@@ -7,17 +7,17 @@ enum TrailShape {
 }
 
 enum TrailColor {
-    static let cream = adaptive(light: 0xF7F4EB, dark: 0x171E1C)
-    static let paper = adaptive(light: 0xFFFDF7, dark: 0x222D2A)
-    static let ink = adaptive(light: 0x1C2925, dark: 0xF4F5EB)
-    static let muted = adaptive(light: 0x53645D, dark: 0xB9C9BF, highLight: 0x253A33, highDark: 0xFFFFFF)
-    static let coral = adaptive(light: 0xF56B50, dark: 0xD55D48)
-    static let green = adaptive(light: 0x0E6658, dark: 0x8BD9C6, highLight: 0x06473D, highDark: 0xC8FFF0)
-    static let action = adaptive(light: 0x0B594D, dark: 0x155D52)
-    static let unavailableAction = adaptive(light: 0x52615B, dark: 0x394D46)
-    static let yellow = adaptive(light: 0xF4C261, dark: 0x6A4D20)
-    static let sky = adaptive(light: 0xB9DFE1, dark: 0x23474A)
-    static let line = adaptive(light: 0xD7DDD1, dark: 0x53645B, highLight: 0x73857B, highDark: 0xDDE9E0)
+    static let cream = adaptive(light: 0x191714, dark: 0x191714)
+    static let paper = adaptive(light: 0x29251F, dark: 0x29251F)
+    static let ink = adaptive(light: 0xF5F0E6, dark: 0xF5F0E6)
+    static let muted = adaptive(light: 0xB8AF9F, dark: 0xB8AF9F)
+    static let coral = adaptive(light: 0xB98259, dark: 0xB98259)
+    static let green = adaptive(light: 0x369B93, dark: 0x369B93)
+    static let action = adaptive(light: 0x276F6A, dark: 0x276F6A)
+    static let unavailableAction = adaptive(light: 0x514B42, dark: 0x514B42)
+    static let yellow = adaptive(light: 0xCDB28A, dark: 0xCDB28A)
+    static let sky = adaptive(light: 0x369B93, dark: 0x369B93)
+    static let line = adaptive(light: 0x766E61, dark: 0x766E61)
 
     private static func adaptive(light: UInt32, dark: UInt32, highLight: UInt32? = nil, highDark: UInt32? = nil)
         -> Color
@@ -127,7 +127,7 @@ struct RoundIconButton: View {
 
 struct TrailEyebrow: View {
     let text: String
-    var color = TrailColor.green
+    var color = TrailColor.muted
 
     var body: some View {
         Text(text.uppercased())
@@ -173,7 +173,7 @@ struct LookUpCard: View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: "binoculars.fill")
                 .font(.system(size: 18, weight: .bold))
-                .foregroundStyle(TrailColor.ink)
+                .foregroundStyle(TrailColor.cream)
                 .frame(width: 38, height: 38)
                 .background(TrailColor.yellow, in: Circle())
             VStack(alignment: .leading, spacing: 3) {

@@ -23,6 +23,7 @@ struct RootView: View {
                 .tag(3)
         }
         .tint(TrailColor.green)
+        .preferredColorScheme(.dark)
         .onOpenURL { url in
             guard let tourID = WidgetTourLink.tourID(from: url) else { return }
             pendingTourID = tourID
@@ -81,7 +82,7 @@ struct ToursView: View {
                             Text("VICTORIA, B.C.")
                                 .font(.trailBody(10, weight: .bold))
                                 .tracking(1.4)
-                                .foregroundStyle(TrailColor.green)
+                                .foregroundStyle(TrailColor.muted)
                         }
 
                         LazyVStack(spacing: 0) {
@@ -171,7 +172,7 @@ struct FeaturedTourCard: View {
                 Text("FEATURED WALK")
                     .font(.trailBody(11, weight: .bold))
                     .tracking(1.3)
-                    .foregroundStyle(TrailColor.ink)
+                    .foregroundStyle(TrailColor.cream)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
                     .background(TrailColor.yellow, in: Capsule())
@@ -228,7 +229,7 @@ struct CompactTourCard: View {
                 Text(purchaseStore.accessLabel(for: tour))
                     .font(.trailBody(11, weight: .bold))
                     .tracking(1)
-                    .foregroundStyle(TrailColor.green)
+                    .foregroundStyle(TrailColor.muted)
             }
             Spacer(minLength: 0)
             Image(systemName: "chevron.right")

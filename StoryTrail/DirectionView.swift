@@ -42,7 +42,7 @@ struct DirectionView: View {
                     Text(hasArrived ? "YOU'VE ARRIVED" : "STOP \(target.number) OF \(tour.stops.count)")
                         .font(.trailBody(14, weight: .heavy))
                         .tracking(1.4)
-                        .foregroundStyle(TrailColor.green)
+                        .foregroundStyle(TrailColor.muted)
 
                     Text("\(target.number). \(target.title)")
                         .font(.trailTitle(30))
@@ -117,7 +117,7 @@ struct DirectionView: View {
                     if connectivity.isOffline {
                         Label("Offline navigation active", systemImage: "location.north.circle.fill")
                             .font(.trailBody(14, weight: .bold))
-                            .foregroundStyle(TrailColor.green)
+                            .foregroundStyle(TrailColor.muted)
                             .padding(.horizontal, 14)
                             .padding(.vertical, 8)
                             .background(TrailColor.green.opacity(0.1), in: Capsule())

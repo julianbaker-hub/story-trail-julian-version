@@ -51,7 +51,7 @@ struct MyBagView: View {
             Button(action: onExplore) {
                 Label("Explore walks", systemImage: "arrow.right")
                     .font(.trailBody(16, weight: .bold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(TrailColor.ink)
                     .frame(maxWidth: .infinity, minHeight: 52)
                     .background(TrailColor.action, in: RoundedRectangle(cornerRadius: TrailShape.button))
             }
@@ -90,6 +90,7 @@ struct AllToursMapView: View {
             VStack(spacing: 8) {
                 if connectivity.isOffline {
                     Label("Offline — map detail may be unavailable", systemImage: "wifi.slash")
+                        .foregroundStyle(TrailColor.cream)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 10)
                         .background(TrailColor.yellow, in: Capsule())

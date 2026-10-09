@@ -130,7 +130,7 @@ struct StopTranscriptView: View {
                 } label: {
                     Label("Play this stop", systemImage: "play.fill")
                         .font(.trailBody(17, weight: .bold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(TrailColor.ink)
                         .frame(maxWidth: .infinity).padding(18)
                         .background(TrailColor.action, in: RoundedRectangle(cornerRadius: TrailShape.button))
                 }
@@ -160,7 +160,7 @@ struct CompactStopPlayer: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("STOP \(stop.number)")
                         .font(.trailBody(12, weight: .bold))
-                        .foregroundStyle(TrailColor.green)
+                        .foregroundStyle(TrailColor.muted)
                     Text(stop.title)
                         .font(.trailBody(16, weight: .bold))
                         .foregroundStyle(TrailColor.ink)

@@ -123,7 +123,7 @@ struct PurchaseView: View {
                     )
                     .font(.trailBody(17, weight: .bold))
                 }
-                .foregroundStyle(.white)
+                .foregroundStyle(TrailColor.ink)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
                 .frame(minHeight: 54)

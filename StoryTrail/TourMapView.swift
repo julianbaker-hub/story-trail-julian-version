@@ -111,7 +111,7 @@ struct TourMapView: View {
                     if let arrivalMessage {
                         Label(arrivalMessage, systemImage: "checkmark.circle.fill")
                             .font(.trailBody(14, weight: .bold))
-                            .foregroundStyle(.white)
+                            .foregroundStyle(TrailColor.ink)
                             .padding(.horizontal, 16).padding(.vertical, 10)
                             .background(TrailColor.action, in: Capsule())
                             .transition(reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity))
@@ -119,7 +119,7 @@ struct TourMapView: View {
                         Button(action: openDirections) {
                             Label("Offline — GPS and compass still work", systemImage: "wifi.slash")
                                 .font(.trailBody(13, weight: .bold))
-                                .foregroundStyle(TrailColor.ink)
+                                .foregroundStyle(TrailColor.cream)
                                 .padding(.horizontal, 14).padding(.vertical, 10)
                                 .background(TrailColor.yellow, in: Capsule())
                         }
@@ -130,7 +130,7 @@ struct TourMapView: View {
                             "Location is off — stops can still be selected manually", systemImage: "location.slash.fill"
                         )
                         .font(.trailBody(13, weight: .semibold))
-                        .foregroundStyle(TrailColor.ink)
+                        .foregroundStyle(TrailColor.cream)
                         .padding(.horizontal, 14).padding(.vertical, 9)
                         .background(TrailColor.yellow, in: Capsule())
                     }
@@ -274,7 +274,7 @@ struct StopMapPin: View {
         }
         // Keep geographic markers compact; VoiceOver exposes their number and state.
         .font(.system(size: active ? 16 : 14, weight: .bold, design: .rounded))
-        .foregroundStyle(active ? TrailColor.ink : .white)
+        .foregroundStyle(active ? TrailColor.cream : TrailColor.ink)
         .frame(width: active ? 48 : 44, height: active ? 48 : 44)
         .background(active ? TrailColor.coral : TrailColor.action, in: Circle())
         .overlay(Circle().stroke(.white, lineWidth: 3))
@@ -488,7 +488,7 @@ struct PlayerSheet: View {
                         systemImage: "location.north.fill"
                     )
                     .font(.trailBody(14, weight: .bold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(TrailColor.ink)
                     .frame(maxWidth: .infinity)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 11)

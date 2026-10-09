@@ -36,7 +36,7 @@ struct TourDetailView: View {
                                 Text("\(visitedCount) / \(tour.stops.count) stops")
                                     .font(.trailBody(13, weight: .bold))
                             }
-                            .foregroundStyle(TrailColor.green)
+                            .foregroundStyle(TrailColor.muted)
                             ProgressView(value: Double(visitedCount), total: Double(tour.stops.count))
                                 .tint(TrailColor.green)
                                 .accessibilityLabel("Tour progress")
@@ -200,7 +200,7 @@ struct TourDetailView: View {
             Text(purchaseStore.hasAccess(to: tour) ? startButtonTitle : unlockButtonTitle)
                 .font(.trailBody(18, weight: .bold))
         }
-        .foregroundStyle(.white)
+        .foregroundStyle(TrailColor.ink)
         .frame(maxWidth: .infinity)
         .padding(.vertical, 18)
         .frame(minHeight: 64)
@@ -249,7 +249,7 @@ struct RoutePreviewRow: View {
             VStack(spacing: 4) {
                 Text("\(stop.number)")
                     .font(.trailBody(13, weight: .bold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(TrailColor.ink)
                     .frame(width: 30, height: 30)
                     .background(TrailColor.action, in: Circle())
                 if !isLast {
