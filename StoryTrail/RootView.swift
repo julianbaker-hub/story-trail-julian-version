@@ -61,7 +61,7 @@ struct ToursView: View {
                         .padding(.top, 12)
 
                     TrailPageHeader(
-                        eyebrow: "Walk · Listen · Discover",
+                        eyebrow: "",
                         title: "Explore Victoria",
                         subtitle: "Choose a walk, follow the route, and listen as each place comes to life."
                     )
