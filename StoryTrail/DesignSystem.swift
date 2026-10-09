@@ -41,7 +41,7 @@ enum TrailColor {
 extension Font {
     static func trailTitle(_ size: CGFloat) -> Font {
         let style: Font.TextStyle = size >= 32 ? .largeTitle : size >= 25 ? .title : .title2
-        return .system(style, design: .rounded, weight: .heavy)
+        return .system(style, design: .serif, weight: .heavy)
     }
 
     static func trailBody(_ size: CGFloat, weight: Weight = .regular) -> Font {
