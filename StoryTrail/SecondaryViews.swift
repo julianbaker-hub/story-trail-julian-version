@@ -91,11 +91,10 @@ struct AllToursMapView: View {
                                     .accessibilityHidden(true)
                             }
                         }
-                        ForEach(tour.stops) { stop in
-                            Annotation(stop.title, coordinate: stop.coordinate, anchor: .center) {
-                                StopMapPin(number: stop.number, active: false, visited: false)
-                            }
-                            .tag(tour)
+                        if let first = tour.stops.first {
+                            Marker("Victoria Inner Harbour Tour", coordinate: first.coordinate)
+                                .tint(TrailColor.green)
+                                .tag(tour)
                         }
                     } else if let first = tour.stops.first {
                         Marker(tour.title, systemImage: "figure.walk", coordinate: first.coordinate)
