@@ -1,0 +1,4 @@
+interface:
+  display_name: "Publish to TestFlight"
+  short_description: "Build, validate, and upload StoryTrail"
+  default_prompt: "Use $testflight-publish to prepare and publish this iOS app to TestFlight."

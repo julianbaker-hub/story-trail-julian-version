@@ -1,0 +1,88 @@
+{
+  "tours": [
+    {
+      "id": "inner-harbour",
+      "title": "Inner Harbour",
+      "subtitle": "Victoria's postcard icons all together",
+      "about": "Victoria's Inner Harbour is more than a pretty waterfront — it's the stage on which the city learned how to present itself to the world.",
+      "minutes": 50,
+      "distance": 1.3,
+      "image_url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6974dfe6b2f3cf4e71f7c639/c2d0d3ef8_Victorias_harbour_Empress_reflection.jpg",
+      "palette": "harbour",
+      "stops": [
+        { "id": "inner-harbour-1", "number": 1, "audio_file": "inner-harbour-01-victoria-visitor-centre.mp3", "title": "Victoria Visitor Centre", "summary": "We start on the Visitor Centre terrace — the perfect spot to orient yourself and look around the harbour.", "transcript": "We start the Inner Harbour tour at the Victoria Visitor Centre terrace. This is the perfect spot to orient yourself and look around the harbour.", "latitude": 48.42272, "longitude": -123.36902 },
+        { "id": "inner-harbour-2", "number": 2, "audio_file": "inner-harbour-02-fairmont-empress-hotel.mp3", "title": "Fairmont Empress Hotel", "summary": "Victoria's most iconic building isn't just a hotel — it's a carefully staged idea. Tea time, anyone?", "transcript": "Victoria's most iconic building isn't just a hotel — it's a carefully staged idea. Tea time, anyone?", "latitude": 48.42149, "longitude": -123.36670 },
+        { "id": "inner-harbour-3", "number": 3, "audio_file": "inner-harbour-03-causeway-promenade.mp3", "title": "Causeway Promenade", "summary": "Victoria's postcard moment: boats, buskers, sea planes, and a photo opportunity every ten seconds.", "transcript": "Victoria's postcard moment: boats, buskers, sea planes, and a photo opportunity every ten seconds.", "latitude": 48.42172, "longitude": -123.36843 },
+        { "id": "inner-harbour-4", "number": 4, "audio_file": "inner-harbour-04-steamship-terminal.mp3", "title": "Steamship Terminal", "summary": "What is a fake Greek temple doing here? Discover how the terminal broadcast Britishness.", "transcript": "What is a fake Greek temple doing here? Discover how the terminal broadcast Britishness.", "latitude": 48.42002, "longitude": -123.36965 },
+        { "id": "inner-harbour-5", "number": 5, "audio_file": "inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3", "title": "James Douglas, Sequoia Tree & Queen Victoria", "summary": "Meet a teenage fur trader, a Gold Rush-era sequoia, and a thirty-foot Queen tucked behind a tree.", "transcript": "Meet a teenage fur trader, a Gold Rush-era sequoia, and a thirty-foot Queen tucked behind a tree.", "latitude": 48.41917, "longitude": -123.36958 },
+        { "id": "inner-harbour-6", "number": 6, "audio_file": "inner-harbour-06-legislative-assembly.mp3", "title": "Legislative Assembly of BC", "summary": "A statement of permanence built in 1898 — plus dark gossip about architect Francis Rattenbury.", "transcript": "A statement of permanence built in 1898 — plus dark gossip about architect Francis Rattenbury.", "latitude": 48.41962, "longitude": -123.37017 },
+        { "id": "inner-harbour-7", "number": 7, "audio_file": "inner-harbour-07-thunderbird-park.mp3", "title": "Thunderbird Park", "summary": "Totem poles, Indigenous history, and BC logging — a cedar museum that is history.", "transcript": "Totem poles, Indigenous history, and BC logging — a cedar museum that is history.", "latitude": 48.41872, "longitude": -123.36712 },
+        { "id": "inner-harbour-8", "number": 8, "audio_file": "inner-harbour-08-emily-carr-statue.mp3", "title": "Emily Carr Statue", "summary": "A woman, a dog, and a monkey — meet Victoria's best-known artist.", "transcript": "A woman, a dog, and a monkey — meet Victoria's best-known artist.", "latitude": 48.41959, "longitude": -123.36774 }
+      ]
+    },
+    {
+      "id": "old-town",
+      "title": "Old Town",
+      "subtitle": "From Fort Victoria to modern tourism district",
+      "about": "Brick façades, narrow alleys, and harbour commerce reveal a neighbourhood shaped by gold-rush urgency and reinvention.",
+      "minutes": 65,
+      "distance": 1.8,
+      "image_url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6974dfe6b2f3cf4e71f7c639/aa10d890f_Victoria_LoJo_1.jpg",
+      "palette": "oldTown",
+      "stops": [
+        { "id": "old-town-1", "number": 1, "title": "Government Street", "summary": "Victoria's oldest commercial corridor began at the shoreline.", "transcript": "Victoria's oldest commercial corridor began at the shoreline.", "latitude": 48.4233, "longitude": -123.3680 },
+        { "id": "old-town-2", "number": 2, "title": "Bank of Montreal Building", "summary": "Beaux-Arts architecture made money look permanent.", "transcript": "Beaux-Arts architecture made money look permanent.", "latitude": 48.4240, "longitude": -123.3675 },
+        { "id": "old-town-3", "number": 3, "title": "Bastion Square", "summary": "From Fort Victoria's palisade to courthouse plaza.", "transcript": "From Fort Victoria's palisade to courthouse plaza.", "latitude": 48.4257, "longitude": -123.3690 },
+        { "id": "old-town-4", "number": 4, "title": "Waddington Alley", "summary": "Walk on rare nineteenth-century wooden paving blocks.", "transcript": "Walk on rare nineteenth-century wooden paving blocks.", "latitude": 48.4270, "longitude": -123.3690 },
+        { "id": "old-town-5", "number": 5, "title": "Lower Johnson Street", "summary": "Harbour commerce became Victoria's colourful boutique block.", "transcript": "Harbour commerce became Victoria's colourful boutique block.", "latitude": 48.4275, "longitude": -123.3692 },
+        { "id": "old-town-6", "number": 6, "title": "Market Square", "summary": "A working courtyard built for crates, hoists, and merchants.", "transcript": "A working courtyard built for crates, hoists, and merchants.", "latitude": 48.4284, "longitude": -123.3692 },
+        { "id": "old-town-7", "number": 7, "title": "Fan Tan Alley", "summary": "Community life and commerce in Canada's narrowest street.", "transcript": "Community life and commerce in Canada's narrowest street.", "latitude": 48.4291, "longitude": -123.3677 },
+        { "id": "old-town-8", "number": 8, "title": "Gate of Harmonious Interest", "summary": "A public statement at the centre of Chinatown's revival.", "transcript": "A public statement at the centre of Chinatown's revival.", "latitude": 48.4294, "longitude": -123.3670 },
+        { "id": "old-town-9", "number": 9, "title": "Johnson Street Bridge", "summary": "Where Old Town opens onto its industrial harbour.", "transcript": "Where Old Town opens onto its industrial harbour.", "latitude": 48.4273, "longitude": -123.3725 },
+        { "id": "old-town-10", "number": 10, "title": "Old Victoria Customs House", "summary": "A handsome stone statement about trade and taxation.", "transcript": "A handsome stone statement about trade and taxation.", "latitude": 48.4248, "longitude": -123.3700 }
+      ]
+    },
+    {
+      "id": "james-bay",
+      "title": "James Bay",
+      "subtitle": "Victoria's first and prettiest neighbourhood",
+      "about": "Part seaside village, part government back-office, and part Victorian time capsule — with the Pacific at its edge.",
+      "minutes": 85,
+      "distance": 3.4,
+      "image_url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6974dfe6b2f3cf4e71f7c639/0b5927eea_Fishermens_Wharf_Joe_Mabel.jpg",
+      "palette": "jamesBay",
+      "stops": [
+        { "id": "james-bay-1", "number": 1, "title": "Pendray Tea House", "summary": "Victorian ambition and modern tourism under one roof.", "transcript": "Victorian ambition and modern tourism under one roof.", "latitude": 48.4210, "longitude": -123.3753 },
+        { "id": "james-bay-2", "number": 2, "title": "Laurel Point", "summary": "A shoreline story of use, abuse, and renewal.", "transcript": "A shoreline story of use, abuse, and renewal.", "latitude": 48.4199, "longitude": -123.3780 },
+        { "id": "james-bay-3", "number": 3, "title": "Fisherman's Wharf", "summary": "A working waterfront reinvented as a floating village.", "transcript": "A working waterfront reinvented as a floating village.", "latitude": 48.4190, "longitude": -123.3827 },
+        { "id": "james-bay-4", "number": 4, "title": "Ogden Point", "summary": "Industrial ambition meets the open Pacific.", "transcript": "Industrial ambition meets the open Pacific.", "latitude": 48.4145, "longitude": -123.3890 },
+        { "id": "james-bay-5", "number": 5, "title": "Holland Point Park", "summary": "A quiet stretch of coast for weather, geology, and reflection.", "transcript": "A quiet stretch of coast for weather, geology, and reflection.", "latitude": 48.4102, "longitude": -123.3790 },
+        { "id": "james-bay-6", "number": 6, "title": "South Turner Street", "summary": "James Bay's history at the scale of porches and sidewalks.", "transcript": "James Bay's history at the scale of porches and sidewalks.", "latitude": 48.4116, "longitude": -123.3747 },
+        { "id": "james-bay-7", "number": 7, "title": "Emily Carr House", "summary": "The birthplace of one of Canada's most influential artists.", "transcript": "The birthplace of one of Canada's most influential artists.", "latitude": 48.4142, "longitude": -123.3698 },
+        { "id": "james-bay-8", "number": 8, "title": "Toronto Street", "summary": "A street name that reveals migration and colonial identity-building.", "transcript": "A street name that reveals migration and colonial identity-building.", "latitude": 48.4130, "longitude": -123.3730 },
+        { "id": "james-bay-9", "number": 9, "title": "The King's Printer", "summary": "How printed words became tools of government authority.", "transcript": "How printed words became tools of government authority.", "latitude": 48.4161, "longitude": -123.3658 },
+        { "id": "james-bay-10", "number": 10, "title": "Confederation Gardens", "summary": "A calm civic ending among fountains, flowers, and government buildings.", "transcript": "A calm civic ending among fountains, flowers, and government buildings.", "latitude": 48.4190, "longitude": -123.3686 }
+      ]
+    },
+    {
+      "id": "beacon-hill",
+      "title": "Beacon Hill Park",
+      "subtitle": "More than a Victorian pleasure garden",
+      "about": "Wide lawns, winding paths, ocean views, and layered stories of land, culture, and memory.",
+      "minutes": 90,
+      "distance": 3.0,
+      "image_url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6974dfe6b2f3cf4e71f7c639/d76426b62_BHP_Bridge.jpg",
+      "palette": "beaconHill",
+      "stops": [
+        { "id": "beacon-hill-1", "number": 1, "title": "Goodacre Lake", "summary": "Designed scenery layered over a much older wetland story.", "transcript": "Designed scenery layered over a much older wetland story.", "latitude": 48.4137, "longitude": -123.3637 },
+        { "id": "beacon-hill-2", "number": 2, "title": "Cameron Bandshell", "summary": "Victoria's outdoor stage and shared living room since 1935.", "transcript": "Victoria's outdoor stage and shared living room since 1935.", "latitude": 48.4131, "longitude": -123.3615 },
+        { "id": "beacon-hill-3", "number": 3, "title": "The Beacon on the Hill", "summary": "A vantage point shaped by looking, naming, and claiming.", "transcript": "A vantage point shaped by looking, naming, and claiming.", "latitude": 48.4088, "longitude": -123.3610 },
+        { "id": "beacon-hill-4", "number": 4, "title": "Burial Mounds", "summary": "Ancient Lekwungen resting places held in the landscape.", "transcript": "Ancient Lekwungen resting places held in the landscape.", "latitude": 48.4080, "longitude": -123.3600 },
+        { "id": "beacon-hill-5", "number": 5, "title": "World's Tallest Totem Pole", "summary": "Story, lineage, and cultural continuity standing upright.", "transcript": "Story, lineage, and cultural continuity standing upright.", "latitude": 48.4091, "longitude": -123.3670 },
+        { "id": "beacon-hill-6", "number": 6, "title": "Camas Fields", "summary": "A meadow that is also a long-running Indigenous food system.", "transcript": "A meadow that is also a long-running Indigenous food system.", "latitude": 48.4070, "longitude": -123.3645 },
+        { "id": "beacon-hill-7", "number": 7, "title": "Mile 0 & Terry Fox Statue", "summary": "A monument to beginnings, movement, and resolve.", "transcript": "A monument to beginnings, movement, and resolve.", "latitude": 48.4072, "longitude": -123.3696 },
+        { "id": "beacon-hill-8", "number": 8, "title": "Beacon Drive-in Restaurant", "summary": "A local ritual and a lighter ending, often with onion rings.", "transcript": "A local ritual and a lighter ending, often with onion rings.", "latitude": 48.4128, "longitude": -123.3666 }
+      ]
+    }
+  ]
+}

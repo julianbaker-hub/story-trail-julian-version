@@ -1,0 +1,57 @@
+name: StoryTrail
+options:
+  bundleIdPrefix: com.storytrailguide
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    DEVELOPMENT_TEAM: "9JY5CE8B5H"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "3"
+targets:
+  StoryTrail:
+    type: application
+    platform: iOS
+    sources:
+      - StoryTrail
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.storytrailguide.app
+        PRODUCT_NAME: StoryTrail
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: StoryTrail/Info.plist
+        CODE_SIGN_ENTITLEMENTS: StoryTrail/StoryTrail.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    dependencies:
+      - target: StoryTrailWidgets
+    scheme:
+      testTargets:
+        - StoryTrailTests
+  StoryTrailWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - StoryTrailWidgets
+      - path: StoryTrail/WidgetSnapshot.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.storytrailguide.app.widgets
+        PRODUCT_NAME: StoryTrailWidgets
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: StoryTrailWidgets/Info.plist
+        CODE_SIGN_ENTITLEMENTS: StoryTrailWidgets/StoryTrailWidgets.entitlements
+        APPLICATION_EXTENSION_API_ONLY: YES
+  StoryTrailTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - StoryTrailTests
+    dependencies:
+      - target: StoryTrail
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES

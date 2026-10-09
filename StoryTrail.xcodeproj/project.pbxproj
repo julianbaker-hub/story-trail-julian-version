@@ -1,0 +1,704 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0553868A7182513684454442 /* TourLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21B96F4BD6ED676B28549ED /* TourLibrary.swift */; };
+		0A9F7361A152FC19F92931D0 /* inner-harbour-04-steamship-terminal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D92B166D8D387482D96AE5E2 /* inner-harbour-04-steamship-terminal.mp3 */; };
+		1C7780229738C17FC2BD3921 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B15B862B54E1ACD23B487B91 /* Assets.xcassets */; };
+		274C974865AD74104881667D /* NavigationMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2E16F513DC7F78DFFF84AE /* NavigationMath.swift */; };
+		2763738DDC45247A53FA08D5 /* NavigationAndProximityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12B9696FB042ACE9670E87C /* NavigationAndProximityTests.swift */; };
+		2AF04EF1E24345879477A001 /* PurchaseConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF04EF1E24345879477B001 /* PurchaseConfiguration.swift */; };
+		2AF04EF1E24345879477A002 /* PurchaseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF04EF1E24345879477B002 /* PurchaseStore.swift */; };
+		2AF04EF1E24345879477A003 /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF04EF1E24345879477B003 /* PurchaseView.swift */; };
+		2AF04EF1E24345879477A004 /* TourAccessPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF04EF1E24345879477B004 /* TourAccessPolicyTests.swift */; };
+		32689AEC41C9581B0CC1D7DE /* AudioPlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D9459DA13195A08D8C9523 /* AudioPlayerModel.swift */; };
+		44DBB4C7118E837874E44EB4 /* inner-harbour-02-fairmont-empress-hotel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 573AC9477C9FD9AF71EA69DD /* inner-harbour-02-fairmont-empress-hotel.mp3 */; };
+		545B942F78111C87B1E6ACA3 /* TourDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B51FA5FA238A3E41608135 /* TourDetailView.swift */; };
+		6254B4857CB3BAC575812D6B /* inner-harbour-08-emily-carr-statue.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AEE0709A04ECD45DACBA4EB0 /* inner-harbour-08-emily-carr-statue.mp3 */; };
+		7239365A9FACC75BE9382DB9 /* StoryTrailApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F1B80E6DC60C51412E44DB /* StoryTrailApp.swift */; };
+		76229AA8D597A51DAFEDF0A6 /* inner-harbor.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7C6CAFAE98A3D776D6878BA7 /* inner-harbor.mp3 */; };
+		8AB697DBA96C232084644903 /* TourStopsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A4894C1681E6530A2F5F82 /* TourStopsView.swift */; };
+		8F1C3D67C9790DB46B69DB52 /* TourMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5678475970E8DF82B2FD3C9F /* TourMapView.swift */; };
+		9218B77282AC9EBFCE4291AB /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1241C28BB01BCD8447B25C5 /* Models.swift */; };
+		9DE3B505EBB12889D2E9699A /* tours.json in Resources */ = {isa = PBXBuildFile; fileRef = 3382E908EF9D3B53C877BF94 /* tours.json */; };
+		A10000000000000000000001 /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* WidgetSnapshot.swift */; };
+		A10000000000000000000002 /* WidgetSnapshotPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* WidgetSnapshotPublisher.swift */; };
+		A10000000000000000000003 /* StoryTrailWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* StoryTrailWidgets.swift */; };
+		A10000000000000000000004 /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* WidgetSnapshot.swift */; };
+		A10000000000000000000005 /* WidgetSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* WidgetSnapshotTests.swift */; };
+		A10000000000000000000006 /* StoryTrailWidgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* StoryTrailWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A62769413BEC5194F348F4B9 /* TourRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CCD516384D37F08D17077B /* TourRepository.swift */; };
+		B10000000000000000000001 /* TourShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000001 /* TourShortcuts.swift */; };
+		B10000000000000000000002 /* TourShortcutsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000002 /* TourShortcutsTests.swift */; };
+		B5C0E85966050A6324E2896A /* inner-harbour-01-victoria-visitor-centre.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D27345F869D6B8B0E95412FF /* inner-harbour-01-victoria-visitor-centre.mp3 */; };
+		BAB4164CC6D4AC500D55627A /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEA563DAC19057DEEF31443 /* RootView.swift */; };
+		BD4D28C66DFFF88817459F79 /* inner-harbour-06-legislative-assembly.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CAD363AEBFD55F8266A009CF /* inner-harbour-06-legislative-assembly.mp3 */; };
+		C1382BFB86AC260209E7806E /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2C96003D63C4B0200EA100 /* DesignSystem.swift */; };
+		C95F8D831E9E30CA92012DF0 /* inner-harbour-07-thunderbird-park.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 97BCB3902E0D488138E5F22D /* inner-harbour-07-thunderbird-park.mp3 */; };
+		D9159EFB60672FEF83291E10 /* inner-harbour-03-causeway-promenade.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 72AC3AEA01189D6AEA80DB5E /* inner-harbour-03-causeway-promenade.mp3 */; };
+		E34FE420DB13C0C391C65A8B /* inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4B7D0D9EBE07706E80BA187B /* inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3 */; };
+		F100ED4F9767A20ECF4FF361 /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50F30408A68C5958B9433AC /* LocationModel.swift */; };
+		F328F8EC7A8162B4CF2873F7 /* SecondaryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5450AED213644C21D17801 /* SecondaryViews.swift */; };
+		F762B12BAED6150BDF1D8DEA /* DirectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B91682E8C418258B29AD12 /* DirectionView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7A264994CE161971A5E745A2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA54B3252C746C0EA423BD03 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9EE0DE4E187FE13532E812B2;
+			remoteInfo = StoryTrail;
+		};
+		A30000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA54B3252C746C0EA423BD03 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A40000000000000000000001;
+			remoteInfo = StoryTrailWidgets;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A50000000000000000000001 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A10000000000000000000006 /* StoryTrailWidgets.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0736B47FAC7AE890EB9BEB0B /* StoryTrail.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoryTrail.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2AF04EF1E24345879477B001 /* PurchaseConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseConfiguration.swift; sourceTree = "<group>"; };
+		2AF04EF1E24345879477B002 /* PurchaseStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseStore.swift; sourceTree = "<group>"; };
+		2AF04EF1E24345879477B003 /* PurchaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseView.swift; sourceTree = "<group>"; };
+		2AF04EF1E24345879477B004 /* TourAccessPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourAccessPolicyTests.swift; sourceTree = "<group>"; };
+		3382E908EF9D3B53C877BF94 /* tours.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tours.json; sourceTree = "<group>"; };
+		33A4894C1681E6530A2F5F82 /* TourStopsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourStopsView.swift; sourceTree = "<group>"; };
+		3BEA563DAC19057DEEF31443 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		45B91682E8C418258B29AD12 /* DirectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionView.swift; sourceTree = "<group>"; };
+		4B2C96003D63C4B0200EA100 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		4B7D0D9EBE07706E80BA187B /* inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3"; sourceTree = "<group>"; };
+		5678475970E8DF82B2FD3C9F /* TourMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourMapView.swift; sourceTree = "<group>"; };
+		573AC9477C9FD9AF71EA69DD /* inner-harbour-02-fairmont-empress-hotel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-02-fairmont-empress-hotel.mp3"; sourceTree = "<group>"; };
+		6B5450AED213644C21D17801 /* SecondaryViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryViews.swift; sourceTree = "<group>"; };
+		72AC3AEA01189D6AEA80DB5E /* inner-harbour-03-causeway-promenade.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-03-causeway-promenade.mp3"; sourceTree = "<group>"; };
+		7C6CAFAE98A3D776D6878BA7 /* inner-harbor.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbor.mp3"; sourceTree = "<group>"; };
+		83CCD516384D37F08D17077B /* TourRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourRepository.swift; sourceTree = "<group>"; };
+		87F1B80E6DC60C51412E44DB /* StoryTrailApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryTrailApp.swift; sourceTree = "<group>"; };
+		97BCB3902E0D488138E5F22D /* inner-harbour-07-thunderbird-park.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-07-thunderbird-park.mp3"; sourceTree = "<group>"; };
+		A20000000000000000000001 /* WidgetSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshot.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* WidgetSnapshotPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshotPublisher.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* StoryTrailWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryTrailWidgets.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* WidgetSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshotTests.swift; sourceTree = "<group>"; };
+		A20000000000000000000005 /* StoryTrailWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StoryTrailWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000000000000000000006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A20000000000000000000007 /* StoryTrailWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StoryTrailWidgets.entitlements; sourceTree = "<group>"; };
+		A20000000000000000000008 /* StoryTrail.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StoryTrail.entitlements; sourceTree = "<group>"; };
+		A21B96F4BD6ED676B28549ED /* TourLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourLibrary.swift; sourceTree = "<group>"; };
+		AA2E16F513DC7F78DFFF84AE /* NavigationMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMath.swift; sourceTree = "<group>"; };
+		AEE0709A04ECD45DACBA4EB0 /* inner-harbour-08-emily-carr-statue.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-08-emily-carr-statue.mp3"; sourceTree = "<group>"; };
+		B15B862B54E1ACD23B487B91 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B20000000000000000000001 /* TourShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourShortcuts.swift; sourceTree = "<group>"; };
+		B20000000000000000000002 /* TourShortcutsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourShortcutsTests.swift; sourceTree = "<group>"; };
+		B50F30408A68C5958B9433AC /* LocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
+		C4B51FA5FA238A3E41608135 /* TourDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourDetailView.swift; sourceTree = "<group>"; };
+		CAD363AEBFD55F8266A009CF /* inner-harbour-06-legislative-assembly.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-06-legislative-assembly.mp3"; sourceTree = "<group>"; };
+		D27345F869D6B8B0E95412FF /* inner-harbour-01-victoria-visitor-centre.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-01-victoria-visitor-centre.mp3"; sourceTree = "<group>"; };
+		D92B166D8D387482D96AE5E2 /* inner-harbour-04-steamship-terminal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-04-steamship-terminal.mp3"; sourceTree = "<group>"; };
+		E1241C28BB01BCD8447B25C5 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		E12B9696FB042ACE9670E87C /* NavigationAndProximityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAndProximityTests.swift; sourceTree = "<group>"; };
+		E78116F1BB9B9AFE61AC6653 /* StoryTrailTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoryTrailTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3D9459DA13195A08D8C9523 /* AudioPlayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerModel.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		28CD52CEF6C22AE532FA7A3F /* StoryTrailTests */ = {
+			isa = PBXGroup;
+			children = (
+				E12B9696FB042ACE9670E87C /* NavigationAndProximityTests.swift */,
+				2AF04EF1E24345879477B004 /* TourAccessPolicyTests.swift */,
+				A20000000000000000000004 /* WidgetSnapshotTests.swift */,
+				B20000000000000000000002 /* TourShortcutsTests.swift */,
+			);
+			path = StoryTrailTests;
+			sourceTree = "<group>";
+		};
+		3839144C0FB0DA1299FCD935 = {
+			isa = PBXGroup;
+			children = (
+				F826156BF1E92B1986FFBC48 /* StoryTrail */,
+				A60000000000000000000001 /* StoryTrailWidgets */,
+				28CD52CEF6C22AE532FA7A3F /* StoryTrailTests */,
+				BB0ECF22D262C341FB5F727D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4D5DA3DBAD526129DB76F655 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				ACFE2C6DB5688D1C1C71AF25 /* Audio */,
+				7C6CAFAE98A3D776D6878BA7 /* inner-harbor.mp3 */,
+				3382E908EF9D3B53C877BF94 /* tours.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A60000000000000000000001 /* StoryTrailWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000006 /* Info.plist */,
+				A20000000000000000000007 /* StoryTrailWidgets.entitlements */,
+				A20000000000000000000003 /* StoryTrailWidgets.swift */,
+			);
+			path = StoryTrailWidgets;
+			sourceTree = "<group>";
+		};
+		ACFE2C6DB5688D1C1C71AF25 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				D27345F869D6B8B0E95412FF /* inner-harbour-01-victoria-visitor-centre.mp3 */,
+				573AC9477C9FD9AF71EA69DD /* inner-harbour-02-fairmont-empress-hotel.mp3 */,
+				72AC3AEA01189D6AEA80DB5E /* inner-harbour-03-causeway-promenade.mp3 */,
+				D92B166D8D387482D96AE5E2 /* inner-harbour-04-steamship-terminal.mp3 */,
+				4B7D0D9EBE07706E80BA187B /* inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3 */,
+				CAD363AEBFD55F8266A009CF /* inner-harbour-06-legislative-assembly.mp3 */,
+				97BCB3902E0D488138E5F22D /* inner-harbour-07-thunderbird-park.mp3 */,
+				AEE0709A04ECD45DACBA4EB0 /* inner-harbour-08-emily-carr-statue.mp3 */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		BB0ECF22D262C341FB5F727D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0736B47FAC7AE890EB9BEB0B /* StoryTrail.app */,
+				E78116F1BB9B9AFE61AC6653 /* StoryTrailTests.xctest */,
+				A20000000000000000000005 /* StoryTrailWidgets.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F826156BF1E92B1986FFBC48 /* StoryTrail */ = {
+			isa = PBXGroup;
+			children = (
+				B15B862B54E1ACD23B487B91 /* Assets.xcassets */,
+				F3D9459DA13195A08D8C9523 /* AudioPlayerModel.swift */,
+				4B2C96003D63C4B0200EA100 /* DesignSystem.swift */,
+				45B91682E8C418258B29AD12 /* DirectionView.swift */,
+				B50F30408A68C5958B9433AC /* LocationModel.swift */,
+				E1241C28BB01BCD8447B25C5 /* Models.swift */,
+				AA2E16F513DC7F78DFFF84AE /* NavigationMath.swift */,
+				2AF04EF1E24345879477B001 /* PurchaseConfiguration.swift */,
+				2AF04EF1E24345879477B002 /* PurchaseStore.swift */,
+				2AF04EF1E24345879477B003 /* PurchaseView.swift */,
+				3BEA563DAC19057DEEF31443 /* RootView.swift */,
+				6B5450AED213644C21D17801 /* SecondaryViews.swift */,
+				87F1B80E6DC60C51412E44DB /* StoryTrailApp.swift */,
+				C4B51FA5FA238A3E41608135 /* TourDetailView.swift */,
+				B20000000000000000000001 /* TourShortcuts.swift */,
+				A20000000000000000000008 /* StoryTrail.entitlements */,
+				A21B96F4BD6ED676B28549ED /* TourLibrary.swift */,
+				5678475970E8DF82B2FD3C9F /* TourMapView.swift */,
+				83CCD516384D37F08D17077B /* TourRepository.swift */,
+				33A4894C1681E6530A2F5F82 /* TourStopsView.swift */,
+				A20000000000000000000001 /* WidgetSnapshot.swift */,
+				A20000000000000000000002 /* WidgetSnapshotPublisher.swift */,
+				4D5DA3DBAD526129DB76F655 /* Resources */,
+			);
+			path = StoryTrail;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9EB6CEA398F76867BD0E5CC3 /* StoryTrailTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85DE390C14FA4E1839E95D48 /* Build configuration list for PBXNativeTarget "StoryTrailTests" */;
+			buildPhases = (
+				2DC6E2967A41FCF824E59E88 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				54EB18DED6EA644F97AC8C04 /* PBXTargetDependency */,
+			);
+			name = StoryTrailTests;
+			packageProductDependencies = (
+			);
+			productName = StoryTrailTests;
+			productReference = E78116F1BB9B9AFE61AC6653 /* StoryTrailTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		9EE0DE4E187FE13532E812B2 /* StoryTrail */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3D3B18F42B9C9907E20A9E2 /* Build configuration list for PBXNativeTarget "StoryTrail" */;
+			buildPhases = (
+				40E20F7809484019099F1594 /* Sources */,
+				689738D3C224C178EE601202 /* Resources */,
+				A50000000000000000000001 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A90000000000000000000001 /* PBXTargetDependency */,
+			);
+			name = StoryTrail;
+			packageProductDependencies = (
+			);
+			productName = StoryTrail;
+			productReference = 0736B47FAC7AE890EB9BEB0B /* StoryTrail.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A40000000000000000000001 /* StoryTrailWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A70000000000000000000001 /* Build configuration list for PBXNativeTarget "StoryTrailWidgets" */;
+			buildPhases = (
+				A80000000000000000000001 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StoryTrailWidgets;
+			productName = StoryTrailWidgets;
+			productReference = A20000000000000000000005 /* StoryTrailWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FA54B3252C746C0EA423BD03 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					9EB6CEA398F76867BD0E5CC3 = {
+						DevelopmentTeam = 9JY5CE8B5H;
+					};
+					9EE0DE4E187FE13532E812B2 = {
+						DevelopmentTeam = 9JY5CE8B5H;
+					};
+					A40000000000000000000001 = {
+						DevelopmentTeam = 9JY5CE8B5H;
+					};
+				};
+			};
+			buildConfigurationList = B80EC2A06F36CD273354DEFE /* Build configuration list for PBXProject "StoryTrail" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 3839144C0FB0DA1299FCD935;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = BB0ECF22D262C341FB5F727D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9EE0DE4E187FE13532E812B2 /* StoryTrail */,
+				9EB6CEA398F76867BD0E5CC3 /* StoryTrailTests */,
+				A40000000000000000000001 /* StoryTrailWidgets */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		689738D3C224C178EE601202 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C7780229738C17FC2BD3921 /* Assets.xcassets in Resources */,
+				76229AA8D597A51DAFEDF0A6 /* inner-harbor.mp3 in Resources */,
+				B5C0E85966050A6324E2896A /* inner-harbour-01-victoria-visitor-centre.mp3 in Resources */,
+				44DBB4C7118E837874E44EB4 /* inner-harbour-02-fairmont-empress-hotel.mp3 in Resources */,
+				D9159EFB60672FEF83291E10 /* inner-harbour-03-causeway-promenade.mp3 in Resources */,
+				0A9F7361A152FC19F92931D0 /* inner-harbour-04-steamship-terminal.mp3 in Resources */,
+				E34FE420DB13C0C391C65A8B /* inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3 in Resources */,
+				BD4D28C66DFFF88817459F79 /* inner-harbour-06-legislative-assembly.mp3 in Resources */,
+				C95F8D831E9E30CA92012DF0 /* inner-harbour-07-thunderbird-park.mp3 in Resources */,
+				6254B4857CB3BAC575812D6B /* inner-harbour-08-emily-carr-statue.mp3 in Resources */,
+				9DE3B505EBB12889D2E9699A /* tours.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2DC6E2967A41FCF824E59E88 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2763738DDC45247A53FA08D5 /* NavigationAndProximityTests.swift in Sources */,
+				2AF04EF1E24345879477A004 /* TourAccessPolicyTests.swift in Sources */,
+				A10000000000000000000005 /* WidgetSnapshotTests.swift in Sources */,
+				B10000000000000000000002 /* TourShortcutsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40E20F7809484019099F1594 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				32689AEC41C9581B0CC1D7DE /* AudioPlayerModel.swift in Sources */,
+				C1382BFB86AC260209E7806E /* DesignSystem.swift in Sources */,
+				F762B12BAED6150BDF1D8DEA /* DirectionView.swift in Sources */,
+				F100ED4F9767A20ECF4FF361 /* LocationModel.swift in Sources */,
+				9218B77282AC9EBFCE4291AB /* Models.swift in Sources */,
+				274C974865AD74104881667D /* NavigationMath.swift in Sources */,
+				2AF04EF1E24345879477A001 /* PurchaseConfiguration.swift in Sources */,
+				2AF04EF1E24345879477A002 /* PurchaseStore.swift in Sources */,
+				2AF04EF1E24345879477A003 /* PurchaseView.swift in Sources */,
+				BAB4164CC6D4AC500D55627A /* RootView.swift in Sources */,
+				F328F8EC7A8162B4CF2873F7 /* SecondaryViews.swift in Sources */,
+				7239365A9FACC75BE9382DB9 /* StoryTrailApp.swift in Sources */,
+				545B942F78111C87B1E6ACA3 /* TourDetailView.swift in Sources */,
+				0553868A7182513684454442 /* TourLibrary.swift in Sources */,
+				8F1C3D67C9790DB46B69DB52 /* TourMapView.swift in Sources */,
+				A62769413BEC5194F348F4B9 /* TourRepository.swift in Sources */,
+				8AB697DBA96C232084644903 /* TourStopsView.swift in Sources */,
+				B10000000000000000000001 /* TourShortcuts.swift in Sources */,
+				A10000000000000000000001 /* WidgetSnapshot.swift in Sources */,
+				A10000000000000000000002 /* WidgetSnapshotPublisher.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A80000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000003 /* StoryTrailWidgets.swift in Sources */,
+				A10000000000000000000004 /* WidgetSnapshot.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		54EB18DED6EA644F97AC8C04 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9EE0DE4E187FE13532E812B2 /* StoryTrail */;
+			targetProxy = 7A264994CE161971A5E745A2 /* PBXContainerItemProxy */;
+		};
+		A90000000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A40000000000000000000001 /* StoryTrailWidgets */;
+			targetProxy = A30000000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		056ED06B70721E0EF607B0C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 3;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 9JY5CE8B5H;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		45A9E435A9A9CBF84099C89D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.storytrailguide.StoryTrailTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StoryTrail.app/StoryTrail";
+			};
+			name = Debug;
+		};
+		88F791070E858FAE506FDD9E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = StoryTrail/StoryTrail.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = StoryTrail/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = StoryTrail;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "StoryTrail uses your location to guide you along walking tours and cue nearby stories.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIBackgroundModes = "audio location";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.storytrailguide.app;
+				PRODUCT_NAME = StoryTrail;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		986FE08494AC5D622C0CF13F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.storytrailguide.StoryTrailTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StoryTrail.app/StoryTrail";
+			};
+			name = Release;
+		};
+		A70000000000000000000002 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = StoryTrailWidgets/StoryTrailWidgets.entitlements;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = 9JY5CE8B5H;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = StoryTrailWidgets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.storytrailguide.app.widgets;
+				PRODUCT_NAME = StoryTrailWidgets;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A70000000000000000000003 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = StoryTrailWidgets/StoryTrailWidgets.entitlements;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = 9JY5CE8B5H;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = StoryTrailWidgets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.storytrailguide.app.widgets;
+				PRODUCT_NAME = StoryTrailWidgets;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DDFA42544FE28228DD43ACCA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 3;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 9JY5CE8B5H;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		E47F7A5C3977FB7796887397 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = StoryTrail/StoryTrail.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = StoryTrail/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = StoryTrail;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "StoryTrail uses your location to guide you along walking tours and cue nearby stories.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIBackgroundModes = "audio location";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.storytrailguide.app;
+				PRODUCT_NAME = StoryTrail;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		85DE390C14FA4E1839E95D48 /* Build configuration list for PBXNativeTarget "StoryTrailTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45A9E435A9A9CBF84099C89D /* Debug */,
+				986FE08494AC5D622C0CF13F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A70000000000000000000001 /* Build configuration list for PBXNativeTarget "StoryTrailWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A70000000000000000000002 /* Debug */,
+				A70000000000000000000003 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B80EC2A06F36CD273354DEFE /* Build configuration list for PBXProject "StoryTrail" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDFA42544FE28228DD43ACCA /* Debug */,
+				056ED06B70721E0EF607B0C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D3D3B18F42B9C9907E20A9E2 /* Build configuration list for PBXNativeTarget "StoryTrail" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				88F791070E858FAE506FDD9E /* Debug */,
+				E47F7A5C3977FB7796887397 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FA54B3252C746C0EA423BD03 /* Project object */;
+}
