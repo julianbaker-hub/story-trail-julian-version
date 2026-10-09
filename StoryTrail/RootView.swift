@@ -146,7 +146,7 @@ struct BrandMark: View {
             Image("BrandIcon")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 36, height: 36)
+                .frame(width: 54, height: 54)
                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             Text("StoryTrail")
                 .font(.trailTitle(23))
