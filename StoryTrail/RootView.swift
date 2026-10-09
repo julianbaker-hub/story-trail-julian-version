@@ -152,6 +152,7 @@ struct BrandMark: View {
                 .font(.trailTitle(23))
                 .foregroundStyle(TrailColor.ink)
         }
+        .frame(maxWidth: .infinity, alignment: .center)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("StoryTrail")
     }
