@@ -27,7 +27,7 @@ struct TourStop: Identifiable, Hashable, Codable {
         summary: String,
         transcript: String,
         coordinate: CLLocationCoordinate2D,
-        triggerRadiusMeters: CLLocationDistance = 30,
+        triggerRadiusMeters: CLLocationDistance = 20,
         audioURL: URL? = nil,
         audioFile: String? = nil,
     ) {
@@ -53,7 +53,7 @@ struct TourStop: Identifiable, Hashable, Codable {
             latitude: try values.decode(Double.self, forKey: .latitude),
             longitude: try values.decode(Double.self, forKey: .longitude),
         )
-        let decodedRadius = try values.decodeIfPresent(CLLocationDistance.self, forKey: .triggerRadiusMeters) ?? 30
+        let decodedRadius = try values.decodeIfPresent(CLLocationDistance.self, forKey: .triggerRadiusMeters) ?? 20
         triggerRadiusMeters = min(max(decodedRadius, 5), 100)
         audioURL = try values.decodeIfPresent(URL.self, forKey: .audioURL)
         audioFile = try values.decodeIfPresent(String.self, forKey: .audioFile)
@@ -77,6 +77,21 @@ struct TourStop: Identifiable, Hashable, Codable {
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
 }
 
+struct TourRoutePoint: Hashable, Codable {
+    let latitude: Double
+    let longitude: Double
+
+    var coordinate: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+}
+
+struct TourRouteArrow: Identifiable {
+    let id: Int
+    let coordinate: CLLocationCoordinate2D
+    let bearing: CLLocationDirection
+}
+
 struct Tour: Identifiable, Hashable, Codable {
     let id: String
     let title: String
@@ -85,16 +100,79 @@ struct Tour: Identifiable, Hashable, Codable {
     let minutes: Int
     let distance: Double
     let stops: [TourStop]
+    let route: [TourRoutePoint]?
     let imageURL: URL?
     let palette: TourPalette
 
     enum CodingKeys: String, CodingKey {
-        case id, title, subtitle, about, minutes, distance, stops, palette
+        case id, title, subtitle, about, minutes, distance, stops, route, palette
         case imageURL = "image_url"
+    }
+
+    init(
+        id: String,
+        title: String,
+        subtitle: String,
+        about: String,
+        minutes: Int,
+        distance: Double,
+        stops: [TourStop],
+        route: [TourRoutePoint]? = nil,
+        imageURL: URL?,
+        palette: TourPalette,
+    ) {
+        self.id = id
+        self.title = title
+        self.subtitle = subtitle
+        self.about = about
+        self.minutes = minutes
+        self.distance = distance
+        self.stops = stops
+        self.route = route
+        self.imageURL = imageURL
+        self.palette = palette
+    }
+
+    var routeCoordinates: [CLLocationCoordinate2D] {
+        guard let route, !route.isEmpty else { return stops.map(\.coordinate) }
+        return route.map(\.coordinate)
+    }
+
+    var routeArrows: [TourRouteArrow] {
+        let coordinates = routeCoordinates
+        guard coordinates.count > 1, stops.count > 1 else { return [] }
+
+        return zip(stops.indices, stops.indices.dropFirst()).compactMap { startStopIndex, endStopIndex in
+            guard
+                let startIndex = coordinates.firstIndex(where: { $0.isNear(stops[startStopIndex].coordinate) }),
+                let endIndex = coordinates[startIndex...].firstIndex(where: {
+                    $0.isNear(stops[endStopIndex].coordinate)
+                }),
+                startIndex < endIndex
+            else { return nil }
+
+            let segmentIndex = min((startIndex + endIndex) / 2, endIndex - 1)
+            let start = coordinates[segmentIndex]
+            let end = coordinates[segmentIndex + 1]
+            return TourRouteArrow(
+                id: startStopIndex,
+                coordinate: CLLocationCoordinate2D(
+                    latitude: (start.latitude + end.latitude) / 2,
+                    longitude: (start.longitude + end.longitude) / 2,
+                ),
+                bearing: NavigationMath.bearing(from: start, to: end),
+            )
+        }
     }
 
     static func == (lhs: Tour, rhs: Tour) -> Bool { lhs.id == rhs.id }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
+}
+
+extension CLLocationCoordinate2D {
+    fileprivate func isNear(_ other: CLLocationCoordinate2D) -> Bool {
+        abs(latitude - other.latitude) < 0.000_001 && abs(longitude - other.longitude) < 0.000_001
+    }
 }
 
 enum TourPalette: String, Codable {

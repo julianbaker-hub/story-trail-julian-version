@@ -19,16 +19,16 @@ final class NavigationAndProximityTests: XCTestCase {
             TourNavigation.destination(stops: stops, activeStop: second, arrivedStopIDs: [first.id, second.id]))
     }
 
-    func testProximityTriggersOnlyAfterCrossingThirtyMetres() {
+    func testProximityTriggersOnlyAfterCrossingTwentyMetres() {
         var engine = ProximityEngine()
         let stop = makeStop(number: 1, coordinate: origin)
 
-        XCTAssertNil(engine.update(location: location(northMetres: 31), stops: [stop]))
-        let event = engine.update(location: location(northMetres: 29), stops: [stop])
+        XCTAssertNil(engine.update(location: location(northMetres: 21), stops: [stop]))
+        let event = engine.update(location: location(northMetres: 19), stops: [stop])
 
         XCTAssertEqual(event?.stop.id, stop.id)
         XCTAssertEqual(event?.sequence, 1)
-        XCTAssertLessThanOrEqual(event?.distance ?? 100, 30)
+        XCTAssertLessThanOrEqual(event?.distance ?? 100, 20)
     }
 
     func testProximityUsesHysteresisToPreventGPSBounce() {
@@ -108,6 +108,32 @@ final class NavigationAndProximityTests: XCTestCase {
             return file
         }
         XCTAssertEqual(Set(files).count, tour.stops.count)
+    }
+
+    func testBundledToursUseTwentyMetreTriggerRadius() async throws {
+        let tours = try await BundledTourRepository().fetchTours()
+
+        XCTAssertTrue(tours.flatMap(\.stops).allSatisfy { $0.triggerRadiusMeters == 20 })
+    }
+
+    func testInnerHarbourUsesDetailedRouteAndUpdatedStops() async throws {
+        let tours = try await BundledTourRepository().fetchTours()
+        let tour = try XCTUnwrap(tours.first { $0.id == "inner-harbour" })
+        let expectedStopCoordinates = [
+            CLLocationCoordinate2D(latitude: 48.422732, longitude: -123.368861),
+            CLLocationCoordinate2D(latitude: 48.421744, longitude: -123.368806),
+            CLLocationCoordinate2D(latitude: 48.420883, longitude: -123.369476),
+            CLLocationCoordinate2D(latitude: 48.420939, longitude: -123.370996),
+            CLLocationCoordinate2D(latitude: 48.420663, longitude: -123.370137),
+            CLLocationCoordinate2D(latitude: 48.420529, longitude: -123.369870),
+            CLLocationCoordinate2D(latitude: 48.420156, longitude: -123.366460),
+            CLLocationCoordinate2D(latitude: 48.420776, longitude: -123.368596),
+        ]
+
+        XCTAssertEqual(tour.routeCoordinates.count, 27)
+        XCTAssertEqual(tour.routeArrows.count, 7)
+        XCTAssertEqual(tour.stops.map(\.coordinate.latitude), expectedStopCoordinates.map(\.latitude))
+        XCTAssertEqual(tour.stops.map(\.coordinate.longitude), expectedStopCoordinates.map(\.longitude))
     }
 
     func testNearestStopWinsWhenTriggerAreasOverlap() {

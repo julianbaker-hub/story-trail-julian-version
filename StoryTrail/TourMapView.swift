@@ -24,7 +24,7 @@ struct TourMapView: View {
     init(tour: Tour, startsPlayer: Bool) {
         self.tour = tour
         self.startsPlayer = startsPlayer
-        let points = tour.stops.map(\.coordinate)
+        let points = tour.routeCoordinates
         _position = State(initialValue: .region(Self.region(for: points)))
         _visitedStopIDs = State(initialValue: TourProgress.visitedStopIDs(for: tour.id))
     }
@@ -82,8 +82,17 @@ struct TourMapView: View {
     private var mapContent: some View {
         VStack(spacing: 0) {
             Map(position: $position, selection: $selectedStop) {
-                MapPolyline(coordinates: tour.stops.map(\.coordinate))
+                MapPolyline(coordinates: tour.routeCoordinates)
                     .stroke(TrailColor.green, style: StrokeStyle(lineWidth: 4, lineCap: .round, dash: [4, 9]))
+                ForEach(tour.routeArrows) { arrow in
+                    Annotation("Route direction", coordinate: arrow.coordinate, anchor: .center) {
+                        Image(systemName: "arrowtriangle.up.fill")
+                            .font(.system(size: 14, weight: .black))
+                            .foregroundStyle(TrailColor.green)
+                            .rotationEffect(.degrees(arrow.bearing))
+                            .accessibilityHidden(true)
+                    }
+                }
                 ForEach(tour.stops) { stop in
                     Annotation(stop.title, coordinate: stop.coordinate, anchor: .center) {
                         StopMapPin(
@@ -240,7 +249,7 @@ struct TourMapView: View {
         if let coordinate = location.location?.coordinate {
             position = .region(MKCoordinateRegion(center: coordinate, latitudinalMeters: 800, longitudinalMeters: 800))
         } else {
-            position = .region(Self.region(for: tour.stops.map(\.coordinate)))
+            position = .region(Self.region(for: tour.routeCoordinates))
         }
     }
 

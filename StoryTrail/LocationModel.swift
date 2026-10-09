@@ -48,7 +48,7 @@ struct ProximityEngine {
     private var sequence = 0
 
     init(
-        enterRadius: CLLocationDistance = 30, exitRadius: CLLocationDistance = 45,
+        enterRadius: CLLocationDistance = 20, exitRadius: CLLocationDistance = 35,
         maximumAccuracy: CLLocationAccuracy = 65,
     ) {
         precondition(exitRadius > enterRadius)
