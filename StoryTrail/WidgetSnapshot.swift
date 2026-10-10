@@ -17,9 +17,9 @@ struct WidgetSnapshot: Codable, Equatable {
 }
 
 enum WidgetSnapshotStore {
-    static let groupID = "group.com.storytrailguide.app"
+    static let groupID = "group.com.storytrail.app"
     private static let key = "widget-snapshot-v1"
-    private static let logger = Logger(subsystem: "com.storytrailguide.app", category: "Widgets")
+    private static let logger = Logger(subsystem: "com.storytrail.app", category: "Widgets")
 
     static func load(from defaults: UserDefaults? = UserDefaults(suiteName: groupID)) -> WidgetSnapshot? {
         guard let data = defaults?.data(forKey: key) else { return nil }

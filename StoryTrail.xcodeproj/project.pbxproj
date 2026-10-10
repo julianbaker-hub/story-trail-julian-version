@@ -288,12 +288,6 @@
 					9EB6CEA398F76867BD0E5CC3 = {
 						DevelopmentTeam = 9JY5CE8B5H;
 					};
-					9EE0DE4E187FE13532E812B2 = {
-						DevelopmentTeam = 9JY5CE8B5H;
-					};
-					A40000000000000000000001 = {
-						DevelopmentTeam = 9JY5CE8B5H;
-					};
 				};
 			};
 			buildConfigurationList = B80EC2A06F36CD273354DEFE /* Build configuration list for PBXProject "StoryTrail" */;
@@ -465,13 +459,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 924QL56G7G;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.storytrailguide.StoryTrailTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.storytrail.app.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StoryTrail.app/StoryTrail";
@@ -485,6 +481,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StoryTrail/StoryTrail.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 924QL56G7G;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = StoryTrail/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StoryTrail;
@@ -501,7 +499,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.storytrailguide.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.storytrail.app;
 				PRODUCT_NAME = StoryTrail;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -512,13 +510,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 924QL56G7G;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.storytrailguide.StoryTrailTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.storytrail.app.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StoryTrail.app/StoryTrail";
@@ -530,13 +530,14 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = StoryTrailWidgets/StoryTrailWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = 9JY5CE8B5H;
+				DEVELOPMENT_TEAM = 924QL56G7G;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = StoryTrailWidgets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.storytrailguide.app.widgets;
+				PRODUCT_BUNDLE_IDENTIFIER = com.storytrail.app.widgets;
 				PRODUCT_NAME = StoryTrailWidgets;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -549,13 +550,14 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = StoryTrailWidgets/StoryTrailWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = 9JY5CE8B5H;
+				DEVELOPMENT_TEAM = 924QL56G7G;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = StoryTrailWidgets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.storytrailguide.app.widgets;
+				PRODUCT_BUNDLE_IDENTIFIER = com.storytrail.app.widgets;
 				PRODUCT_NAME = StoryTrailWidgets;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -636,6 +638,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StoryTrail/StoryTrail.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 924QL56G7G;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = StoryTrail/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StoryTrail;
@@ -652,7 +656,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.storytrailguide.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.storytrail.app;
 				PRODUCT_NAME = StoryTrail;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
