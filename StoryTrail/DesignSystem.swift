@@ -140,6 +140,7 @@ struct TrailEyebrow: View {
 struct TourMetadata: View {
     let tour: Tour
     var foregroundStyle = TrailColor.ink
+    var fontSize: CGFloat = 13
 
     var body: some View {
         ViewThatFits(in: .horizontal) {
@@ -161,7 +162,7 @@ struct TourMetadata: View {
 
     private func item(icon: String, text: String) -> some View {
         Label(text, systemImage: icon)
-            .font(.trailBody(13, weight: .semibold))
+            .font(.trailBody(fontSize, weight: .semibold))
             .labelStyle(.titleAndIcon)
     }
 }

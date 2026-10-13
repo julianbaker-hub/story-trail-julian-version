@@ -22,33 +22,13 @@ struct TourDetailView: View {
                                 .font(.trailTitle(38))
                                 .foregroundStyle(TrailColor.ink)
                             Text(tour.subtitle)
-                                .font(.trailBody(17, weight: .semibold))
+                                .font(.trailBody(22, weight: .semibold))
                                 .foregroundStyle(TrailColor.muted)
-                            TourMetadata(tour: tour)
+                            TourMetadata(tour: tour, fontSize: 17)
                                 .padding(.top, 4)
                         }
 
-                        VStack(alignment: .leading, spacing: 9) {
-                            HStack {
-                                Label("Your walk", systemImage: "figure.walk")
-                                    .font(.trailBody(16, weight: .bold))
-                                Spacer()
-                                Text("\(visitedCount) / \(tour.stops.count) stops")
-                                    .font(.trailBody(13, weight: .bold))
-                            }
-                            .foregroundStyle(TrailColor.muted)
-                            ProgressView(value: Double(visitedCount), total: Double(tour.stops.count))
-                                .tint(TrailColor.green)
-                                .accessibilityLabel("Tour progress")
-                                .accessibilityValue("\(visitedCount) of \(tour.stops.count) stops visited")
-                            Text(visitedCount == 0 ? "Every stop has a story waiting." : "Pick up where you left off.")
-                                .font(.trailBody(14))
-                                .foregroundStyle(TrailColor.muted)
-                        }
-                        .padding(.vertical, 18)
-                        .overlay(alignment: .bottom) { Divider().overlay(TrailColor.line) }
-
-                        TrailEyebrow(text: "About this walk", color: TrailColor.muted)
+                        TrailEyebrow(text: "About this tour", color: TrailColor.muted)
                             .padding(.top, 4)
                         Text(tour.about)
                             .font(.trailBody(19))
@@ -77,7 +57,7 @@ struct TourDetailView: View {
 
                         VStack(alignment: .leading, spacing: 14) {
                             HStack {
-                                TrailEyebrow(text: "Your route")
+                                TrailEyebrow(text: "Tour route")
                                 Spacer()
                                 Text("\(tour.stops.count) STOPS")
                                     .font(.trailBody(11, weight: .bold))
@@ -112,8 +92,8 @@ struct TourDetailView: View {
                                     TourMapView(tour: tour, startsPlayer: false)
                                 } label: {
                                     DetailRow(
-                                        icon: "map.fill", color: TrailColor.green, title: "Explore the route",
-                                        subtitle: "Map, stops, and directions")
+                                        icon: "map.fill", color: TrailColor.green, title: "Tour Route",
+                                        subtitle: "Route map with tour stops")
                                 }
                                 NavigationLink {
                                     TourStopsView(tour: tour)
