@@ -77,29 +77,13 @@ struct AllToursMapView: View {
         ZStack(alignment: .top) {
             Map(position: $position, selection: $selectedTour) {
                 ForEach(library.tours) { tour in
-                    if tour.id == "inner-harbour" {
-                        MapPolyline(coordinates: tour.routeCoordinates)
-                            .stroke(
-                                TrailColor.green,
-                                style: StrokeStyle(lineWidth: 4, lineCap: .round, dash: [4, 9]))
-                        ForEach(tour.routeArrows) { arrow in
-                            Annotation("Route direction", coordinate: arrow.coordinate, anchor: .center) {
-                                Image(systemName: "arrowtriangle.up.fill")
-                                    .font(.system(size: 14, weight: .black))
-                                    .foregroundStyle(TrailColor.green)
-                                    .rotationEffect(.degrees(arrow.bearing))
-                                    .accessibilityHidden(true)
-                            }
-                        }
-                        if let first = tour.stops.first {
-                            Marker("Victoria Inner Harbour Tour", coordinate: first.coordinate)
-                                .tint(TrailColor.green)
-                                .tag(tour)
-                        }
-                    } else if let first = tour.stops.first {
-                        Marker(tour.title, systemImage: "figure.walk", coordinate: first.coordinate)
-                            .tint(TrailColor.green)
-                            .tag(tour)
+                    if let coordinate = tour.mapPinCoordinate {
+                        Marker(
+                            tour.id == "inner-harbour" ? "Victoria Inner Harbour Tour" : tour.title,
+                            coordinate: coordinate
+                        )
+                        .tint(TrailColor.green)
+                        .tag(tour)
                     }
                 }
                 UserAnnotation()

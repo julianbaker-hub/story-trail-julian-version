@@ -119,6 +119,9 @@ final class NavigationAndProximityTests: XCTestCase {
     func testInnerHarbourUsesDetailedRouteAndUpdatedStops() async throws {
         let tours = try await BundledTourRepository().fetchTours()
         let tour = try XCTUnwrap(tours.first { $0.id == "inner-harbour" })
+        let mapPin = try XCTUnwrap(tour.mapPin)
+        XCTAssertEqual(mapPin.latitude, 48.421464, accuracy: 0.000_001)
+        XCTAssertEqual(mapPin.longitude, -123.368864, accuracy: 0.000_001)
         let expectedStopCoordinates = [
             CLLocationCoordinate2D(latitude: 48.422732, longitude: -123.368861),
             CLLocationCoordinate2D(latitude: 48.421744, longitude: -123.368806),

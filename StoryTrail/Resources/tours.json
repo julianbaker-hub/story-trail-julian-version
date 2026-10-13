@@ -9,6 +9,7 @@
       "distance": 1.3,
       "image_url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6974dfe6b2f3cf4e71f7c639/c2d0d3ef8_Victorias_harbour_Empress_reflection.jpg",
       "palette": "harbour",
+      "map_pin": { "latitude": 48.421464, "longitude": -123.368864 },
       "route": [
         { "latitude": 48.422732, "longitude": -123.368861 },
         { "latitude": 48.422802, "longitude": -123.368746 },

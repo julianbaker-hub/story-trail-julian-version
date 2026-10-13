@@ -101,11 +101,13 @@ struct Tour: Identifiable, Hashable, Codable {
     let distance: Double
     let stops: [TourStop]
     let route: [TourRoutePoint]?
+    let mapPin: TourRoutePoint?
     let imageURL: URL?
     let palette: TourPalette
 
     enum CodingKeys: String, CodingKey {
         case id, title, subtitle, about, minutes, distance, stops, route, palette
+        case mapPin = "map_pin"
         case imageURL = "image_url"
     }
 
@@ -118,6 +120,7 @@ struct Tour: Identifiable, Hashable, Codable {
         distance: Double,
         stops: [TourStop],
         route: [TourRoutePoint]? = nil,
+        mapPin: TourRoutePoint? = nil,
         imageURL: URL?,
         palette: TourPalette,
     ) {
@@ -129,6 +132,7 @@ struct Tour: Identifiable, Hashable, Codable {
         self.distance = distance
         self.stops = stops
         self.route = route
+        self.mapPin = mapPin
         self.imageURL = imageURL
         self.palette = palette
     }
@@ -136,6 +140,10 @@ struct Tour: Identifiable, Hashable, Codable {
     var routeCoordinates: [CLLocationCoordinate2D] {
         guard let route, !route.isEmpty else { return stops.map(\.coordinate) }
         return route.map(\.coordinate)
+    }
+
+    var mapPinCoordinate: CLLocationCoordinate2D? {
+        mapPin?.coordinate ?? stops.first?.coordinate
     }
 
     var routeArrows: [TourRouteArrow] {
