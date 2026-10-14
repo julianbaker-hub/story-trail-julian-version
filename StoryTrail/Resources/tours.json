@@ -82,6 +82,7 @@
       "distance": 3.4,
       "image_url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6974dfe6b2f3cf4e71f7c639/0b5927eea_Fishermens_Wharf_Joe_Mabel.jpg",
       "palette": "jamesBay",
+      "map_pin": { "latitude": 48.416911, "longitude": -123.373173 },
       "stops": [
         { "id": "james-bay-1", "number": 1, "title": "Pendray Tea House", "summary": "Victorian ambition and modern tourism under one roof.", "transcript": "Victorian ambition and modern tourism under one roof.", "latitude": 48.4210, "longitude": -123.3753 },
         { "id": "james-bay-2", "number": 2, "title": "Laurel Point", "summary": "A shoreline story of use, abuse, and renewal.", "transcript": "A shoreline story of use, abuse, and renewal.", "latitude": 48.4199, "longitude": -123.3780 },
