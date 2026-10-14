@@ -21,38 +21,24 @@ struct TourDetailView: View {
                             Text(tour.title)
                                 .font(.trailTitle(38))
                                 .foregroundStyle(TrailColor.ink)
-                            Text(tour.subtitle)
-                                .font(.trailBody(22, weight: .semibold))
-                                .foregroundStyle(TrailColor.muted)
                             TourMetadata(tour: tour, fontSize: 17)
-                                .padding(.top, 4)
-                        }
-
-                        TrailEyebrow(text: "About this tour", color: TrailColor.muted)
-                            .padding(.top, 4)
-                        Text(tour.about)
-                            .font(.trailBody(19))
-                            .foregroundStyle(TrailColor.ink)
-                            .lineSpacing(5)
-
-                        HStack(alignment: .top, spacing: 13) {
-                            Image(systemName: "eye.fill")
-                                .font(.system(size: 17, weight: .bold))
-                                .foregroundStyle(TrailColor.ink)
-                                .frame(width: 30, height: 30)
-                            VStack(alignment: .leading, spacing: 3) {
-                                TrailEyebrow(text: "Field note", color: TrailColor.ink)
-                                Text(
-                                    "Keep your headphones on and your eyes up. Stories begin automatically as you arrive."
+                                .frame(maxWidth: .infinity)
+                                .padding(.horizontal, 18)
+                                .padding(.vertical, 16)
+                                .background(
+                                    TrailColor.paper,
+                                    in: RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous)
                                 )
-                                .font(.trailBody(15, weight: .semibold))
-                                .foregroundStyle(TrailColor.ink)
-                                .fixedSize(horizontal: false, vertical: true)
-                            }
+                                .padding(.top, 8)
                         }
-                        .padding(.leading, 16)
-                        .overlay(alignment: .leading) {
-                            Rectangle().fill(TrailColor.yellow).frame(width: 3)
+
+                        VStack(alignment: .leading, spacing: 14) {
+                            TrailEyebrow(text: "About this tour", color: TrailColor.muted)
+                            Text(tour.about)
+                                .font(.trailBody(19))
+                                .foregroundStyle(TrailColor.ink)
+                                .lineSpacing(5)
+                            TourHighlightsView(highlights: highlights)
                         }
 
                         VStack(alignment: .leading, spacing: 14) {
@@ -193,6 +179,38 @@ struct TourDetailView: View {
         showsFullRoute ? tour.stops : Array(tour.stops.prefix(3))
     }
 
+    private var highlights: [TourHighlight] {
+        switch tour.id {
+        case "inner-harbour":
+            return [
+                TourHighlight(icon: "mappin", title: "8 Must-See Stops"),
+                TourHighlight(icon: "star.fill", title: "10 Famous Landmarks"),
+                TourHighlight(icon: "music.note", title: "Curated Music"),
+            ]
+        case "old-town":
+            return [
+                TourHighlight(icon: "mappin", title: "10 Must-See Stops"),
+                TourHighlight(icon: "diamond.fill", title: "Hidden Gems"),
+                TourHighlight(icon: "music.note", title: "Curated Music"),
+            ]
+        case "beacon-hill":
+            return [
+                TourHighlight(icon: "mappin", title: "10 Must-See Stops"),
+                TourHighlight(
+                    icon: "point.topleft.down.to.point.bottomright.curvepath", title: "Time-Saving Route"),
+                TourHighlight(icon: "binoculars.fill", title: "Beautiful Viewpoints"),
+            ]
+        case "james-bay":
+            return [
+                TourHighlight(icon: "mappin", title: "10 Must-See Stops"),
+                TourHighlight(icon: "water.waves", title: "Coastal Viewpoints"),
+                TourHighlight(icon: "music.note", title: "Curated Music"),
+            ]
+        default:
+            return []
+        }
+    }
+
     private var unlockButtonTitle: String {
         if let price = purchaseStore.product(for: tour)?.displayPrice {
             return "Unlock Tour · \(price)"
@@ -217,6 +235,34 @@ struct TourDetailView: View {
                 .padding(.leading, 20)
                 .padding(.top, 12)
         }
+    }
+}
+
+private struct TourHighlight: Identifiable {
+    let icon: String
+    let title: String
+
+    var id: String { title }
+}
+
+private struct TourHighlightsView: View {
+    let highlights: [TourHighlight]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 11) {
+            ForEach(highlights) { highlight in
+                HStack(spacing: 12) {
+                    Image(systemName: highlight.icon)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(TrailColor.coral)
+                        .frame(width: 24)
+                    Text(highlight.title)
+                        .font(.trailBody(16, weight: .semibold))
+                        .foregroundStyle(TrailColor.ink)
+                }
+            }
+        }
+        .accessibilityElement(children: .contain)
     }
 }
 
