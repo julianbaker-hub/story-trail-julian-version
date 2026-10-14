@@ -82,7 +82,7 @@ struct AllToursMapView: View {
                             tour.id == "inner-harbour" ? "Victoria Inner Harbour Tour" : tour.title,
                             coordinate: coordinate
                         )
-                        .tint(TrailColor.green)
+                        .tint(TrailColor.coral)
                         .tag(tour)
                     }
                 }
