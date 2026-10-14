@@ -59,6 +59,7 @@
       "distance": 1.8,
       "image_url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6974dfe6b2f3cf4e71f7c639/aa10d890f_Victoria_LoJo_1.jpg",
       "palette": "oldTown",
+      "map_pin": { "latitude": 48.425654, "longitude": -123.367722 },
       "stops": [
         { "id": "old-town-1", "number": 1, "title": "Government Street", "summary": "Victoria's oldest commercial corridor began at the shoreline.", "transcript": "Victoria's oldest commercial corridor began at the shoreline.", "latitude": 48.4233, "longitude": -123.3680 },
         { "id": "old-town-2", "number": 2, "title": "Bank of Montreal Building", "summary": "Beaux-Arts architecture made money look permanent.", "transcript": "Beaux-Arts architecture made money look permanent.", "latitude": 48.4240, "longitude": -123.3675 },
