@@ -47,7 +47,6 @@ extension Font {
     static func trailBody(_ size: CGFloat, weight: Weight = .regular) -> Font {
         let style: Font.TextStyle
         switch size {
-        case ..<17: style = .subheadline
         case ..<19: style = .body
         default: style = .title3
         }
