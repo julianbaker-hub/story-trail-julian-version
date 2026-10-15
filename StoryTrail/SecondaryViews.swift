@@ -268,10 +268,6 @@ struct SupportView: View {
                 )
                 .padding(.top, 8)
 
-                TrailEyebrow(text: "Your access", color: TrailColor.muted)
-
-                purchaseSupport
-
                 TrailEyebrow(text: "Help & legal", color: TrailColor.muted)
                     .padding(.top, 6)
                 VStack(spacing: 0) {
@@ -344,26 +340,6 @@ struct SupportView: View {
         }
     }
 
-    private var purchaseSupport: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Label("Purchases", systemImage: "person.crop.circle.fill")
-                .font(.trailBody(18, weight: .bold))
-                .foregroundStyle(TrailColor.ink)
-            Text("Restore access with the Apple ID used to buy your tours.")
-                .font(.trailBody(15))
-                .foregroundStyle(TrailColor.muted)
-            Button("Restore Purchases") {
-                Task { await purchaseStore.restorePurchases() }
-            }
-            .font(.trailBody(16, weight: .bold))
-            .foregroundStyle(TrailColor.green)
-            .frame(minHeight: 44)
-            .disabled(purchaseStore.isLoading)
-        }
-        .padding(.vertical, 18)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .overlay(alignment: .bottom) { Divider().overlay(TrailColor.line) }
-    }
 }
 
 private enum SupportDestination: String, CaseIterable, Hashable, Identifiable {
