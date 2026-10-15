@@ -95,16 +95,17 @@ struct TourDetailView: View {
                                 } label: {
                                     DetailRow(
                                         icon: "lock.fill", color: TrailColor.green, title: "Unlock this tour",
-                                        subtitle: "Route, audio stories, transcripts, and offline access")
+                                        subtitle: "Route, audio stories, transcripts, and offline access", isCard: true)
                                 }
                             }
                             NavigationLink {
                                 FAQView(tour: tour)
                             } label: {
                                 DetailRow(
-                                    icon: "info.circle.fill", color: TrailColor.yellow, title: "Before you go",
-                                    subtitle: "Offline access and common questions")
+                                    icon: "info.circle.fill", color: TrailColor.yellow, title: "Know before you go",
+                                    subtitle: "Offline access and common questions", isCard: true)
                             }
+                            .padding(.top, 12)
                         }
                         .buttonStyle(TrailPressStyle())
 
@@ -307,6 +308,7 @@ struct DetailRow: View {
     let color: Color
     let title: String
     let subtitle: String
+    var isCard = false
     var body: some View {
         HStack(spacing: 16) {
             Image(systemName: icon)
@@ -320,9 +322,18 @@ struct DetailRow: View {
             Spacer()
             Image(systemName: "chevron.right").fontWeight(.bold).foregroundStyle(TrailColor.muted)
         }
+        .padding(.horizontal, isCard ? 14 : 0)
         .padding(.vertical, 14)
         .frame(minHeight: 72)
-        .overlay(alignment: .bottom) { Divider().overlay(TrailColor.line) }
+        .background(
+            isCard ? TrailColor.paper : .clear,
+            in: RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous)
+        )
+        .overlay(alignment: .bottom) {
+            if !isCard {
+                Divider().overlay(TrailColor.line)
+            }
+        }
         .contentShape(Rectangle())
     }
 }
