@@ -78,11 +78,11 @@ struct AllToursMapView: View {
             Map(position: $position, selection: $selectedTour) {
                 ForEach(library.tours) { tour in
                     if let coordinate = tour.mapPinCoordinate {
-                        Marker(
-                            tour.id == "inner-harbour" ? "Victoria Inner Harbour Tour" : tour.title,
-                            coordinate: coordinate
-                        )
-                        .tint(TrailColor.coral)
+                        Annotation("Tour", coordinate: coordinate, anchor: .bottom) {
+                            TourMapPin(
+                                title: tour.id == "inner-harbour" ? "Victoria Inner Harbour Tour" : tour.title
+                            )
+                        }
                         .tag(tour)
                     }
                 }
@@ -150,6 +150,21 @@ struct AllToursMapView: View {
         .navigationBarTitleDisplayMode(.inline)
         .animation(reduceMotion ? nil : .spring(response: 0.38, dampingFraction: 0.82), value: selectedTour?.id)
         .sensoryFeedback(.selection, trigger: selectedTour?.id)
+    }
+}
+
+private struct TourMapPin: View {
+    let title: String
+
+    var body: some View {
+        VStack(spacing: 4) {
+            Image(systemName: "mappin")
+                .font(.system(size: 36, weight: .bold))
+                .foregroundStyle(TrailColor.coral)
+            Text(title)
+                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                .foregroundStyle(TrailColor.ink)
+        }
     }
 }
 
