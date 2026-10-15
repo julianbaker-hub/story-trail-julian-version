@@ -45,10 +45,27 @@ extension Font {
     }
 
     static func trailBody(_ size: CGFloat, weight: Weight = .regular) -> Font {
+        if size < 15 {
+            let uiWeight: UIFont.Weight
+            switch weight {
+            case .ultraLight: uiWeight = .ultraLight
+            case .thin: uiWeight = .thin
+            case .light: uiWeight = .light
+            case .medium: uiWeight = .medium
+            case .semibold: uiWeight = .semibold
+            case .bold: uiWeight = .bold
+            case .heavy: uiWeight = .heavy
+            case .black: uiWeight = .black
+            default: uiWeight = .regular
+            }
+            let baseFont = UIFont.systemFont(ofSize: 14, weight: uiWeight)
+            let descriptor = baseFont.fontDescriptor.withDesign(.rounded) ?? baseFont.fontDescriptor
+            let roundedFont = UIFont(descriptor: descriptor, size: 14)
+            return Font(UIFontMetrics(forTextStyle: .footnote).scaledFont(for: roundedFont))
+        }
+
         let style: Font.TextStyle
         switch size {
-        case ..<13: style = .caption
-        case ..<15: style = .footnote
         case ..<17: style = .subheadline
         case ..<19: style = .body
         default: style = .title3
