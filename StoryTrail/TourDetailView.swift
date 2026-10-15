@@ -340,37 +340,51 @@ struct DetailRow: View {
 
 struct FAQView: View {
     let tour: Tour
+
+    private var displayTitle: String {
+        switch tour.id {
+        case "inner-harbour": "Victoria Inner Harbour"
+        case "old-town": "Victoria Old Town"
+        default: tour.title
+        }
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 14) {
-                TrailPageHeader(
-                    eyebrow: tour.title,
-                    title: "Before you go.",
-                    subtitle: "A few useful answers for a relaxed walk."
-                )
+                VStack(alignment: .leading, spacing: 8) {
+                    TrailEyebrow(text: displayTitle)
+                    Text("Know before you go.")
+                        .font(.trailTitle(34))
+                        .foregroundStyle(TrailColor.ink)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 6)
                 FAQRow(
-                    question: "Do I need mobile data?",
+                    question: "Do I need cellular data?",
                     answer:
-                        "No for GPS, compass navigation, tour details, and bundled stories. Stops with online audio need a connection the first time they are loaded, and Apple Maps may need data for uncached map detail.",
+                        "No. We strongly recommend that you download a tour via prior to use. Wifi is usually best for downloading. These audio tours are designed to work offline.",
                 )
                 FAQRow(
-                    question: "Does the tour play automatically?",
+                    question: "Does this tour play automatically?",
                     answer:
-                        "After you start a tour, StoryTrail plays a stop when you come within about 30 metres. You can always choose stops manually.",
+                        "Yes. Once you start a tour, the app senses your location by GPS and triggers tour stop audio automatically once you enter a tour stop area.",
                 )
                 FAQRow(
                     question: "What if I reach the next stop while audio is playing?",
                     answer:
-                        "The current story stops and the new stop starts from the beginning, so what you hear always matches where you are.",
+                        "The tour stops are sequenced so that the currently-playing audio will finish before the next stop begins. Don't rush, though! The tour audio will guide you to next stop.",
                 )
                 FAQRow(
                     question: "Can I pause or skip a stop?",
-                    answer: "Yes. The player supports pause, seeking, and moving between stops.")
+                    answer:
+                        "Yes. You can pause the audio and walk to the next stop, if you like. You may need to check the map for directions."
+                )
             }
             .padding(22)
         }
-        .navigationTitle("Before you go")
+        .navigationTitle("Know before you go")
         .navigationBarTitleDisplayMode(.inline)
         .creamBackground()
     }
