@@ -99,10 +99,12 @@ struct AllToursMapView: View {
                         .background(TrailColor.yellow, in: Capsule())
                 }
                 if selectedTour == nil {
-                    Label("Tap a pin to preview a walk", systemImage: "hand.tap")
+                    Label("Tap a pin to preview a tour", systemImage: "hand.tap")
+                        .foregroundStyle(TrailColor.cream)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 10)
-                        .background(TrailColor.paper, in: Capsule())
+                        .background(TrailColor.coral, in: Capsule())
+                        .overlay { Capsule().stroke(TrailColor.cream, lineWidth: 2) }
                 }
             }
             .font(.trailBody(13, weight: .bold))
@@ -144,7 +146,7 @@ struct AllToursMapView: View {
             }
         }
         .navigationDestination(for: Tour.self) { TourDetailView(tour: $0) }
-        .navigationTitle("Walks on the map")
+        .navigationTitle("Tours on the map")
         .navigationBarTitleDisplayMode(.inline)
         .animation(reduceMotion ? nil : .spring(response: 0.38, dampingFraction: 0.82), value: selectedTour?.id)
         .sensoryFeedback(.selection, trigger: selectedTour?.id)
