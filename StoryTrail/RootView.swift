@@ -77,7 +77,7 @@ struct ToursView: View {
 
                     if !remainingTours.isEmpty {
                         HStack {
-                            TrailEyebrow(text: "More trails", color: TrailColor.muted)
+                            TrailEyebrow(text: "More tours", color: TrailColor.muted)
                             Spacer()
                             Text("VICTORIA, B.C.")
                                 .font(.trailBody(10, weight: .bold))
@@ -85,32 +85,27 @@ struct ToursView: View {
                                 .foregroundStyle(TrailColor.muted)
                         }
 
-                        LazyVStack(spacing: 0) {
-                            ForEach(Array(remainingTours.enumerated()), id: \.element.id) { index, tour in
+                        LazyVStack(spacing: 12) {
+                            ForEach(remainingTours) { tour in
                                 NavigationLink(value: tour) { CompactTourCard(tour: tour) }
                                     .buttonStyle(TrailPressStyle())
-                                if index < remainingTours.count - 1 {
-                                    Divider().overlay(TrailColor.line)
-                                }
                             }
                         }
                     }
 
-                    HStack(alignment: .top, spacing: 13) {
-                        Image(systemName: "arrow.down.circle.fill")
-                            .font(.system(size: 24, weight: .semibold))
-                            .foregroundStyle(TrailColor.green)
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Made to wander offline")
-                                .font(.trailBody(16, weight: .bold))
-                                .foregroundStyle(TrailColor.ink)
-                            Text("Routes, GPS, compass, transcripts, and bundled stories travel with you.")
-                                .font(.trailBody(14))
-                                .foregroundStyle(TrailColor.muted)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
+                    VStack(spacing: 0) {
+                        HomeInfoRow(
+                            icon: "arrow.down.circle.fill",
+                            title: "Made to work offline",
+                            detail: "Download your tour via wifi before heading out the door."
+                        )
+                        Divider().overlay(TrailColor.line)
+                        HomeInfoRow(
+                            icon: "headphones",
+                            title: "Headphones recommended",
+                            detail: "For the best listening experience, we strongly recommend you use headphones."
+                        )
                     }
-                    .padding(.vertical, 20)
                     .overlay(alignment: .top) { Divider().overlay(TrailColor.line) }
                     .padding(.top, 8)
                 }
@@ -137,6 +132,33 @@ struct ToursView: View {
         .navigationDestination(for: Tour.self) { TourDetailView(tour: $0) }
         .toolbar(.hidden, for: .navigationBar)
         .creamBackground()
+    }
+}
+
+private struct HomeInfoRow: View {
+    let icon: String
+    let title: String
+    let detail: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 13) {
+            Image(systemName: icon)
+                .font(.system(size: 24, weight: .semibold))
+                .foregroundStyle(TrailColor.green)
+                .frame(width: 24)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.trailBody(16, weight: .bold))
+                    .foregroundStyle(TrailColor.ink)
+                Text(detail)
+                    .font(.trailBody(14))
+                    .foregroundStyle(TrailColor.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(.vertical, 20)
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -200,6 +222,9 @@ struct FeaturedTourCard: View {
                 TourMetadata(tour: tour)
             }
         }
+        .padding(14)
+        .background(TrailColor.paper, in: RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous))
+        .contentShape(RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous))
         .accessibilityElement(children: .combine)
         .accessibilityHint("Opens tour details")
     }
@@ -234,8 +259,9 @@ struct CompactTourCard: View {
                 .foregroundStyle(TrailColor.muted)
                 .accessibilityHidden(true)
         }
-        .padding(.vertical, 14)
-        .contentShape(Rectangle())
+        .padding(14)
+        .background(TrailColor.paper, in: RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous))
+        .contentShape(RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous))
         .accessibilityElement(children: .combine)
         .accessibilityHint("Opens tour details")
     }
