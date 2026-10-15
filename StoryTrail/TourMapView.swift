@@ -20,6 +20,7 @@ struct TourMapView: View {
     @State private var showsPlayer = false
     @State private var playerDockHeight: CGFloat = 160
     @State private var opensDirectionsAfterPlayer = false
+    @State private var stopSelectionHapticTrigger = 0
 
     init(tour: Tour, startsPlayer: Bool) {
         self.tour = tour
@@ -81,7 +82,7 @@ struct TourMapView: View {
 
     private var mapContent: some View {
         VStack(spacing: 0) {
-            Map(position: $position, selection: $selectedStop) {
+            Map(position: $position, selection: selectedStopBinding) {
                 MapPolyline(coordinates: tour.routeCoordinates)
                     .stroke(TrailColor.green, style: StrokeStyle(lineWidth: 4, lineCap: .round, dash: [4, 9]))
                 ForEach(tour.routeArrows) { arrow in
@@ -149,6 +150,7 @@ struct TourMapView: View {
                 .padding(.bottom, 8)
             }
         }
+        .sensoryFeedback(.impact(weight: .light), trigger: stopSelectionHapticTrigger)
         .onAppear {
             WidgetSnapshotPublisher.activate(tour, in: library.tours, savedIDs: library.savedTourIDs)
             location.begin(for: tour.stops)
@@ -179,7 +181,6 @@ struct TourMapView: View {
                     ? "Playing Stop \(event.stop.number)"
                     : "Arrived at Stop \(event.stop.number)"
             }
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             UIAccessibility.post(
                 notification: .announcement,
                 argument: shouldAutoplay
@@ -200,6 +201,18 @@ struct TourMapView: View {
     private var activeStop: TourStop {
         if player.currentTour?.id == tour.id, let current = player.currentStop { return current }
         return selectedStop ?? tour.stops[0]
+    }
+
+    private var selectedStopBinding: Binding<TourStop?> {
+        Binding(
+            get: { selectedStop },
+            set: { stop in
+                selectedStop = stop
+                if stop != nil {
+                    stopSelectionHapticTrigger += 1
+                }
+            }
+        )
     }
 
     private var navigationStop: TourStop? {
@@ -394,11 +407,13 @@ struct StoryPlaybackButton: View {
     let stop: TourStop
     let diameter: CGFloat
     @EnvironmentObject private var player: AudioPlayerModel
+    @State private var playbackHapticTrigger = 0
 
     private var isCurrentStop: Bool { player.currentTour?.id == tour.id && player.currentStop?.id == stop.id }
 
     var body: some View {
         Button {
+            playbackHapticTrigger += 1
             if !isCurrentStop {
                 player.load(tour: tour, stop: stop, autoplay: true)
             } else {
@@ -418,6 +433,7 @@ struct StoryPlaybackButton: View {
             .background(TrailColor.coral, in: Circle())
         }
         .buttonStyle(.plain)
+        .sensoryFeedback(.impact(weight: .light), trigger: playbackHapticTrigger)
         .disabled(isCurrentStop && player.isLoading)
         .accessibilityLabel(
             isCurrentStop && player.isLoading

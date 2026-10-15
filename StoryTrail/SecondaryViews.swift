@@ -5,6 +5,7 @@ import WebKit
 struct MyBagView: View {
     let onExplore: () -> Void
     @EnvironmentObject private var library: TourLibrary
+    @State private var tourCardHapticTrigger = 0
     private var saved: [Tour] { library.tours.filter(library.isSaved) }
 
     var body: some View {
@@ -22,6 +23,7 @@ struct MyBagView: View {
                     ForEach(Array(saved.enumerated()), id: \.element.id) { index, tour in
                         NavigationLink(value: tour) { CompactTourCard(tour: tour) }
                             .buttonStyle(TrailPressStyle())
+                            .simultaneousGesture(TapGesture().onEnded { tourCardHapticTrigger += 1 })
                         if index < saved.count - 1 {
                             Divider().overlay(TrailColor.line)
                         }
@@ -31,6 +33,7 @@ struct MyBagView: View {
             .padding(22)
         }
         .navigationDestination(for: Tour.self) { TourDetailView(tour: $0) }
+        .sensoryFeedback(.impact(weight: .light), trigger: tourCardHapticTrigger)
         .toolbar(.hidden, for: .navigationBar)
         .creamBackground()
     }

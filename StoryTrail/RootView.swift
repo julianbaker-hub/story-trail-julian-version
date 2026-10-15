@@ -50,6 +50,7 @@ struct RootView: View {
 
 struct ToursView: View {
     @EnvironmentObject private var library: TourLibrary
+    @State private var tourCardHapticTrigger = 0
 
     private var featuredTour: Tour? { library.tours.first }
     private var remainingTours: [Tour] { Array(library.tours.dropFirst()) }
@@ -73,6 +74,7 @@ struct ToursView: View {
                             FeaturedTourCard(tour: featuredTour)
                         }
                         .buttonStyle(TrailPressStyle())
+                        .simultaneousGesture(TapGesture().onEnded { tourCardHapticTrigger += 1 })
                     }
 
                     if !remainingTours.isEmpty {
@@ -89,6 +91,7 @@ struct ToursView: View {
                             ForEach(remainingTours) { tour in
                                 NavigationLink(value: tour) { CompactTourCard(tour: tour) }
                                     .buttonStyle(TrailPressStyle())
+                                    .simultaneousGesture(TapGesture().onEnded { tourCardHapticTrigger += 1 })
                             }
                         }
                     }
@@ -130,6 +133,7 @@ struct ToursView: View {
             }
         }
         .navigationDestination(for: Tour.self) { TourDetailView(tour: $0) }
+        .sensoryFeedback(.impact(weight: .light), trigger: tourCardHapticTrigger)
         .toolbar(.hidden, for: .navigationBar)
         .creamBackground()
     }

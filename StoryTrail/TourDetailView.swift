@@ -8,6 +8,7 @@ struct TourDetailView: View {
     @State private var visitedCount = 0
     @State private var showsPurchase = false
     @State private var showsFullRoute = false
+    @State private var startTourHapticTrigger = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -135,6 +136,8 @@ struct TourDetailView: View {
                     } label: {
                         startButton
                     }
+                    .simultaneousGesture(TapGesture().onEnded { startTourHapticTrigger += 1 })
+                    .sensoryFeedback(.impact(weight: .light), trigger: startTourHapticTrigger)
                 } else {
                     Button {
                         showsPurchase = true

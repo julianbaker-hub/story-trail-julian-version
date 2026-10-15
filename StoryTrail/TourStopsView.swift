@@ -113,6 +113,7 @@ struct StopTranscriptView: View {
     let tour: Tour
     let stop: TourStop
     @EnvironmentObject private var player: AudioPlayerModel
+    @State private var playbackHapticTrigger = 0
 
     var body: some View {
         ScrollView {
@@ -126,6 +127,7 @@ struct StopTranscriptView: View {
                     .foregroundStyle(TrailColor.ink)
                     .lineSpacing(7)
                 Button {
+                    playbackHapticTrigger += 1
                     player.load(tour: tour, stop: stop, autoplay: true)
                 } label: {
                     Label("Play this stop", systemImage: "play.fill")
@@ -135,6 +137,7 @@ struct StopTranscriptView: View {
                         .background(TrailColor.action, in: RoundedRectangle(cornerRadius: TrailShape.button))
                 }
                 .buttonStyle(TrailPressStyle())
+                .sensoryFeedback(.impact(weight: .light), trigger: playbackHapticTrigger)
             }
             .padding(22)
         }
@@ -153,6 +156,7 @@ struct CompactStopPlayer: View {
     let tour: Tour
     let stop: TourStop
     @EnvironmentObject private var player: AudioPlayerModel
+    @State private var playbackHapticTrigger = 0
 
     var body: some View {
         VStack(spacing: 10) {
@@ -180,6 +184,7 @@ struct CompactStopPlayer: View {
                     .background(TrailColor.coral, in: Circle())
                 }
                 .buttonStyle(.plain)
+                .sensoryFeedback(.impact(weight: .light), trigger: playbackHapticTrigger)
                 .disabled(player.isLoading)
                 .accessibilityLabel(player.isPlaying ? "Pause audio" : "Play audio")
             }
@@ -224,6 +229,7 @@ struct CompactStopPlayer: View {
     }
 
     private func togglePlayback() {
+        playbackHapticTrigger += 1
         if player.hasFinished {
             player.seek(to: 0)
         }
