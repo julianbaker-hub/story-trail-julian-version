@@ -79,9 +79,7 @@ struct AllToursMapView: View {
                 ForEach(library.tours) { tour in
                     if let coordinate = tour.mapPinCoordinate {
                         Annotation("", coordinate: coordinate, anchor: .bottom) {
-                            TourMapPin(
-                                title: tour.id == "inner-harbour" ? "Victoria Inner Harbour Tour" : tour.title
-                            )
+                            TourMapPin(title: mapPinTitle(for: tour))
                         }
                         .tag(tour)
                     }
@@ -150,6 +148,21 @@ struct AllToursMapView: View {
         .navigationBarTitleDisplayMode(.inline)
         .animation(reduceMotion ? nil : .spring(response: 0.38, dampingFraction: 0.82), value: selectedTour?.id)
         .sensoryFeedback(.selection, trigger: selectedTour?.id)
+    }
+
+    private func mapPinTitle(for tour: Tour) -> String {
+        switch tour.id {
+        case "inner-harbour":
+            "Victoria Inner Harbour Tour"
+        case "old-town":
+            "Victoria Old Town Tour"
+        case "james-bay":
+            "James Bay Tour"
+        case "beacon-hill":
+            "Beacon Hill Park Tour"
+        default:
+            tour.title
+        }
     }
 }
 
