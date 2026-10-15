@@ -105,7 +105,7 @@
       "distance": 3.0,
       "image_url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6974dfe6b2f3cf4e71f7c639/d76426b62_BHP_Bridge.jpg",
       "palette": "beaconHill",
-      "map_pin": { "latitude": 48.417805, "longitude": -123.365160 },
+      "map_pin": { "latitude": 48.415536, "longitude": -123.364438 },
       "stops": [
         { "id": "beacon-hill-1", "number": 1, "title": "Goodacre Lake", "summary": "Designed scenery layered over a much older wetland story.", "transcript": "Designed scenery layered over a much older wetland story.", "latitude": 48.4137, "longitude": -123.3637 },
         { "id": "beacon-hill-2", "number": 2, "title": "Cameron Bandshell", "summary": "Victoria's outdoor stage and shared living room since 1935.", "transcript": "Victoria's outdoor stage and shared living room since 1935.", "latitude": 48.4131, "longitude": -123.3615 },
