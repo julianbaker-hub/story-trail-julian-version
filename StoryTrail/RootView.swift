@@ -236,6 +236,7 @@ struct FeaturedTourCard: View {
 
 struct CompactTourCard: View {
     let tour: Tour
+    var accessLabel: String? = nil
     @EnvironmentObject private var purchaseStore: PurchaseStore
 
     var body: some View {
@@ -252,7 +253,7 @@ struct CompactTourCard: View {
                 Text("\(tour.minutes) min · \(String(format: "%.1f", tour.distance)) km")
                     .font(.trailBody(12, weight: .semibold))
                     .foregroundStyle(TrailColor.muted)
-                Text(purchaseStore.accessLabel(for: tour))
+                Text(accessLabel ?? purchaseStore.accessLabel(for: tour))
                     .font(.trailBody(11, weight: .bold))
                     .tracking(1)
                     .foregroundStyle(TrailColor.muted)

@@ -5,8 +5,19 @@ import WebKit
 struct MyBagView: View {
     let onExplore: () -> Void
     @EnvironmentObject private var library: TourLibrary
+    @EnvironmentObject private var purchaseStore: PurchaseStore
     @State private var tourCardHapticTrigger = 0
-    private var saved: [Tour] { library.tours.filter(library.isSaved) }
+
+    private var purchasedTours: [Tour] {
+        let purchasedProductIDs = purchaseStore.purchasedProductIDs
+        if purchasedProductIDs.contains(PurchaseConfiguration.allToursProductID) {
+            return library.tours
+        }
+        return library.tours.filter { tour in
+            guard let productID = PurchaseConfiguration.productID(for: tour.id) else { return false }
+            return purchasedProductIDs.contains(productID)
+        }
+    }
 
     var body: some View {
         ScrollView {
@@ -14,18 +25,18 @@ struct MyBagView: View {
                 BrandMark()
                 TrailPageHeader(
                     eyebrow: "Your collection",
-                    title: "Walks worth keeping.",
-                    subtitle: "Your saved routes stay close whenever you are ready to head out."
+                    title: "Tours worth keeping.",
+                    subtitle:
+                        "Once you purchase a tour its yours forever. Access it on location or listen to individual tour stops whenever you like"
                 )
-                if saved.isEmpty {
+                if purchasedTours.isEmpty {
                     emptyState
                 } else {
-                    ForEach(Array(saved.enumerated()), id: \.element.id) { index, tour in
-                        NavigationLink(value: tour) { CompactTourCard(tour: tour) }
-                            .buttonStyle(TrailPressStyle())
-                            .simultaneousGesture(TapGesture().onEnded { tourCardHapticTrigger += 1 })
-                        if index < saved.count - 1 {
-                            Divider().overlay(TrailColor.line)
+                    LazyVStack(spacing: 12) {
+                        ForEach(purchasedTours) { tour in
+                            NavigationLink(value: tour) { CompactTourCard(tour: tour, accessLabel: "PURCHASED") }
+                                .buttonStyle(TrailPressStyle())
+                                .simultaneousGesture(TapGesture().onEnded { tourCardHapticTrigger += 1 })
                         }
                     }
                 }
@@ -40,19 +51,16 @@ struct MyBagView: View {
 
     private var emptyState: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Image(systemName: "bookmark.fill")
+            Image(systemName: "cart.fill")
                 .font(.system(size: 28, weight: .semibold))
                 .foregroundStyle(TrailColor.green)
                 .frame(width: 60, height: 60)
                 .background(TrailColor.sky.opacity(0.45), in: Circle())
-            Text("Your next favourite walk starts here")
+            Text("No tours purchased yet")
                 .font(.trailTitle(24))
                 .foregroundStyle(TrailColor.ink)
-            Text("Save a tour to keep its route and stories handy for later.")
-                .font(.trailBody(15))
-                .foregroundStyle(TrailColor.muted)
             Button(action: onExplore) {
-                Label("Explore walks", systemImage: "arrow.right")
+                Label("Explore tours", systemImage: "arrow.right")
                     .font(.trailBody(16, weight: .bold))
                     .foregroundStyle(TrailColor.ink)
                     .frame(maxWidth: .infinity, minHeight: 52)
