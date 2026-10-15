@@ -78,7 +78,7 @@ struct AllToursMapView: View {
             Map(position: $position, selection: $selectedTour) {
                 ForEach(library.tours) { tour in
                     if let coordinate = tour.mapPinCoordinate {
-                        Annotation("Tour", coordinate: coordinate, anchor: .bottom) {
+                        Annotation("", coordinate: coordinate, anchor: .bottom) {
                             TourMapPin(
                                 title: tour.id == "inner-harbour" ? "Victoria Inner Harbour Tour" : tour.title
                             )
@@ -158,9 +158,16 @@ private struct TourMapPin: View {
 
     var body: some View {
         VStack(spacing: 4) {
-            Image(systemName: "mappin")
-                .font(.system(size: 36, weight: .bold))
-                .foregroundStyle(TrailColor.coral)
+            ZStack {
+                Circle()
+                    .fill(TrailColor.coral)
+                Circle()
+                    .stroke(TrailColor.cream, lineWidth: 2)
+                Image(systemName: "mappin")
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundStyle(TrailColor.ink)
+            }
+            .frame(width: 36, height: 36)
             Text(title)
                 .font(.system(size: 17, weight: .semibold, design: .rounded))
                 .foregroundStyle(TrailColor.ink)
