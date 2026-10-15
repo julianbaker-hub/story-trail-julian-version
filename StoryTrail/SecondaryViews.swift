@@ -79,7 +79,11 @@ struct AllToursMapView: View {
                 ForEach(library.tours) { tour in
                     if let coordinate = tour.mapPinCoordinate {
                         Annotation("", coordinate: coordinate, anchor: .bottom) {
-                            TourMapPin(title: mapPinTitle(for: tour))
+                            TourMapPin(
+                                title: mapPinTitle(for: tour),
+                                isSelected: selectedTour?.id == tour.id,
+                                reduceMotion: reduceMotion
+                            )
                         }
                         .tag(tour)
                     }
@@ -203,6 +207,8 @@ struct AllToursMapView: View {
 
 private struct TourMapPin: View {
     let title: String
+    let isSelected: Bool
+    let reduceMotion: Bool
 
     var body: some View {
         VStack(spacing: 4) {
@@ -216,6 +222,15 @@ private struct TourMapPin: View {
                     .foregroundStyle(TrailColor.ink)
             }
             .frame(width: 36, height: 36)
+            .keyframeAnimator(initialValue: 0.0, trigger: isSelected) { content, horizontalOffset in
+                content.offset(x: isSelected && !reduceMotion ? horizontalOffset : 0)
+            } keyframes: { _ in
+                LinearKeyframe(-4, duration: 0.06)
+                LinearKeyframe(4, duration: 0.08)
+                LinearKeyframe(-3, duration: 0.08)
+                LinearKeyframe(3, duration: 0.08)
+                LinearKeyframe(0, duration: 0.06)
+            }
             Text(title)
                 .font(.system(size: 17, weight: .semibold, design: .rounded))
                 .foregroundStyle(TrailColor.ink)
