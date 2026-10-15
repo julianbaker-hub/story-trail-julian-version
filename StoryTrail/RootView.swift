@@ -186,7 +186,6 @@ struct BrandMark: View {
 
 struct FeaturedTourCard: View {
     let tour: Tour
-    @EnvironmentObject private var purchaseStore: PurchaseStore
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -208,7 +207,7 @@ struct FeaturedTourCard: View {
                 VStack {
                     Spacer()
                     HStack {
-                        Text(purchaseStore.accessLabel(for: tour))
+                        Text("$10")
                             .font(.trailBody(11, weight: .bold))
                             .tracking(1.1)
                             .foregroundStyle(TrailColor.ink)
