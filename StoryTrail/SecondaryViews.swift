@@ -118,11 +118,11 @@ struct AllToursMapView: View {
                             .foregroundStyle(TrailColor.green)
                             .accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 4) {
-                            TrailEyebrow(text: purchaseStore.accessLabel(for: selectedTour))
-                            Text(selectedTour.title)
+                            TrailEyebrow(text: previewPrice(for: selectedTour))
+                            Text(previewTitle(for: selectedTour))
                                 .font(.trailBody(19, weight: .bold))
                                 .foregroundStyle(TrailColor.ink)
-                            Text("\(selectedTour.minutes) min · \(selectedTour.stops.count) stories")
+                            Text(previewMetadata(for: selectedTour))
                                 .font(.trailBody(14))
                                 .foregroundStyle(TrailColor.muted)
                         }
@@ -162,6 +162,41 @@ struct AllToursMapView: View {
             "Beacon Hill Park Tour"
         default:
             tour.title
+        }
+    }
+
+    private func previewPrice(for tour: Tour) -> String {
+        switch tour.id {
+        case "inner-harbour", "old-town", "james-bay", "beacon-hill":
+            "$10"
+        default:
+            purchaseStore.accessLabel(for: tour)
+        }
+    }
+
+    private func previewTitle(for tour: Tour) -> String {
+        switch tour.id {
+        case "inner-harbour":
+            "Victoria Inner Harbour"
+        case "old-town":
+            "Victoria Old Town"
+        default:
+            tour.title
+        }
+    }
+
+    private func previewMetadata(for tour: Tour) -> String {
+        switch tour.id {
+        case "inner-harbour":
+            "\(tour.minutes) min · 8 stops"
+        case "old-town":
+            "60 min · 10 stops"
+        case "james-bay":
+            "90 min · 10 stops"
+        case "beacon-hill":
+            "75 min · 10 stops"
+        default:
+            "\(tour.minutes) min · \(tour.stops.count) stops"
         }
     }
 }
