@@ -64,7 +64,7 @@ struct ToursView: View {
                     TrailPageHeader(
                         eyebrow: "",
                         title: "Explore Victoria",
-                        subtitle: "Choose a tour, download it, and listen as each place comes to life"
+                        subtitle: "Choose a tour, download it, and listen as each landmark comes to life"
                     )
                     .padding(.bottom, 8)
 
@@ -170,7 +170,7 @@ struct FeaturedTourCard: View {
                     .clipped()
                     .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
 
-                Text("FEATURED WALK")
+                Text("FEATURED TOUR")
                     .font(.trailBody(11, weight: .bold))
                     .tracking(1.3)
                     .foregroundStyle(TrailColor.cream)
@@ -197,10 +197,6 @@ struct FeaturedTourCard: View {
 
             VStack(alignment: .leading, spacing: 11) {
                 Text(tour.title).font(.trailTitle(28)).foregroundStyle(TrailColor.ink)
-                Text(tour.subtitle)
-                    .font(.trailBody(15))
-                    .foregroundStyle(TrailColor.muted)
-                    .fixedSize(horizontal: false, vertical: true)
                 TourMetadata(tour: tour)
             }
         }
