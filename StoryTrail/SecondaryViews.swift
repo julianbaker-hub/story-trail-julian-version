@@ -100,7 +100,7 @@ struct AllToursMapView: View {
                 }
                 if selectedTour == nil {
                     Label("Tap a pin to preview a tour", systemImage: "hand.tap")
-                        .foregroundStyle(TrailColor.cream)
+                        .foregroundStyle(TrailColor.ink)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 10)
                         .background(TrailColor.coral, in: Capsule())
