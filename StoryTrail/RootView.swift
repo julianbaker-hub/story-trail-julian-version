@@ -221,7 +221,11 @@ struct FeaturedTourCard: View {
             }
 
             VStack(alignment: .leading, spacing: 11) {
-                Text(tour.title).font(.trailTitle(28)).foregroundStyle(TrailColor.ink)
+                Text(tour.id == "inner-harbour" ? "Victoria Inner Harbour" : tour.title)
+                    .font(.trailTitle(28))
+                    .foregroundStyle(TrailColor.ink)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
                 TourMetadata(tour: tour)
             }
         }
