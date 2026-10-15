@@ -246,13 +246,13 @@ struct CompactTourCard: View {
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
 
             VStack(alignment: .leading, spacing: 5) {
-                Text(tour.title)
+                Text(displayTitle)
                     .font(.trailTitle(19))
                     .foregroundStyle(TrailColor.ink)
-                Text("\(tour.minutes) min · \(String(format: "%.1f", tour.distance)) km")
+                Text(displayMetadata)
                     .font(.trailBody(12, weight: .semibold))
                     .foregroundStyle(TrailColor.muted)
-                Text(accessLabel ?? purchaseStore.accessLabel(for: tour))
+                Text(displayAccessLabel)
                     .font(.trailBody(11, weight: .bold))
                     .tracking(1)
                     .foregroundStyle(TrailColor.muted)
@@ -268,6 +268,35 @@ struct CompactTourCard: View {
         .contentShape(RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous))
         .accessibilityElement(children: .combine)
         .accessibilityHint("Opens tour details")
+    }
+
+    private var displayTitle: String {
+        tour.id == "old-town" ? "Victoria Old Town" : tour.title
+    }
+
+    private var displayMetadata: String {
+        switch tour.id {
+        case "old-town":
+            "60 min · 1.2 km"
+        case "james-bay":
+            "90 min · 2.1 km"
+        case "beacon-hill":
+            "\(tour.minutes) min · 1.5 km"
+        default:
+            "\(tour.minutes) min · \(String(format: "%.1f", tour.distance)) km"
+        }
+    }
+
+    private var displayAccessLabel: String {
+        if let accessLabel {
+            return accessLabel
+        }
+        switch tour.id {
+        case "old-town", "james-bay", "beacon-hill":
+            return "$10"
+        default:
+            return purchaseStore.accessLabel(for: tour)
+        }
     }
 }
 
