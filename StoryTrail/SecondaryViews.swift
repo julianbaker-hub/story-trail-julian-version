@@ -1,6 +1,5 @@
 import MapKit
 import SwiftUI
-import WebKit
 
 struct MyBagView: View {
     let onExplore: () -> Void
@@ -334,11 +333,7 @@ struct SupportView: View {
         case .privacyPolicy:
             PrivacyPolicyView()
         case .termsOfService:
-            if let url = destination.liveDocumentURL {
-                LiveSupportDocumentView(destination: destination, url: url)
-            } else {
-                ContentUnavailableView("Document unavailable", systemImage: "doc.text.magnifyingglass")
-            }
+            TermsOfServiceView()
         }
     }
 
@@ -379,14 +374,6 @@ private enum SupportDestination: String, CaseIterable, Hashable, Identifiable {
         }
     }
 
-    var liveDocumentURL: URL? {
-        switch self {
-        case .termsOfService:
-            URL(string: "https://storytrailguide.com/TermsOfService")
-        case .helpCenter, .contactSupport, .privacyPolicy:
-            nil
-        }
-    }
 }
 
 private struct PrivacyPolicyView: View {
@@ -675,6 +662,511 @@ private struct PrivacyPolicySection: Identifiable {
     let content: [String]
 }
 
+private struct TermsOfServiceView: View {
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 28) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("StoryTrail")
+                        .font(.trailBody(17, weight: .bold))
+                        .foregroundStyle(TrailColor.green)
+                        .textCase(.uppercase)
+                    Text("Terms of Service")
+                        .font(.trailTitle(36))
+                        .foregroundStyle(TrailColor.ink)
+                    Text("Last Updated: October 16, 2026")
+                        .font(.trailBody(17, weight: .semibold))
+                        .foregroundStyle(TrailColor.muted)
+                }
+
+                policyText(Self.introduction)
+
+                ForEach(Self.sections) { section in
+                    VStack(alignment: .leading, spacing: 14) {
+                        Text(section.title)
+                            .font(.trailTitle(24))
+                            .foregroundStyle(TrailColor.ink)
+                            .accessibilityAddTraits(.isHeader)
+                        policyText(section.content)
+                    }
+                }
+            }
+            .padding(22)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .navigationTitle("Terms of Service")
+        .navigationBarTitleDisplayMode(.inline)
+        .textSelection(.enabled)
+        .creamBackground()
+    }
+
+    private func policyText(_ text: String) -> some View {
+        Text(text)
+            .font(.trailBody(17))
+            .foregroundStyle(TrailColor.ink)
+            .lineSpacing(5)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private static let introduction = """
+        Welcome to StoryTrail.
+
+        These Terms of Service ("Terms") govern your access to and use of StoryTrail, a GPS-enabled audio tour guide application and related services operated by Julian Baker, doing business as StoryTrail, a registered sole proprietorship in British Columbia, Canada.
+
+        Business Registration Number: FM1118263.
+
+        In these Terms, "StoryTrail", "we", "us", and "our" refer to Julian Baker operating as StoryTrail. "You" and "your" refer to users of our Services.
+
+        Our Services include the StoryTrail mobile application ("App"), downloadable audio tours, maps, location-based narration, our website at www.storytrailguide.com, and related products and services (collectively, the "Services").
+
+        By downloading, installing, purchasing content through, or using the Services, you agree to these Terms. If you do not agree, you should not use the Services.
+
+        Nothing in these Terms excludes, restricts, or modifies any consumer protection or other legal right that cannot lawfully be excluded, restricted, or modified.
+        """
+
+    private static let sections = [
+        TermsSection(
+            title: "1. Description of Services",
+            content: """
+                StoryTrail provides self-guided audio tours designed to help users explore cities, neighbourhoods, public spaces, historic sites, and other points of interest.
+
+                The Services may include:
+
+                • Pre-recorded audio narration and storytelling.
+                • GPS-triggered audio at designated tour stops.
+                • Interactive maps and suggested walking routes.
+                • Historical, cultural, educational, and tourism information.
+                • Downloadable audio tour content.
+                • Locally stored tour progress and purchase entitlements.
+
+                StoryTrail is intended primarily for self-guided exploration, education, and entertainment.
+
+                The Services are not professional navigation, emergency response, travel safety, or accessibility-assessment services.
+
+                Tour content, features, routes, and availability may vary by location, device, operating system, and purchased product.
+                """
+        ),
+        TermsSection(
+            title: "2. Eligibility",
+            content: """
+                You must have the legal capacity to enter into these Terms or use the Services with the appropriate involvement and consent of a parent or legal guardian.
+
+                Users under the age of majority in their jurisdiction should use the Services with the permission and supervision of a parent or legal guardian.
+
+                Parents and guardians are responsible for determining whether particular tour routes and content are appropriate for children under their supervision.
+
+                StoryTrail does not guarantee that every route or location is suitable for children, persons with mobility limitations, or individuals with particular accessibility requirements.
+                """
+        ),
+        TermsSection(
+            title: "3. Location Services and GPS Accuracy",
+            content: """
+                StoryTrail uses Apple's Core Location framework and related technologies to identify your position and trigger audio narration when you approach designated tour stops.
+
+                GPS location information is processed locally on your device for tour functionality. StoryTrail does not maintain a server-based history of your individual movements.
+
+                Location services require permission through your device's operating system.
+
+                You may change or withdraw location permissions at any time through your device settings. Disabling location access may prevent automatic narration and certain mapping features from functioning.
+
+                GPS and location-based services may be inaccurate, delayed, unavailable, or interrupted due to circumstances including:
+
+                • Poor satellite reception.
+                • Buildings, trees, tunnels, or other obstructions.
+                • Device hardware or software limitations.
+                • Weather and environmental conditions.
+                • Operating-system restrictions or battery-saving settings.
+                • Inaccurate or outdated mapping information.
+
+                StoryTrail does not guarantee the accuracy, timeliness, completeness, or reliability of GPS positioning, location-triggered narration, maps, or suggested routes.
+
+                You must rely on your own judgment, posted signs, official directions, and actual conditions when navigating.
+
+                StoryTrail must not be relied upon for emergency navigation or situations in which inaccurate location information could create a risk of serious injury or damage.
+                """
+        ),
+        TermsSection(
+            title: "4. Travel Conditions and Route Accessibility",
+            content: """
+                StoryTrail tours may involve walking through public streets, parks, pedestrian pathways, historic districts, and other locations.
+
+                Conditions along a tour route may change without notice.
+
+                Potential hazards include:
+
+                • Vehicle, bicycle, and pedestrian traffic.
+                • Uneven pavement, stairs, curbs, and slippery surfaces.
+                • Construction, maintenance, or temporary closures.
+                • Weather conditions and reduced visibility.
+                • Restricted or private property.
+                • Environmental hazards, wildlife, or falling objects.
+                • Changes in public access or accessibility.
+
+                StoryTrail does not guarantee that any suggested route, attraction, business, pathway, or destination will be open, accessible, safe, or suitable for your individual circumstances.
+
+                You must obey applicable laws, official signs, access restrictions, and instructions from authorized personnel.
+
+                You must not enter private property, restricted areas, closed facilities, or unsafe locations merely because they appear in a tour.
+
+                You are responsible for assessing conditions and deciding whether to begin, continue, modify, or discontinue a tour.
+                """
+        ),
+        TermsSection(
+            title: "5. Safe Use of the Services",
+            content: """
+                Your safety and the safety of others must take priority over the use of StoryTrail.
+
+                When walking, cycling, driving, or otherwise travelling, you must remain attentive to your surroundings.
+
+                You agree to:
+
+                • Follow applicable traffic and pedestrian laws.
+                • Use designated crossings and pathways where appropriate.
+                • Avoid interacting with your device when doing so would create a hazard.
+                • Stop in a safe location before making adjustments that require your attention.
+                • Maintain awareness of traffic, other pedestrians, obstacles, and environmental conditions.
+                • Use headphones or audio equipment at a volume that allows appropriate awareness of your surroundings.
+
+                StoryTrail is designed to support audio-based exploration, but automatic narration and hands-free operation do not eliminate the need for situational awareness.
+
+                If you use the Services while operating a vehicle, you must comply with all applicable distracted-driving laws. You must not handle or interact with your device in an unlawful or unsafe manner.
+
+                StoryTrail does not instruct users to disregard traffic regulations, enter restricted areas, or undertake unsafe activities.
+
+                If an audio instruction, route suggestion, or location cue conflicts with actual conditions or official directions, you must follow the safer and lawful course of action.
+                """
+        ),
+        TermsSection(
+            title: "6. Assumption of Travel Risks",
+            content: """
+                You acknowledge that walking, cycling, driving, sightseeing, and outdoor exploration involve inherent risks.
+
+                These may include personal injury, property damage, accidents, falls, traffic incidents, adverse weather, and unexpected environmental conditions.
+
+                You acknowledge that StoryTrail cannot monitor or control the conditions encountered during your tour.
+
+                You agree to exercise reasonable care, assess your own abilities and circumstances, and make independent decisions about your safety.
+
+                To the extent permitted by applicable law, you voluntarily accept the ordinary and reasonably foreseeable risks inherent in the travel activities you choose to undertake.
+
+                Nothing in this section excludes liability that cannot lawfully be excluded or removes any legal duty that StoryTrail may owe you.
+                """
+        ),
+        TermsSection(
+            title: "7. Purchases, Pricing, and Taxes",
+            content: """
+                StoryTrail offers certain audio tours and digital content for purchase.
+
+                For the iOS application, purchases are processed through Apple's App Store in-app purchase system.
+
+                Before completing a purchase, you will be presented with information about the product, its price, and applicable charges through the relevant purchase interface and product information.
+
+                Prices may vary by country, currency, applicable taxes, and App Store territory.
+
+                The final price and currency presented through Apple's purchase interface will apply to the transaction, subject to applicable law.
+
+                You authorize Apple to process the purchase using your selected payment method under Apple's applicable payment terms.
+
+                StoryTrail does not receive or store your complete payment-card information.
+
+                Unless otherwise expressly stated, individual tour purchases are one-time purchases rather than recurring subscriptions.
+
+                StoryTrail may change prices, introduce new tours, or offer promotional pricing. Price changes will not retroactively increase the price of purchases already completed.
+
+                Promotional offers may be subject to additional conditions disclosed before purchase.
+
+                Purchase Information and Contract Review
+
+                Where required by applicable consumer protection law, StoryTrail will provide or make available the relevant supplier information, product description, technical requirements, delivery arrangements, pricing, taxes, restrictions, and refund or cancellation terms before a purchase is completed.
+
+                You will have an opportunity to review the applicable contractual terms before completing a purchase, as required by law.
+
+                StoryTrail will provide or make available copies of applicable contracts and transaction information in accordance with legal requirements.
+
+                Apple may separately provide transaction receipts and purchase confirmations through its systems.
+                """
+        ),
+        TermsSection(
+            title: "8. Refunds, Cancellations, and Consumer Rights",
+            content: """
+                Purchases of digital tours through the iOS application are processed by Apple.
+
+                For purchases processed by Apple, refund requests should ordinarily be submitted through Apple's refund process:
+
+                https://reportaproblem.apple.com/
+
+                Refund eligibility may depend on Apple's applicable policies, the nature of the purchase, and the consumer protection laws that apply to the transaction.
+
+                Except where a refund, cancellation, or other remedy is required by applicable law or expressly offered by StoryTrail, completed digital-content purchases are generally non-refundable.
+
+                Nothing in these Terms limits your statutory rights to cancel a contract, receive a refund, or obtain another remedy where applicable law provides such rights.
+
+                This includes rights arising from inaccurate or incomplete pre-purchase disclosures, failure to provide required contractual information, failure to supply purchased content, or other circumstances recognized by applicable consumer protection legislation.
+
+                If you believe you are entitled to a refund or other remedy under applicable law, you may contact StoryTrail using the contact information at the end of these Terms.
+
+                Where a legal obligation rests with StoryTrail, we will not require you to waive that right or rely exclusively on Apple's discretionary refund process.
+                """
+        ),
+        TermsSection(
+            title: "9. Tour Access and Purchase Restoration",
+            content: """
+                Purchasing a StoryTrail tour grants you access to the specified digital content under the licence described in these Terms.
+
+                A purchase does not transfer ownership of the audio recordings, scripts, software, or other intellectual property.
+
+                Purchased tours are generally associated with the Apple Account used to complete the purchase.
+
+                Where supported, you may restore eligible non-consumable purchases using Apple's purchase restoration functionality.
+
+                Restoration and continued access may depend on:
+
+                • Use of the appropriate Apple Account.
+                • Device and operating-system compatibility.
+                • Availability of the App and purchased content.
+                • Applicable App Store requirements.
+                • Technical limitations or circumstances beyond StoryTrail's reasonable control.
+
+                StoryTrail does not guarantee that any particular device or operating-system version will be supported indefinitely.
+
+                We may modify, update, replace, or discontinue content or functionality for legitimate operational, technical, legal, or security reasons.
+
+                Where changes materially affect access to purchased content, we will comply with applicable notice, refund, and consumer protection obligations.
+                """
+        ),
+        TermsSection(
+            title: "10. Offline Functionality and Connectivity",
+            content: """
+                StoryTrail may allow certain audio tour content to be downloaded or stored for use without an active internet connection.
+
+                However, not all functionality is guaranteed to operate offline.
+
+                Features that may require connectivity include:
+
+                • Downloading or updating tour content.
+                • Completing purchases or restoring purchase entitlements.
+                • Loading or updating certain map information.
+                • Accessing external websites or directions.
+                • Receiving application or content updates.
+
+                GPS functionality may continue without an internet connection, but its performance depends on device capabilities, location permissions, operating-system behaviour, and environmental conditions.
+
+                StoryTrail does not guarantee uninterrupted or error-free offline operation.
+
+                You are responsible for preparing your device appropriately before beginning a tour, including ensuring sufficient battery power, available storage, and access to necessary content.
+                """
+        ),
+        TermsSection(
+            title: "11. Equipment and Data Charges",
+            content: """
+                You are responsible for obtaining and maintaining the equipment necessary to use StoryTrail.
+
+                This may include:
+
+                • A compatible Apple mobile device.
+                • A supported operating system.
+                • Location services.
+                • Audio playback equipment.
+                • Sufficient battery power and device storage.
+                • Internet or mobile data connectivity where required.
+
+                You are responsible for applicable mobile data charges, roaming fees, and other charges imposed by your telecommunications or internet service provider.
+
+                StoryTrail is not responsible for charges imposed independently by those providers.
+                """
+        ),
+        TermsSection(
+            title: "12. Intellectual Property and Content Licence",
+            content: """
+                The StoryTrail application and its content are protected by applicable copyright, trademark, and other intellectual property laws.
+
+                Content may include:
+
+                • Audio recordings and narration.
+                • Original scripts and written material.
+                • Tour descriptions and route arrangements.
+                • Photographs, illustrations, and graphics.
+                • Logos, branding, and visual designs.
+                • Software and application interfaces.
+                • Other original or licensed materials.
+
+                These materials are owned by StoryTrail or their respective licensors.
+
+                Third-party materials, including maps and certain geographic information, remain subject to the rights and applicable terms of their respective owners.
+
+                Subject to your compliance with these Terms, StoryTrail grants you a limited, non-exclusive, non-transferable, non-sublicensable licence to access and use purchased tour content for personal, non-commercial purposes.
+
+                Except where expressly authorized or permitted by law, you may not:
+
+                • Copy, reproduce, or redistribute tour content.
+                • Sell, rent, sublicense, or commercially exploit purchased content.
+                • Publicly broadcast or perform audio recordings.
+                • Create or distribute unauthorized derivative works.
+                • Remove copyright notices or other proprietary information.
+                • Circumvent technical measures protecting the Services.
+                • Extract or systematically reproduce substantial portions of the content for competing commercial services.
+
+                Nothing in these Terms restricts rights that cannot lawfully be excluded, including applicable statutory exceptions under Canadian copyright law.
+
+                The StoryTrail application itself is also subject to Apple's Standard End User License Agreement, where applicable.
+                """
+        ),
+        TermsSection(
+            title: "13. Historical, Cultural, and Informational Content",
+            content: """
+                StoryTrail provides historical narratives, cultural commentary, tourism information, and other educational content.
+
+                We make reasonable efforts to research and present information accurately.
+
+                However, historical interpretation may involve uncertainty, incomplete records, contested evidence, or differing scholarly perspectives.
+
+                Information about buildings, landmarks, businesses, attractions, public facilities, and historical sites may change over time.
+
+                StoryTrail does not guarantee that all information is complete, current, error-free, or universally accepted.
+
+                The Services are provided for general educational and entertainment purposes and are not a substitute for professional historical, legal, travel, safety, or navigation advice.
+
+                References to third-party businesses, attractions, organizations, or individuals do not imply sponsorship, endorsement, partnership, or affiliation unless expressly stated.
+                """
+        ),
+        TermsSection(
+            title: "14. Acceptable Use",
+            content: """
+                You agree to use StoryTrail lawfully and responsibly.
+
+                You must not:
+
+                • Use the Services for unlawful, fraudulent, or harmful purposes.
+                • Attempt to gain unauthorized access to the App or related systems.
+                • Interfere with the operation or security of the Services.
+                • Introduce malicious code or otherwise disrupt functionality.
+                • Circumvent purchase verification or content-access controls.
+                • Redistribute, resell, or commercially exploit tour content without authorization.
+                • Misrepresent your affiliation with StoryTrail.
+                • Infringe the intellectual property or privacy rights of others.
+
+                Restrictions on software modification, reverse engineering, or technical access apply only to the extent permitted by applicable law and relevant software licences.
+
+                StoryTrail may take reasonable and proportionate steps to address violations of these Terms, subject to applicable consumer rights.
+                """
+        ),
+        TermsSection(
+            title: "15. Third-Party Services",
+            content: """
+                StoryTrail uses or integrates certain services provided by third parties, including Apple technologies such as:
+
+                • Core Location.
+                • MapKit and Apple Maps.
+                • StoreKit and App Store purchasing services.
+
+                Third-party services may operate under their own terms, conditions, and privacy policies.
+
+                StoryTrail does not control independent third-party systems and cannot guarantee their uninterrupted availability, accuracy, or performance.
+
+                Where applicable, users must comply with the lawful terms of third-party services they access.
+
+                Nothing in this section excludes responsibility that StoryTrail cannot lawfully disclaim.
+                """
+        ),
+        TermsSection(
+            title: "16. Privacy",
+            content: """
+                Your privacy is important to StoryTrail.
+
+                Our Privacy Policy explains how personal information is collected, used, disclosed, retained, and protected in connection with the Services.
+
+                The Privacy Policy is available through the StoryTrail application and at:
+
+                https://www.storytrailguide.com/privacy-policy
+
+                By using location-dependent features, you acknowledge that the App requires location access to perform those functions.
+
+                Location permissions are managed through your device's operating system.
+
+                Where required by applicable law, StoryTrail obtains consent for the collection, use, or disclosure of personal information.
+                """
+        ),
+        TermsSection(
+            title: "17. Disclaimer of Warranties",
+            content: """
+                StoryTrail aims to provide reliable and functional Services.
+
+                However, to the fullest extent permitted by applicable law, the Services are provided on an "as is" and "as available" basis.
+
+                StoryTrail does not guarantee that:
+
+                • The Services will operate without interruption or error.
+                • GPS-triggered narration will activate at every designated location.
+                • Maps or location information will always be accurate.
+                • Every tour route or destination will remain accessible.
+                • The Services will be compatible with all devices or operating-system versions.
+                • Downloaded content will remain accessible under all technical circumstances.
+                • Historical, cultural, or tourism information will always be complete or current.
+
+                To the extent permitted by applicable law, StoryTrail disclaims warranties and conditions not expressly provided in these Terms, including implied warranties or conditions of merchantability, fitness for a particular purpose, and non-infringement.
+
+                Nothing in this section excludes, restricts, or modifies warranties, conditions, guarantees, or remedies that cannot lawfully be excluded under applicable consumer protection legislation.
+                """
+        ),
+        TermsSection(
+            title: "18. Limitation of Liability",
+            content: """
+                To the maximum extent permitted by applicable law, StoryTrail and its owner, employees, contractors, and agents will not be liable for indirect, incidental, special, or consequential losses arising from or relating to the Services.
+
+                Such losses may include:
+
+                • Lost profits or business opportunities.
+                • Loss of data.
+                • Travel interruptions or inconvenience.
+                • Losses arising from temporary service unavailability.
+                • Other indirect or consequential economic losses.
+
+                To the extent permitted by applicable law, StoryTrail's total aggregate liability arising from a particular purchased tour or related transaction will not exceed the greater of:
+
+                1. The amount paid for the relevant tour or service; or
+                2. CAD $100.
+
+                This limitation applies only where legally permissible.
+
+                Nothing in these Terms limits or excludes liability for fraud, wilful misconduct, or any injury, loss, statutory remedy, or other liability that cannot lawfully be limited or excluded.
+
+                These limitations do not remove any legal duty of care that StoryTrail may owe users.
+                """
+        ),
+        TermsSection(
+            title: "19. Indemnification",
+            content: """
+                To the fullest extent permitted by applicable law, you agree to indemnify, defend, and hold harmless StoryTrail, its owner and operator, Julian Baker, and its employees, contractors, agents, and representatives from and against any third-party claims, demands, proceedings, liabilities, damages, losses, costs, and expenses, including reasonable legal fees, arising directly from:
+
+                a. Your material breach of these Terms of Service;
+
+                b. Your unlawful, fraudulent, negligent, or wilfully wrongful conduct in connection with your use of the Services;
+
+                c. Your infringement or violation of the intellectual property, privacy, or other legal rights of a third party; or
+
+                d. Your unauthorized reproduction, distribution, modification, commercial exploitation, or misuse of StoryTrail's content, software, or Services.
+
+                Your indemnification obligations apply only to the extent that the relevant claim, loss, or expense is attributable to your conduct.
+
+                You are not required to indemnify StoryTrail for claims, damages, or losses arising from StoryTrail's own negligence, wilful misconduct, breach of applicable law, or other acts or omissions for which liability cannot lawfully be transferred to you.
+
+                StoryTrail will provide you with reasonable notice of any claim for which indemnification is sought and will cooperate reasonably in its defence. You may not settle a claim in a manner that imposes liability or obligations on StoryTrail without our prior written consent, which will not be unreasonably withheld.
+
+                Nothing in this section limits, excludes, or overrides any rights or remedies available to consumers under the Business Practices and Consumer Protection Act (British Columbia) or other applicable consumer protection legislation.
+
+                This section survives the termination of these Terms to the extent necessary to address claims arising from conduct occurring while the Terms were in effect.
+                """
+        ),
+    ]
+}
+
+private struct TermsSection: Identifiable {
+    var id: String { title }
+
+    let title: String
+    let content: String
+}
+
 private struct SupportLinkRow: View {
     let destination: SupportDestination
 
@@ -859,92 +1351,6 @@ private struct SupportActionCard: View {
         .overlay(alignment: .bottom) { Divider().overlay(TrailColor.line) }
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
-    }
-}
-
-private struct LiveSupportDocumentView: View {
-    let destination: SupportDestination
-    let url: URL
-    @EnvironmentObject private var connectivity: ConnectivityModel
-    @State private var loadError: String?
-    @State private var retryID = UUID()
-
-    var body: some View {
-        VStack(spacing: 0) {
-            if connectivity.isOffline {
-                ContentUnavailableView(
-                    "Connection needed", systemImage: "wifi.slash",
-                    description: Text("This current document is available online at storytrailguide.com."),
-                )
-            } else if let loadError {
-                ContentUnavailableView {
-                    Label("Couldn't open document", systemImage: "exclamationmark.triangle")
-                } description: {
-                    Text(loadError)
-                } actions: {
-                    Button("Try again") {
-                        self.loadError = nil
-                        retryID = UUID()
-                    }
-                }
-            } else {
-                Label("This current document is loaded from storytrailguide.com.", systemImage: "wifi")
-                    .font(.trailBody(13, weight: .semibold))
-                    .foregroundStyle(TrailColor.ink)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .frame(maxWidth: .infinity)
-                    .background(TrailColor.yellow.opacity(0.35))
-                SupportWebView(url: url, loadError: $loadError)
-                    .id(retryID)
-            }
-        }
-        .navigationTitle(destination.title)
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-private struct SupportWebView: UIViewRepresentable {
-    let url: URL
-    @Binding var loadError: String?
-
-    func makeCoordinator() -> Coordinator { Coordinator(loadError: $loadError) }
-
-    func makeUIView(context: Context) -> WKWebView {
-        let webView = WKWebView()
-        webView.allowsBackForwardNavigationGestures = true
-        webView.navigationDelegate = context.coordinator
-        webView.load(URLRequest(url: url))
-        return webView
-    }
-
-    func updateUIView(_ webView: WKWebView, context: Context) {
-        guard webView.url != url else { return }
-        webView.load(URLRequest(url: url))
-    }
-
-    final class Coordinator: NSObject, WKNavigationDelegate {
-        @Binding var loadError: String?
-
-        init(loadError: Binding<String?>) {
-            _loadError = loadError
-        }
-
-        func webView(_ webView: WKWebView, didFail navigation: WKNavigation?, withError error: Error) {
-            guard (error as? URLError)?.code != .cancelled else { return }
-            loadError = "Check your connection and try again."
-        }
-
-        func webView(
-            _ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation?, withError error: Error
-        ) {
-            guard (error as? URLError)?.code != .cancelled else { return }
-            loadError = "Check your connection and try again."
-        }
-
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation?) {
-            loadError = nil
-        }
     }
 }
 
