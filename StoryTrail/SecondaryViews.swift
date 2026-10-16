@@ -1280,11 +1280,17 @@ private struct ContactSupportView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 18) {
-                TrailPageHeader(
-                    eyebrow: "Contact us",
-                    title: "We're here to help.",
-                    subtitle: "Choose the way that works best for you."
-                )
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("We're here to help.")
+                        .font(.trailTitle(34))
+                        .foregroundStyle(TrailColor.ink)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text("We will do our best to respond within one business day.")
+                        .font(.trailBody(16))
+                        .foregroundStyle(TrailColor.muted)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 Text("Office hours: Mon–Fri, 8:00 AM–5:00 PM Pacific")
                     .font(.trailBody(15))
                     .foregroundStyle(TrailColor.muted)
@@ -1302,12 +1308,12 @@ private struct ContactSupportView: View {
                     .accessibilityHint("Opens the Phone app")
                 }
 
-                if let emailURL = URL(string: "mailto:juliancharlesbaker@gmail.com") {
+                if let emailURL = URL(string: "mailto:help@storytrail.com") {
                     Link(destination: emailURL) {
                         SupportActionCard(
                             icon: "envelope.fill",
                             title: "Email",
-                            detail: "juliancharlesbaker@gmail.com",
+                            detail: "help@storytrail.com",
                         )
                     }
                     .buttonStyle(.plain)
@@ -1346,9 +1352,9 @@ private struct SupportActionCard: View {
                 .foregroundStyle(TrailColor.green)
                 .accessibilityHidden(true)
         }
-        .padding(.vertical, 18)
+        .padding(18)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .overlay(alignment: .bottom) { Divider().overlay(TrailColor.line) }
+        .background(TrailColor.paper, in: RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous))
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
     }
