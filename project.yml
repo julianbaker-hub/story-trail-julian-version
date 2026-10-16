@@ -36,6 +36,8 @@ targets:
     sources:
       - StoryTrailWidgets
       - path: StoryTrail/WidgetSnapshot.swift
+      - path: StoryTrail/PrivacyInfo.xcprivacy
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.storytrail.app.widgets

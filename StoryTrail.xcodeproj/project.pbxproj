@@ -17,6 +17,8 @@
 		2AF04EF1E24345879477A003 /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF04EF1E24345879477B003 /* PurchaseView.swift */; };
 		2AF04EF1E24345879477A004 /* TourAccessPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF04EF1E24345879477B004 /* TourAccessPolicyTests.swift */; };
 		32689AEC41C9581B0CC1D7DE /* AudioPlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D9459DA13195A08D8C9523 /* AudioPlayerModel.swift */; };
+		37D7462130827F3E0013BD08 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 37D7462030827C410013BD08 /* PrivacyInfo.xcprivacy */; };
+		37D7462330827F860013BD08 /* PrivacyInfo.xcprivacy in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37D7462030827C410013BD08 /* PrivacyInfo.xcprivacy */; };
 		44DBB4C7118E837874E44EB4 /* inner-harbour-02-fairmont-empress-hotel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 573AC9477C9FD9AF71EA69DD /* inner-harbour-02-fairmont-empress-hotel.mp3 */; };
 		545B942F78111C87B1E6ACA3 /* TourDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B51FA5FA238A3E41608135 /* TourDetailView.swift */; };
 		6254B4857CB3BAC575812D6B /* inner-harbour-08-emily-carr-statue.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AEE0709A04ECD45DACBA4EB0 /* inner-harbour-08-emily-carr-statue.mp3 */; };
@@ -65,6 +67,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		37D7462230827F5E0013BD08 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				37D7462330827F860013BD08 /* PrivacyInfo.xcprivacy in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A50000000000000000000001 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -86,6 +98,7 @@
 		2AF04EF1E24345879477B004 /* TourAccessPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourAccessPolicyTests.swift; sourceTree = "<group>"; };
 		3382E908EF9D3B53C877BF94 /* tours.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tours.json; sourceTree = "<group>"; };
 		33A4894C1681E6530A2F5F82 /* TourStopsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourStopsView.swift; sourceTree = "<group>"; };
+		37D7462030827C410013BD08 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3BEA563DAC19057DEEF31443 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		45B91682E8C418258B29AD12 /* DirectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionView.swift; sourceTree = "<group>"; };
 		4B2C96003D63C4B0200EA100 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
@@ -216,6 +229,7 @@
 				A20000000000000000000001 /* WidgetSnapshot.swift */,
 				A20000000000000000000002 /* WidgetSnapshotPublisher.swift */,
 				4D5DA3DBAD526129DB76F655 /* Resources */,
+				37D7462030827C410013BD08 /* PrivacyInfo.xcprivacy */,
 			);
 			path = StoryTrail;
 			sourceTree = "<group>";
@@ -266,6 +280,7 @@
 			buildConfigurationList = A70000000000000000000001 /* Build configuration list for PBXNativeTarget "StoryTrailWidgets" */;
 			buildPhases = (
 				A80000000000000000000001 /* Sources */,
+				37D7462230827F5E0013BD08 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -316,6 +331,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37D7462130827F3E0013BD08 /* PrivacyInfo.xcprivacy in Resources */,
 				1C7780229738C17FC2BD3921 /* Assets.xcassets in Resources */,
 				76229AA8D597A51DAFEDF0A6 /* inner-harbor.mp3 in Resources */,
 				B5C0E85966050A6324E2896A /* inner-harbour-01-victoria-visitor-centre.mp3 in Resources */,
