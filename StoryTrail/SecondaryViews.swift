@@ -263,7 +263,7 @@ struct SupportView: View {
                 TrailPageHeader(
                     eyebrow: "Support & settings",
                     title: "Help for the journey.",
-                    subtitle: "Answers, purchase help, and the practical details for a good walk."
+                    subtitle: "FAQs, purchase help, and practical details for using the app."
                 )
                 .padding(.top, 8)
 
@@ -287,15 +287,17 @@ struct SupportView: View {
                     SupportCard(
                         icon: "location.fill", title: "Location",
                         detail:
-                            "Allow location while using the app to highlight nearby stops. You can still select every stop manually.",
+                            "Allow location services while using the app so it can sense your location and play audio at each stop.",
                     )
                     SupportCard(
                         icon: "headphones", title: "Audio",
-                        detail: "Use headphones in busy areas, but stay aware of traffic and your surroundings.")
+                        detail:
+                            "We recommend that you use headphones. But stay aware of traffic and your surroundings! Safety is your responsibility."
+                    )
                     SupportCard(
                         icon: "wifi.slash", title: "Works offline",
                         detail:
-                            "Tour details, bundled stories, GPS, and compass navigation work without data. Apple Maps may need a connection for uncached map detail.",
+                            "The app, downloaded tours, and GPS work without cellular data or wifi. Apple Maps may need a connection for uncached map detail.",
                     )
                 }
 
