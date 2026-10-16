@@ -309,15 +309,11 @@ struct TourImage: View {
 
     var body: some View {
         GeometryReader { geometry in
-            AsyncImage(url: tour.imageURL) { phase in
-                if let image = phase.image {
-                    image.resizable().scaledToFill()
-                } else {
-                    IllustratedSky(palette: tour.palette)
-                }
-            }
-            .frame(width: geometry.size.width, height: geometry.size.height)
-            .clipped()
+            Image(tour.imageName)
+                .resizable()
+                .scaledToFill()
+                .frame(width: geometry.size.width, height: geometry.size.height)
+                .clipped()
         }
     }
 }

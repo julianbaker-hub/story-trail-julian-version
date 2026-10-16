@@ -13,7 +13,7 @@ final class WidgetSnapshotTests: XCTestCase {
         }
         let tour = Tour(
             id: "walk", title: "Walk", subtitle: "A walk", about: "", minutes: 30,
-            distance: 1, stops: stops, imageURL: nil, palette: .harbour
+            distance: 1, stops: stops, imageName: "InnerHarbourHero", palette: .harbour
         )
 
         let partial = WidgetSnapshotPublisher.makeWidgetTour(tour, visitedIDs: ["stop-1", "unknown"])

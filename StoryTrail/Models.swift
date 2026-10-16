@@ -102,13 +102,13 @@ struct Tour: Identifiable, Hashable, Codable {
     let stops: [TourStop]
     let route: [TourRoutePoint]?
     let mapPin: TourRoutePoint?
-    let imageURL: URL?
+    let imageName: String
     let palette: TourPalette
 
     enum CodingKeys: String, CodingKey {
         case id, title, subtitle, about, minutes, distance, stops, route, palette
         case mapPin = "map_pin"
-        case imageURL = "image_url"
+        case imageName = "image_name"
     }
 
     init(
@@ -121,7 +121,7 @@ struct Tour: Identifiable, Hashable, Codable {
         stops: [TourStop],
         route: [TourRoutePoint]? = nil,
         mapPin: TourRoutePoint? = nil,
-        imageURL: URL?,
+        imageName: String,
         palette: TourPalette,
     ) {
         self.id = id
@@ -133,7 +133,7 @@ struct Tour: Identifiable, Hashable, Codable {
         self.stops = stops
         self.route = route
         self.mapPin = mapPin
-        self.imageURL = imageURL
+        self.imageName = imageName
         self.palette = palette
     }
 
