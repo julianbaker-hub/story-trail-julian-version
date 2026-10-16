@@ -1203,7 +1203,7 @@ private struct HelpCenterView: View {
         HelpArticle(
             title: "How to use StoryTrail",
             detail:
-                "Choose a walk from Tours, unlock it if needed, and tap Start Tour. Follow the route to each stop. Nearby stories can be selected automatically with location access, and every stop can also be opened manually.",
+                "Choose a tour or tour bundle, complete the purchase and download the tour. Find your desired tour's start location. Once you arrive at the start location and tap Start Tour, the app will start the tour's first stop automatically. Enjoy! The audio will guide you to the next stop. Each stop will play automatically when you arrive at the correct location.",
         ),
         HelpArticle(
             title: "How to Redeem Purchased Tours",
@@ -1223,23 +1223,29 @@ private struct HelpCenterView: View {
         HelpArticle(
             title: "How to Switch to Another Tour",
             detail:
-                "Leave the current tour with the back control, open the Tours tab, and choose another walk. Your saved tours and completed-stop progress remain available.",
+                "Pause and exit the current tour using the back navigation control. Then open the Tours tab and choose another tour. Your saved tours remain available.",
         ),
         HelpArticle(
             title: "My Download isn't Working",
             detail:
-                "Bundled tour stories do not need a separate download. If content is missing, restore purchases and reopen the app. Map detail can require a connection; contact support if bundled audio still does not play.",
+                "Check that you have downloaded the tour. Bundled tours may require individual downloads. If content is missing, restore purchases and reopen the app. Map detail can require a connection. Contact support if bundled audio still does not download or play.",
         ),
     ]
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                TrailPageHeader(
-                    eyebrow: "Help center",
-                    title: "Good to know.",
-                    subtitle: "Straight answers for the moments before and during your walk."
-                )
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Good to know.")
+                        .font(.trailTitle(34))
+                        .foregroundStyle(TrailColor.ink)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text("Answers to common questions.")
+                        .font(.trailBody(16))
+                        .foregroundStyle(TrailColor.muted)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 Text("Office hours: Mon–Fri, 8:00 AM–5:00 PM Pacific")
                     .font(.trailBody(15))
                     .foregroundStyle(TrailColor.muted)
