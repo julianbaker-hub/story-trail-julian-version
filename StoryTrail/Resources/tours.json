@@ -61,17 +61,17 @@
       "palette": "oldTown",
       "map_pin": { "latitude": 48.425654, "longitude": -123.367722 },
       "stops": [
-        { "id": "old-town-1", "number": 1, "title": "Introduction & Old Victoria Hotel", "summary": "", "transcript": "", "latitude": 48.4233, "longitude": -123.3680 },
-        { "id": "old-town-2", "number": 2, "title": "Rogers’ Chocolates Shop", "summary": "", "transcript": "", "latitude": 48.4240, "longitude": -123.3675 },
-        { "id": "old-town-3", "number": 3, "title": "Old Victoria Customs House", "summary": "", "transcript": "", "latitude": 48.4257, "longitude": -123.3690 },
-        { "id": "old-town-4", "number": 4, "title": "Fort Victoria Bricks", "summary": "", "transcript": "", "latitude": 48.4270, "longitude": -123.3690 },
-        { "id": "old-town-5", "number": 5, "title": "Munro’s, Murchie’s & Morris", "summary": "", "transcript": "", "latitude": 48.4275, "longitude": -123.3692 },
-        { "id": "old-town-6", "number": 6, "title": "BMO Building", "summary": "", "transcript": "", "latitude": 48.4284, "longitude": -123.3692 },
-        { "id": "old-town-7", "number": 7, "title": "Bastion Square & Black Pioneers", "summary": "", "transcript": "", "latitude": 48.4291, "longitude": -123.3677 },
-        { "id": "old-town-8", "number": 8, "title": "Waddington Alley", "summary": "", "transcript": "", "latitude": 48.4294, "longitude": -123.3670 },
-        { "id": "old-town-9", "number": 9, "title": "Lower Johnson Street", "summary": "", "transcript": "", "latitude": 48.4273, "longitude": -123.3725 },
-        { "id": "old-town-10", "number": 10, "title": "Market Square", "summary": "", "transcript": "", "latitude": 48.4248, "longitude": -123.3700 },
-        { "id": "old-town-11", "number": 11, "title": "Fan Tan Alley", "summary": "", "transcript": "", "latitude": 48.4291, "longitude": -123.3677 }
+        { "id": "old-town-1", "number": 1, "title": "Introduction & Old Victoria Hotel", "summary": "Get started on Victoria's historic main street and see a remarkable 1858 structure that survived an explosion.", "transcript": "", "latitude": 48.4233, "longitude": -123.3680 },
+        { "id": "old-town-2", "number": 2, "title": "Rogers’ Chocolates Shop", "summary": "Meet Victoria's most famous chocolate shop and step inside the most beautiful historic store interior in the city.", "transcript": "", "latitude": 48.4240, "longitude": -123.3675 },
+        { "id": "old-town-3", "number": 3, "title": "Old Victoria Customs House", "summary": "Discover how a grand Customs House helped regulate Victoria's booming trade and gold rush migrations.", "transcript": "", "latitude": 48.4257, "longitude": -123.3690 },
+        { "id": "old-town-4", "number": 4, "title": "Fort Victoria Bricks", "summary": "Follow the traces of a fur-trading fort and pass by a very fine, poetic pub.", "transcript": "", "latitude": 48.4270, "longitude": -123.3690 },
+        { "id": "old-town-5", "number": 5, "title": "Munro’s, Murchie’s & Morris", "summary": "Discover three famous shops, from a Nobel Prize-winning novelist's bookstore to royal tea and an elegant tobacco shop.", "transcript": "", "latitude": 48.4275, "longitude": -123.3692 },
+        { "id": "old-town-6", "number": 6, "title": "BMO Building", "summary": "Meet a grand 1897 bank, Victoria's most famous architect, and the manufactured tradition of the Irish Pub.", "transcript": "", "latitude": 48.4284, "longitude": -123.3692 },
+        { "id": "old-town-7", "number": 7, "title": "Bastion Square & Black Pioneers", "summary": "Learn the remarkable story of a group Black Pioneers who migrated to Victoria in the 1850s seeking opportunity, freedom and equality.", "transcript": "", "latitude": 48.4291, "longitude": -123.3677 },
+        { "id": "old-town-8", "number": 8, "title": "Waddington Alley", "summary": "Walk along century-old wooden paving stones and meet the ambitious businessman whose grandest scheme ended in disaster.", "transcript": "", "latitude": 48.4294, "longitude": -123.3670 },
+        { "id": "old-town-9", "number": 9, "title": "Lower Johnson Street", "summary": "Discover how a row of colourful Victorian storefronts survived demolition to become one of Victoria's most photogenic streets.", "transcript": "", "latitude": 48.4273, "longitude": -123.3725 },
+        { "id": "old-town-10", "number": 10, "title": "Market Square", "summary": "Discover how two  brothers transformed a city block into a heritage marketplace and glimpse the edge of Victoria's early Chinatown.", "transcript": "", "latitude": 48.4248, "longitude": -123.3700 },
+        { "id": "old-town-11", "number": 11, "title": "Fan Tan Alley", "summary": "Squeeze through the famously narrow Fan Tan Alley and uncover a hidden world of gambling, opium, commerce and community in historic Chinatown.", "transcript": "", "latitude": 48.4291, "longitude": -123.3677 }
       ]
     },
     {

@@ -293,7 +293,7 @@ struct RoutePreviewRow: View {
                 Text(stop.summary)
                     .font(.trailBody(13))
                     .foregroundStyle(TrailColor.muted)
-                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             Spacer(minLength: 0)
         }
