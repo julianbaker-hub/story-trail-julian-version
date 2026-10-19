@@ -96,7 +96,7 @@ struct TourDetailView: View {
                                     TourMapView(tour: tour, startsPlayer: false)
                                 } label: {
                                     DetailRow(
-                                        icon: "map.fill", color: TrailColor.green, title: "Tour Route",
+                                        icon: "map.fill", color: TrailColor.green, title: "Tour Route Map",
                                         subtitle: "Route map with tour stops")
                                 }
                                 NavigationLink {
