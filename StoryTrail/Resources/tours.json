@@ -61,16 +61,17 @@
       "palette": "oldTown",
       "map_pin": { "latitude": 48.425654, "longitude": -123.367722 },
       "stops": [
-        { "id": "old-town-1", "number": 1, "title": "Government Street", "summary": "Victoria's oldest commercial corridor began at the shoreline.", "transcript": "Victoria's oldest commercial corridor began at the shoreline.", "latitude": 48.4233, "longitude": -123.3680 },
-        { "id": "old-town-2", "number": 2, "title": "Bank of Montreal Building", "summary": "Beaux-Arts architecture made money look permanent.", "transcript": "Beaux-Arts architecture made money look permanent.", "latitude": 48.4240, "longitude": -123.3675 },
-        { "id": "old-town-3", "number": 3, "title": "Bastion Square", "summary": "From Fort Victoria's palisade to courthouse plaza.", "transcript": "From Fort Victoria's palisade to courthouse plaza.", "latitude": 48.4257, "longitude": -123.3690 },
-        { "id": "old-town-4", "number": 4, "title": "Waddington Alley", "summary": "Walk on rare nineteenth-century wooden paving blocks.", "transcript": "Walk on rare nineteenth-century wooden paving blocks.", "latitude": 48.4270, "longitude": -123.3690 },
-        { "id": "old-town-5", "number": 5, "title": "Lower Johnson Street", "summary": "Harbour commerce became Victoria's colourful boutique block.", "transcript": "Harbour commerce became Victoria's colourful boutique block.", "latitude": 48.4275, "longitude": -123.3692 },
-        { "id": "old-town-6", "number": 6, "title": "Market Square", "summary": "A working courtyard built for crates, hoists, and merchants.", "transcript": "A working courtyard built for crates, hoists, and merchants.", "latitude": 48.4284, "longitude": -123.3692 },
-        { "id": "old-town-7", "number": 7, "title": "Fan Tan Alley", "summary": "Community life and commerce in Canada's narrowest street.", "transcript": "Community life and commerce in Canada's narrowest street.", "latitude": 48.4291, "longitude": -123.3677 },
-        { "id": "old-town-8", "number": 8, "title": "Gate of Harmonious Interest", "summary": "A public statement at the centre of Chinatown's revival.", "transcript": "A public statement at the centre of Chinatown's revival.", "latitude": 48.4294, "longitude": -123.3670 },
-        { "id": "old-town-9", "number": 9, "title": "Johnson Street Bridge", "summary": "Where Old Town opens onto its industrial harbour.", "transcript": "Where Old Town opens onto its industrial harbour.", "latitude": 48.4273, "longitude": -123.3725 },
-        { "id": "old-town-10", "number": 10, "title": "Old Victoria Customs House", "summary": "A handsome stone statement about trade and taxation.", "transcript": "A handsome stone statement about trade and taxation.", "latitude": 48.4248, "longitude": -123.3700 }
+        { "id": "old-town-1", "number": 1, "title": "Introduction & Old Victoria Hotel", "summary": "", "transcript": "", "latitude": 48.4233, "longitude": -123.3680 },
+        { "id": "old-town-2", "number": 2, "title": "Rogers’ Chocolates Shop", "summary": "", "transcript": "", "latitude": 48.4240, "longitude": -123.3675 },
+        { "id": "old-town-3", "number": 3, "title": "Old Victoria Customs House", "summary": "", "transcript": "", "latitude": 48.4257, "longitude": -123.3690 },
+        { "id": "old-town-4", "number": 4, "title": "Fort Victoria Bricks", "summary": "", "transcript": "", "latitude": 48.4270, "longitude": -123.3690 },
+        { "id": "old-town-5", "number": 5, "title": "Munro’s, Murchie’s & Morris", "summary": "", "transcript": "", "latitude": 48.4275, "longitude": -123.3692 },
+        { "id": "old-town-6", "number": 6, "title": "BMO Building", "summary": "", "transcript": "", "latitude": 48.4284, "longitude": -123.3692 },
+        { "id": "old-town-7", "number": 7, "title": "Bastion Square & Black Pioneers", "summary": "", "transcript": "", "latitude": 48.4291, "longitude": -123.3677 },
+        { "id": "old-town-8", "number": 8, "title": "Waddington Alley", "summary": "", "transcript": "", "latitude": 48.4294, "longitude": -123.3670 },
+        { "id": "old-town-9", "number": 9, "title": "Lower Johnson Street", "summary": "", "transcript": "", "latitude": 48.4273, "longitude": -123.3725 },
+        { "id": "old-town-10", "number": 10, "title": "Market Square", "summary": "", "transcript": "", "latitude": 48.4248, "longitude": -123.3700 },
+        { "id": "old-town-11", "number": 11, "title": "Fan Tan Alley", "summary": "", "transcript": "", "latitude": 48.4291, "longitude": -123.3677 }
       ]
     },
     {
