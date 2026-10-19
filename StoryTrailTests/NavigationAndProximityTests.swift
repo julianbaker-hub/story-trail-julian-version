@@ -139,6 +139,36 @@ final class NavigationAndProximityTests: XCTestCase {
         XCTAssertEqual(tour.stops.map(\.coordinate.longitude), expectedStopCoordinates.map(\.longitude))
     }
 
+    func testOldTownUsesDetailedRouteVisibleStopsAndPreparedAudioTriggers() async throws {
+        let tours = try await BundledTourRepository().fetchTours()
+        let tour = try XCTUnwrap(tours.first { $0.id == "old-town" })
+        let triggers = try XCTUnwrap(tour.audioTriggers)
+        let expectedStopCoordinates = [
+            CLLocationCoordinate2D(latitude: 48.423056, longitude: -123.368299),
+            CLLocationCoordinate2D(latitude: 48.423923, longitude: -123.368076),
+            CLLocationCoordinate2D(latitude: 48.424189, longitude: -123.368158),
+            CLLocationCoordinate2D(latitude: 48.424426, longitude: -123.368086),
+            CLLocationCoordinate2D(latitude: 48.425194, longitude: -123.367915),
+            CLLocationCoordinate2D(latitude: 48.425664, longitude: -123.367812),
+            CLLocationCoordinate2D(latitude: 48.425679, longitude: -123.367870),
+            CLLocationCoordinate2D(latitude: 48.426973, longitude: -123.369619),
+            CLLocationCoordinate2D(latitude: 48.427658, longitude: -123.369444),
+            CLLocationCoordinate2D(latitude: 48.427993, longitude: -123.368495),
+            CLLocationCoordinate2D(latitude: 48.428602, longitude: -123.367902),
+        ]
+
+        XCTAssertEqual(tour.routeCoordinates.count, 20)
+        XCTAssertEqual(tour.routeArrows.count, 10)
+        XCTAssertEqual(tour.stops.count, 11)
+        XCTAssertEqual(tour.stops.map(\.coordinate.latitude), expectedStopCoordinates.map(\.latitude))
+        XCTAssertEqual(tour.stops.map(\.coordinate.longitude), expectedStopCoordinates.map(\.longitude))
+        XCTAssertEqual(
+            triggers.map(\.label),
+            ["1", "2", "3", "4", "5", "6", "7", "7.5 navigation prompt", "8", "9", "9.5 continued", "10", "11", "12"])
+        XCTAssertTrue(triggers.allSatisfy { $0.triggerRadiusMeters == 20 })
+        XCTAssertTrue(triggers.allSatisfy { $0.audioFile == nil })
+    }
+
     func testNearestStopWinsWhenTriggerAreasOverlap() {
         var engine = ProximityEngine()
         let first = makeStop(number: 1, coordinate: origin)

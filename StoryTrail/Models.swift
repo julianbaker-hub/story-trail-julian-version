@@ -86,6 +86,36 @@ struct TourRoutePoint: Hashable, Codable {
     }
 }
 
+struct TourAudioTrigger: Identifiable, Hashable, Codable {
+    let id: String
+    let label: String
+    let latitude: Double
+    let longitude: Double
+    let triggerRadiusMeters: CLLocationDistance
+    let audioFile: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, label, latitude, longitude
+        case triggerRadiusMeters = "trigger_radius_meters"
+        case audioFile = "audio_file"
+    }
+
+    var coordinate: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(String.self, forKey: .id)
+        label = try values.decode(String.self, forKey: .label)
+        latitude = try values.decode(Double.self, forKey: .latitude)
+        longitude = try values.decode(Double.self, forKey: .longitude)
+        let decodedRadius = try values.decodeIfPresent(CLLocationDistance.self, forKey: .triggerRadiusMeters) ?? 20
+        triggerRadiusMeters = min(max(decodedRadius, 5), 100)
+        audioFile = try values.decodeIfPresent(String.self, forKey: .audioFile)
+    }
+}
+
 struct TourRouteArrow: Identifiable {
     let id: Int
     let coordinate: CLLocationCoordinate2D
@@ -101,12 +131,14 @@ struct Tour: Identifiable, Hashable, Codable {
     let distance: Double
     let stops: [TourStop]
     let route: [TourRoutePoint]?
+    let audioTriggers: [TourAudioTrigger]?
     let mapPin: TourRoutePoint?
     let imageName: String
     let palette: TourPalette
 
     enum CodingKeys: String, CodingKey {
         case id, title, subtitle, about, minutes, distance, stops, route, palette
+        case audioTriggers = "audio_triggers"
         case mapPin = "map_pin"
         case imageName = "image_name"
     }
@@ -120,6 +152,7 @@ struct Tour: Identifiable, Hashable, Codable {
         distance: Double,
         stops: [TourStop],
         route: [TourRoutePoint]? = nil,
+        audioTriggers: [TourAudioTrigger]? = nil,
         mapPin: TourRoutePoint? = nil,
         imageName: String,
         palette: TourPalette,
@@ -132,6 +165,7 @@ struct Tour: Identifiable, Hashable, Codable {
         self.distance = distance
         self.stops = stops
         self.route = route
+        self.audioTriggers = audioTriggers
         self.mapPin = mapPin
         self.imageName = imageName
         self.palette = palette
