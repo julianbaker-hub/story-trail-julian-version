@@ -81,6 +81,15 @@ struct TourDetailView: View {
                         .overlay(alignment: .top) { Divider().overlay(TrailColor.line) }
                         .overlay(alignment: .bottom) { Divider().overlay(TrailColor.line) }
 
+                        if tour.id == "inner-harbour" {
+                            NavigationLink {
+                                TourMapView(tour: tour, startsPlayer: false)
+                            } label: {
+                                InnerHarbourTourStartCard()
+                            }
+                            .buttonStyle(TrailPressStyle())
+                        }
+
                         VStack(spacing: 0) {
                             if purchaseStore.hasAccess(to: tour) {
                                 NavigationLink {
@@ -245,6 +254,28 @@ struct TourDetailView: View {
                 .padding(.leading, 20)
                 .padding(.top, 12)
         }
+    }
+}
+
+private struct InnerHarbourTourStartCard: View {
+    var body: some View {
+        ZStack(alignment: .topLeading) {
+            Image("InnerHarbourTourStart")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+
+            Text("Tour Start Location")
+                .font(.trailBody(17, weight: .bold))
+                .foregroundStyle(TrailColor.cream)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(TrailColor.yellow, in: Capsule())
+                .padding(14)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Tour Start Location")
+        .accessibilityHint("Opens the tour route map")
     }
 }
 
