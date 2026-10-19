@@ -86,7 +86,7 @@ struct TourDetailView: View {
                                     TourStopsView(tour: tour)
                                 } label: {
                                     DetailRow(
-                                        icon: "waveform", color: TrailColor.coral, title: "All stories",
+                                        icon: "waveform", color: TrailColor.coral, title: "Tour Stop Details",
                                         subtitle: "\(tour.stops.count) audio stops and transcripts")
                                 }
                             } else {
