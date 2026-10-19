@@ -9,9 +9,9 @@ struct TourStopsView: View {
             LazyVStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 8) {
                     TrailPageHeader(
-                        eyebrow: "\(tour.title) · field notes",
+                        eyebrow: tour.title,
                         title: "A story at every stop.",
-                        subtitle: "Follow the route in order, or open any story and read at your own pace."
+                        subtitle: "Tour stop summaries, images and useful links."
                     )
                 }
                 .padding(.bottom, 20)
@@ -32,7 +32,7 @@ struct TourStopsView: View {
             }
             .padding(20)
         }
-        .navigationTitle("Tour Stops")
+        .navigationTitle("Tour Stop Details")
         .navigationBarTitleDisplayMode(.inline)
         .creamBackground()
     }
