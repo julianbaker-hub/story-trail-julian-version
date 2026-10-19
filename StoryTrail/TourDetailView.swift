@@ -367,6 +367,13 @@ struct FAQView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 6)
+                if tour.id == "inner-harbour" {
+                    FAQRow(
+                        question: "Where does this tour start?",
+                        answer:
+                            "This tour starts at the Victoria Visitor Center, at the corner of Government Street and Wharf Street. When you arrive here, press the Start Tour button. If the audio does not start, walk closer to the Victoria Visitor Center."
+                    )
+                }
                 FAQRow(
                     question: "Do I need cellular data?",
                     answer:
