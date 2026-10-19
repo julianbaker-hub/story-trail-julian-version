@@ -81,11 +81,11 @@ struct TourDetailView: View {
                         .overlay(alignment: .top) { Divider().overlay(TrailColor.line) }
                         .overlay(alignment: .bottom) { Divider().overlay(TrailColor.line) }
 
-                        if tour.id == "inner-harbour" {
+                        if let imageName = tourStartImageName {
                             NavigationLink {
                                 TourMapView(tour: tour, startsPlayer: false)
                             } label: {
-                                InnerHarbourTourStartCard()
+                                TourStartLocationCard(imageName: imageName)
                             }
                             .buttonStyle(TrailPressStyle())
                         }
@@ -198,6 +198,17 @@ struct TourDetailView: View {
         showsFullRoute ? tour.stops : Array(tour.stops.prefix(3))
     }
 
+    private var tourStartImageName: String? {
+        switch tour.id {
+        case "inner-harbour":
+            return "InnerHarbourTourStart"
+        case "old-town":
+            return "OldTownTourStart"
+        default:
+            return nil
+        }
+    }
+
     private var highlights: [TourHighlight] {
         switch tour.id {
         case "inner-harbour":
@@ -257,10 +268,12 @@ struct TourDetailView: View {
     }
 }
 
-private struct InnerHarbourTourStartCard: View {
+private struct TourStartLocationCard: View {
+    let imageName: String
+
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            Image("InnerHarbourTourStart")
+            Image(imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
 
