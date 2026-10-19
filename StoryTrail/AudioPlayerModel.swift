@@ -6,6 +6,35 @@ import MediaPlayer
 import OSLog
 import UIKit
 
+struct QueuedTourStop {
+    let tour: Tour
+    let stop: TourStop
+}
+
+struct TourStopPlaybackQueue {
+    private(set) var items: [QueuedTourStop] = []
+
+    mutating func enqueue(tour: Tour, stop: TourStop) {
+        guard !items.contains(where: { $0.tour.id == tour.id && $0.stop.id == stop.id }) else { return }
+        items.append(QueuedTourStop(tour: tour, stop: stop))
+    }
+
+    mutating func popFirst() -> QueuedTourStop? {
+        guard !items.isEmpty else { return nil }
+        return items.removeFirst()
+    }
+
+    mutating func removeAll() {
+        items.removeAll()
+    }
+}
+
+enum ProximityPlaybackResult {
+    case playing
+    case queued
+    case arrived
+}
+
 @MainActor
 final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     @Published private(set) var currentTour: Tour?
@@ -24,6 +53,7 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     private var activeLoadID = UUID()
     private var wasPlayingBeforeInterruption = false
     private var remoteCommandTargets: [(MPRemoteCommand, Any)] = []
+    private var proximityQueue = TourStopPlaybackQueue()
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "StoryTrail", category: "Audio")
 
     override init() {
@@ -54,6 +84,29 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     }
 
     func load(tour: Tour, stop: TourStop, autoplay: Bool = false) {
+        proximityQueue.removeAll()
+        loadAudio(tour: tour, stop: stop, autoplay: autoplay)
+    }
+
+    func handleProximityArrival(tour: Tour, stop: TourStop, autoplay: Bool) -> ProximityPlaybackResult {
+        if currentTour?.id == tour.id, currentStop?.id == stop.id {
+            if autoplay, !isPlaying, progress == 0, !hasFinished {
+                play()
+                return .playing
+            }
+            return .arrived
+        }
+
+        if isLoading || (player != nil && !hasFinished && progress < duration) {
+            proximityQueue.enqueue(tour: tour, stop: stop)
+            return .queued
+        }
+
+        loadAudio(tour: tour, stop: stop, autoplay: autoplay)
+        return autoplay ? .playing : .arrived
+    }
+
+    private func loadAudio(tour: Tour, stop: TourStop, autoplay: Bool) {
         loadingTask?.cancel()
         let loadID = UUID()
         activeLoadID = loadID
@@ -199,6 +252,9 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
         progress = duration
         timer?.invalidate()
         updateNowPlayingInfo()
+        if let next = proximityQueue.popFirst() {
+            loadAudio(tour: next.tour, stop: next.stop, autoplay: true)
+        }
     }
 
     private func configureAudioSession() {

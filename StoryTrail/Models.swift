@@ -104,6 +104,22 @@ struct TourAudioTrigger: Identifiable, Hashable, Codable {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 
+    init(
+        id: String,
+        label: String,
+        latitude: Double,
+        longitude: Double,
+        triggerRadiusMeters: CLLocationDistance = 20,
+        audioFile: String? = nil
+    ) {
+        self.id = id
+        self.label = label
+        self.latitude = latitude
+        self.longitude = longitude
+        self.triggerRadiusMeters = min(max(triggerRadiusMeters, 5), 100)
+        self.audioFile = audioFile
+    }
+
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(String.self, forKey: .id)
@@ -180,6 +196,39 @@ struct Tour: Identifiable, Hashable, Codable {
         mapPin?.coordinate ?? stops.first?.coordinate
     }
 
+    var playbackStops: [TourStop] {
+        guard let audioTriggers, !audioTriggers.isEmpty else { return stops }
+
+        return audioTriggers.compactMap { trigger in
+            if let stop = stops.first(where: { $0.coordinate.distance(to: trigger.coordinate) < 2 }) {
+                return TourStop(
+                    id: stop.id,
+                    number: stop.number,
+                    title: stop.title,
+                    summary: stop.summary,
+                    transcript: stop.transcript,
+                    coordinate: trigger.coordinate,
+                    triggerRadiusMeters: trigger.triggerRadiusMeters,
+                    audioURL: stop.audioURL,
+                    audioFile: trigger.audioFile ?? stop.audioFile
+                )
+            }
+
+            guard let audioFile = trigger.audioFile else { return nil }
+            let numberText = trigger.label.prefix { $0.isNumber }
+            return TourStop(
+                id: trigger.id,
+                number: Int(numberText) ?? 0,
+                title: trigger.label,
+                summary: "",
+                transcript: "",
+                coordinate: trigger.coordinate,
+                triggerRadiusMeters: trigger.triggerRadiusMeters,
+                audioFile: audioFile
+            )
+        }
+    }
+
     var routeArrows: [TourRouteArrow] {
         let coordinates = routeCoordinates
         guard coordinates.count > 1, stops.count > 1 else { return [] }
@@ -212,6 +261,11 @@ struct Tour: Identifiable, Hashable, Codable {
 }
 
 extension CLLocationCoordinate2D {
+    fileprivate func distance(to other: CLLocationCoordinate2D) -> CLLocationDistance {
+        CLLocation(latitude: latitude, longitude: longitude)
+            .distance(from: CLLocation(latitude: other.latitude, longitude: other.longitude))
+    }
+
     fileprivate func isNear(_ other: CLLocationCoordinate2D) -> Bool {
         abs(latitude - other.latitude) < 0.000_001 && abs(longitude - other.longitude) < 0.000_001
     }

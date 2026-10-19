@@ -181,6 +181,54 @@ final class NavigationAndProximityTests: XCTestCase {
         XCTAssertEqual(event?.stop.id, second.id)
     }
 
+    func testOverlappingStopsEachProduceAnArrival() {
+        var engine = ProximityEngine()
+        let first = makeStop(number: 1, coordinate: origin)
+        let secondCoordinate = CLLocationCoordinate2D(
+            latitude: origin.latitude + 10 / 111_111, longitude: origin.longitude)
+        let second = makeStop(number: 2, coordinate: secondCoordinate)
+        let currentLocation = location(northMetres: 9)
+
+        let firstEvent = engine.update(location: currentLocation, stops: [first, second])
+        let secondEvent = engine.update(location: currentLocation, stops: [first, second])
+
+        XCTAssertEqual(Set([firstEvent?.stop.id, secondEvent?.stop.id].compactMap { $0 }), [first.id, second.id])
+    }
+
+    func testPlaybackQueueKeepsEveryUniqueArrivalInOrder() {
+        var queue = TourStopPlaybackQueue()
+        let first = makeStop(number: 5, coordinate: origin)
+        let second = makeStop(number: 6, coordinate: origin)
+        let tour = makeTour(stops: [first, second])
+
+        queue.enqueue(tour: tour, stop: first)
+        queue.enqueue(tour: tour, stop: second)
+        queue.enqueue(tour: tour, stop: second)
+
+        XCTAssertEqual(queue.items.map(\.stop.id), [first.id, second.id])
+        XCTAssertEqual(queue.popFirst()?.stop.id, first.id)
+        XCTAssertEqual(queue.popFirst()?.stop.id, second.id)
+        XCTAssertNil(queue.popFirst())
+    }
+
+    func testPlaybackStopsIncludeConfiguredHiddenAudioTriggers() {
+        let visible = makeStop(number: 7, coordinate: origin)
+        let hiddenCoordinate = CLLocationCoordinate2D(latitude: origin.latitude + 0.001, longitude: origin.longitude)
+        let hiddenTrigger = TourAudioTrigger(
+            id: "hidden-7-5",
+            label: "7.5 navigation prompt",
+            latitude: hiddenCoordinate.latitude,
+            longitude: hiddenCoordinate.longitude,
+            triggerRadiusMeters: 20,
+            audioFile: "hidden-prompt.mp3"
+        )
+        let tour = makeTour(stops: [visible], audioTriggers: [hiddenTrigger])
+
+        XCTAssertEqual(tour.playbackStops.count, 1)
+        XCTAssertEqual(tour.playbackStops.first?.id, hiddenTrigger.id)
+        XCTAssertEqual(tour.playbackStops.first?.audioFile, hiddenTrigger.audioFile)
+    }
+
     func testBearingAndCardinalDirections() {
         let north = CLLocationCoordinate2D(latitude: origin.latitude + 0.01, longitude: origin.longitude)
         let east = CLLocationCoordinate2D(latitude: origin.latitude, longitude: origin.longitude + 0.01)
@@ -199,6 +247,21 @@ final class NavigationAndProximityTests: XCTestCase {
             summary: "Summary",
             transcript: "Transcript",
             coordinate: coordinate,
+        )
+    }
+
+    private func makeTour(stops: [TourStop], audioTriggers: [TourAudioTrigger]? = nil) -> Tour {
+        Tour(
+            id: "test-tour",
+            title: "Test Tour",
+            subtitle: "Subtitle",
+            about: "About",
+            minutes: 10,
+            distance: 1,
+            stops: stops,
+            audioTriggers: audioTriggers,
+            imageName: "Test",
+            palette: .harbour
         )
     }
 

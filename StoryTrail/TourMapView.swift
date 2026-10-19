@@ -153,7 +153,7 @@ struct TourMapView: View {
         .sensoryFeedback(.impact(weight: .light), trigger: stopSelectionHapticTrigger)
         .onAppear {
             WidgetSnapshotPublisher.activate(tour, in: library.tours, savedIDs: library.savedTourIDs)
-            location.begin(for: tour.stops)
+            location.begin(for: tour.playbackStops)
             if startsPlayer || player.currentTour?.id != tour.id {
                 player.load(tour: tour, stop: resumeStop, autoplay: false)
             }
@@ -165,27 +165,28 @@ struct TourMapView: View {
         }
         .onChange(of: location.proximityEvent) { _, event in
             guard let event else { return }
-            let isCurrentStop = player.currentTour?.id == tour.id && player.currentStop?.id == event.stop.id
             let shouldAutoplay = startsPlayer || player.isPlaying
-            selectedStop = event.stop
-            visitedStopIDs.insert(event.stop.id)
-            arrivedStopIDs.insert(event.stop.id)
-            TourProgress.markVisited(stopID: event.stop.id, in: tour.id)
-            WidgetSnapshotPublisher.publish(tours: library.tours, savedIDs: library.savedTourIDs)
-            if !isCurrentStop {
-                player.load(tour: tour, stop: event.stop, autoplay: shouldAutoplay)
+            let playbackResult = player.handleProximityArrival(
+                tour: tour, stop: event.stop, autoplay: shouldAutoplay)
+            if tour.stops.contains(where: { $0.id == event.stop.id }) {
+                visitedStopIDs.insert(event.stop.id)
+                arrivedStopIDs.insert(event.stop.id)
+                TourProgress.markVisited(stopID: event.stop.id, in: tour.id)
+                WidgetSnapshotPublisher.publish(tours: library.tours, savedIDs: library.savedTourIDs)
             }
             withAnimation(reduceMotion ? nil : .default) {
-                arrivalMessage =
-                    shouldAutoplay
-                    ? "Playing Stop \(event.stop.number)"
-                    : "Arrived at Stop \(event.stop.number)"
+                switch playbackResult {
+                case .playing:
+                    arrivalMessage = "Playing Stop \(event.stop.number)"
+                case .queued:
+                    arrivalMessage = "Stop \(event.stop.number) queued"
+                case .arrived:
+                    arrivalMessage = "Arrived at Stop \(event.stop.number)"
+                }
             }
             UIAccessibility.post(
                 notification: .announcement,
-                argument: shouldAutoplay
-                    ? "Arrived at stop \(event.stop.number), \(event.stop.title). Audio playing."
-                    : "Arrived at stop \(event.stop.number), \(event.stop.title).",
+                argument: arrivalAnnouncement(for: event.stop, result: playbackResult),
             )
             Task {
                 try? await Task.sleep(for: .seconds(3))
@@ -263,6 +264,17 @@ struct TourMapView: View {
             position = .region(MKCoordinateRegion(center: coordinate, latitudinalMeters: 800, longitudinalMeters: 800))
         } else {
             position = .region(Self.region(for: tour.routeCoordinates))
+        }
+    }
+
+    private func arrivalAnnouncement(for stop: TourStop, result: ProximityPlaybackResult) -> String {
+        switch result {
+        case .playing:
+            return "Arrived at stop \(stop.number), \(stop.title). Audio playing."
+        case .queued:
+            return "Arrived at stop \(stop.number), \(stop.title). Audio will play after the current stop finishes."
+        case .arrived:
+            return "Arrived at stop \(stop.number), \(stop.title)."
         }
     }
 

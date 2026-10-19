@@ -80,11 +80,9 @@ struct ProximityEngine {
             .sorted { $0.1 < $1.1 }
 
         guard let nearest = entered.first else { return nil }
-        // Treat overlapping trigger circles as one arrival so GPS jitter cannot
-        // rapidly start several tracks at the same physical location.
-        for (stop, _) in entered {
-            insideStopIDs.insert(stop.id)
-        }
+        // Emit one arrival per location update. Other overlapping stops remain
+        // eligible for the next update so every audio cue can enter the playback queue.
+        insideStopIDs.insert(nearest.0.id)
         sequence += 1
         return ProximityEvent(sequence: sequence, stop: nearest.0, distance: nearest.1)
     }
