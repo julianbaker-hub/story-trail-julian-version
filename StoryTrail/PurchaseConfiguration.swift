@@ -1,6 +1,7 @@
 import Foundation
 
 enum PurchaseConfiguration {
+    static let allToursUnlockedForTesting = true
     static let demoTourID = "inner-harbour"
     static let allToursProductID = "com.storytrailguide.app.alltours"
 
@@ -20,21 +21,27 @@ enum PurchaseConfiguration {
 }
 
 struct TourAccessPolicy {
+    let allToursUnlockedForTesting: Bool
     let demoTourID: String
     let allToursProductID: String
     let tourProductIDs: [String: String]
 
     init(
+        allToursUnlockedForTesting: Bool = PurchaseConfiguration.allToursUnlockedForTesting,
         demoTourID: String = PurchaseConfiguration.demoTourID,
         allToursProductID: String = PurchaseConfiguration.allToursProductID,
         tourProductIDs: [String: String] = PurchaseConfiguration.tourProductIDs,
     ) {
+        self.allToursUnlockedForTesting = allToursUnlockedForTesting
         self.demoTourID = demoTourID
         self.allToursProductID = allToursProductID
         self.tourProductIDs = tourProductIDs
     }
 
     func hasAccess(to tourID: String, purchasedProductIDs: Set<String>) -> Bool {
+        if allToursUnlockedForTesting {
+            return true
+        }
         if tourID == demoTourID || purchasedProductIDs.contains(allToursProductID) {
             return true
         }

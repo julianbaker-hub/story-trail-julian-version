@@ -164,11 +164,9 @@ struct TourDetailView: View {
 
     private var startButton: some View {
         HStack(spacing: 8) {
-            if !purchaseStore.hasAccess(to: tour) {
-                Image(systemName: "lock.fill")
-            }
+            Image(systemName: purchaseStore.hasAccess(to: tour) ? "play.fill" : "lock.fill")
             Text(purchaseStore.hasAccess(to: tour) ? startButtonTitle : unlockButtonTitle)
-                .font(.trailBody(18, weight: .bold))
+                .font(.system(.title2, design: .rounded, weight: .bold))
         }
         .foregroundStyle(TrailColor.ink)
         .frame(maxWidth: .infinity)

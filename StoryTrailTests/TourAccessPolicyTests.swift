@@ -4,10 +4,22 @@ import XCTest
 
 final class TourAccessPolicyTests: XCTestCase {
     private let policy = TourAccessPolicy(
+        allToursUnlockedForTesting: false,
         demoTourID: "demo",
         allToursProductID: "all",
         tourProductIDs: ["paid-one": "one", "paid-two": "two"],
     )
+
+    func testTemporaryTestingAccessUnlocksEveryTour() {
+        let testingPolicy = TourAccessPolicy(
+            allToursUnlockedForTesting: true,
+            demoTourID: "demo",
+            allToursProductID: "all",
+            tourProductIDs: [:]
+        )
+
+        XCTAssertTrue(testingPolicy.hasAccess(to: "future-tour", purchasedProductIDs: []))
+    }
 
     func testDemoTourIsAlwaysAvailable() {
         XCTAssertTrue(policy.hasAccess(to: "demo", purchasedProductIDs: []))
