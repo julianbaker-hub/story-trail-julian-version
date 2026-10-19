@@ -259,7 +259,7 @@ struct TourDetailView: View {
 
 private struct InnerHarbourTourStartCard: View {
     var body: some View {
-        ZStack(alignment: .topLeading) {
+        ZStack(alignment: .topTrailing) {
             Image("InnerHarbourTourStart")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
