@@ -19,9 +19,17 @@ struct TourDetailView: View {
                     VStack(alignment: .leading, spacing: 20) {
                         VStack(alignment: .leading, spacing: 8) {
                             TrailEyebrow(text: "Walking tour")
-                            Text(tour.title)
-                                .font(.trailTitle(38))
-                                .foregroundStyle(TrailColor.ink)
+                            Group {
+                                if tour.id == "old-town" {
+                                    Text("Victoria Old Town")
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.75)
+                                } else {
+                                    Text(tour.title)
+                                }
+                            }
+                            .font(.trailTitle(38))
+                            .foregroundStyle(TrailColor.ink)
                             TourMetadata(tour: tour, fontSize: 17)
                                 .frame(maxWidth: .infinity)
                                 .padding(.horizontal, 18)
