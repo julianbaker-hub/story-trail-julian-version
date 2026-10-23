@@ -236,6 +236,10 @@ struct Tour: Identifiable, Hashable, Codable {
         }
     }
 
+    func playbackStop(for stop: TourStop) -> TourStop {
+        playbackStops.first(where: { $0.id == stop.id }) ?? stop
+    }
+
     var routeArrows: [TourRouteArrow] {
         let coordinates = routeCoordinates
         guard coordinates.count > 1, stops.count > 1 else { return [] }

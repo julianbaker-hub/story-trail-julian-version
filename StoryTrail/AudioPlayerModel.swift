@@ -54,6 +54,22 @@ enum ProximityPlaybackResult {
     }
 }
 
+enum TourAudioSource: Equatable {
+    case bundled(String)
+    case remote(URL)
+    case unavailable
+
+    static func source(for stop: TourStop) -> TourAudioSource {
+        if let audioFile = stop.audioFile {
+            return .bundled(audioFile)
+        }
+        if let audioURL = stop.audioURL {
+            return .remote(audioURL)
+        }
+        return .unavailable
+    }
+}
+
 @MainActor
 final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     @Published private(set) var currentTour: Tour?
@@ -104,7 +120,7 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
 
     func load(tour: Tour, stop: TourStop, autoplay: Bool = false) {
         proximityQueue.removeAll()
-        loadAudio(tour: tour, stop: stop, autoplay: autoplay)
+        loadAudio(tour: tour, stop: tour.playbackStop(for: stop), autoplay: autoplay)
     }
 
     func resetSession() {
@@ -167,16 +183,14 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
         duration = 0
         updateNowPlayingInfo()
 
-        if let file = stop.audioFile {
+        switch TourAudioSource.source(for: stop) {
+        case .bundled(let file):
             guard let url = bundledURL(for: file) else {
                 failLoading("The audio file \(file) could not be found.")
                 return
             }
             preparePlayer(url: url, stop: stop, autoplay: autoplay)
-            return
-        }
-
-        if let remoteURL = stop.audioURL {
+        case .remote(let remoteURL):
             if let cachedURL = cachedAudioURL(for: remoteURL), FileManager.default.fileExists(atPath: cachedURL.path) {
                 logger.notice("Using cached audio for \(stop.id, privacy: .public)")
                 preparePlayer(url: cachedURL, stop: stop, autoplay: autoplay)
@@ -210,14 +224,9 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
                         "This story could not be downloaded. Check your connection and try again.", error: error)
                 }
             }
-            return
+        case .unavailable:
+            failLoading("Audio is unavailable for this tour stop.")
         }
-
-        guard let previewURL = Bundle.main.url(forResource: "inner-harbor", withExtension: "mp3") else {
-            failLoading("The tour audio could not be found.")
-            return
-        }
-        preparePlayer(url: previewURL, stop: stop, autoplay: autoplay)
     }
 
     func toggle() { isPlaying ? pause() : play() }
@@ -272,7 +281,7 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     func playNext() -> Bool {
         guard let tour = currentTour,
             let stop = currentStop,
-            let index = tour.stops.firstIndex(of: stop),
+            let index = tour.stops.firstIndex(where: { $0.id == stop.id }),
             index < tour.stops.count - 1
         else { return false }
         load(tour: tour, stop: tour.stops[index + 1], autoplay: true)
@@ -282,7 +291,7 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     func playPrevious() -> Bool {
         guard let tour = currentTour,
             let stop = currentStop,
-            let index = tour.stops.firstIndex(of: stop)
+            let index = tour.stops.firstIndex(where: { $0.id == stop.id })
         else { return false }
         if progress > 4 {
             seek(to: 0)

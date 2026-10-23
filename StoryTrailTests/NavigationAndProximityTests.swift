@@ -214,6 +214,49 @@ final class NavigationAndProximityTests: XCTestCase {
         }
     }
 
+    func testOldTownVisibleStopsResolveToTheirBundledAudioFiles() async throws {
+        let tours = try await BundledTourRepository().fetchTours()
+        let tour = try XCTUnwrap(tours.first { $0.id == "old-town" })
+        let resolvedStops = tour.stops.map { tour.playbackStop(for: $0) }
+
+        XCTAssertEqual(
+            resolvedStops.compactMap(\.audioFile),
+            [
+                "old-town-01-introduction-old-victoria-hotel.mp3",
+                "old-town-02-rogers-chocolates.mp3",
+                "old-town-03-customs-house.mp3",
+                "old-town-04-fort-victoria.mp3",
+                "old-town-05-munros-murchies-morris.mp3",
+                "old-town-06-bank-of-montreal.mp3",
+                "old-town-07-bastion-square-black-pioneers.mp3",
+                "old-town-08-waddington-alley.mp3",
+                "old-town-09-lower-johnson-street.mp3",
+                "old-town-10-market-square.mp3",
+                "old-town-11-fan-tan-alley.mp3",
+            ]
+        )
+        XCTAssertTrue(resolvedStops.allSatisfy { TourAudioSource.source(for: $0) != .unavailable })
+        XCTAssertFalse(resolvedStops.compactMap(\.audioFile).contains("inner-harbor.mp3"))
+    }
+
+    func testStopWithoutConfiguredAudioIsUnavailable() {
+        let stop = makeStop(number: 1, coordinate: origin)
+
+        XCTAssertEqual(TourAudioSource.source(for: stop), .unavailable)
+    }
+
+    @MainActor
+    func testPlayerReportsExplicitErrorForStopWithoutAudio() {
+        let stop = makeStop(number: 1, coordinate: origin)
+        let player = AudioPlayerModel()
+
+        player.load(tour: makeTour(stops: [stop]), stop: stop)
+
+        XCTAssertEqual(player.currentStop?.id, stop.id)
+        XCTAssertEqual(player.lastError, "Audio is unavailable for this tour stop.")
+        XCTAssertEqual(player.duration, 0)
+    }
+
     func testNearestStopWinsWhenTriggerAreasOverlap() {
         var engine = ProximityEngine()
         let first = makeStop(number: 1, coordinate: origin)

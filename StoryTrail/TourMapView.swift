@@ -253,12 +253,14 @@ struct TourMapView: View {
     }
 
     private func previous() {
-        guard let index = tour.stops.firstIndex(of: activeStop), index > 0 else { return }
+        guard let index = tour.stops.firstIndex(where: { $0.id == activeStop.id }), index > 0 else { return }
         choose(tour.stops[index - 1])
     }
 
     private func next() {
-        guard let index = tour.stops.firstIndex(of: activeStop), index < tour.stops.count - 1 else { return }
+        guard let index = tour.stops.firstIndex(where: { $0.id == activeStop.id }), index < tour.stops.count - 1 else {
+            return
+        }
         choose(tour.stops[index + 1])
     }
 
