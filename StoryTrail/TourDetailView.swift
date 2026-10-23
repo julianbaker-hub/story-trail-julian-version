@@ -318,7 +318,7 @@ struct TourDetailView: View {
             ]
         case "old-town":
             return [
-                TourHighlight(icon: "mappin", title: "10 Must-See Stops"),
+                TourHighlight(icon: "mappin", title: "12 Must-See Stops"),
                 TourHighlight(icon: "diamond.fill", title: "Hidden Gems"),
                 TourHighlight(icon: "music.note", title: "Curated Music"),
             ]

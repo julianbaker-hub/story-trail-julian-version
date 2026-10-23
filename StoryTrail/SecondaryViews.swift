@@ -204,7 +204,7 @@ struct AllToursMapView: View {
         case "inner-harbour":
             "\(tour.minutes) min · 8 stops"
         case "old-town":
-            "60 min · 10 stops"
+            "60 min · \(tour.stops.count) stops"
         case "james-bay":
             "90 min · 10 stops"
         case "beacon-hill":
