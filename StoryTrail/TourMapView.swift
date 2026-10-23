@@ -4,9 +4,11 @@ import SwiftUI
 struct TourMapView: View {
     let tour: Tour
     let startsPlayer: Bool
+    let startingStopID: String?
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     @EnvironmentObject private var player: AudioPlayerModel
     @EnvironmentObject private var library: TourLibrary
     @EnvironmentObject private var connectivity: ConnectivityModel
@@ -22,9 +24,10 @@ struct TourMapView: View {
     @State private var opensDirectionsAfterPlayer = false
     @State private var stopSelectionHapticTrigger = 0
 
-    init(tour: Tour, startsPlayer: Bool) {
+    init(tour: Tour, startsPlayer: Bool, startingStopID: String? = nil) {
         self.tour = tour
         self.startsPlayer = startsPlayer
+        self.startingStopID = startingStopID
         let points = tour.routeCoordinates
         _position = State(initialValue: .region(Self.region(for: points)))
         _visitedStopIDs = State(initialValue: TourProgress.visitedStopIDs(for: tour.id))
@@ -74,10 +77,17 @@ struct TourMapView: View {
             .scrollBounceBehavior(.basedOnSize)
             .padding(.top, 20)
             .background(TrailColor.paper)
-            .presentationDetents(typeSize.isAccessibilitySize ? [.large] : [.medium, .large])
+            .presentationDetents(playerPresentationDetents)
             .presentationDragIndicator(.visible)
             .presentationCornerRadius(TrailShape.card)
         }
+    }
+
+    private var playerPresentationDetents: Set<PresentationDetent> {
+        if typeSize.isAccessibilitySize || verticalSizeClass == .compact {
+            return [.large]
+        }
+        return [.fraction(0.75)]
     }
 
     private var mapContent: some View {
@@ -154,7 +164,9 @@ struct TourMapView: View {
         .onAppear {
             WidgetSnapshotPublisher.activate(tour, in: library.tours, savedIDs: library.savedTourIDs)
             location.begin(for: tour.playbackStops)
-            if startsPlayer || player.currentTour?.id != tour.id {
+            if startsPlayer {
+                player.load(tour: tour, stop: startingStop, autoplay: false)
+            } else if player.currentTour?.id != tour.id {
                 player.load(tour: tour, stop: resumeStop, autoplay: false)
             }
         }
@@ -168,6 +180,7 @@ struct TourMapView: View {
             let shouldAutoplay = startsPlayer || player.isPlaying
             let playbackResult = player.handleProximityArrival(
                 tour: tour, stop: event.stop, autoplay: shouldAutoplay)
+            guard playbackResult.acceptsArrival else { return }
             if tour.stops.contains(where: { $0.id == event.stop.id }) {
                 visitedStopIDs.insert(event.stop.id)
                 arrivedStopIDs.insert(event.stop.id)
@@ -182,6 +195,8 @@ struct TourMapView: View {
                     arrivalMessage = "Stop \(event.stop.number) queued"
                 case .arrived:
                     arrivalMessage = "Arrived at Stop \(event.stop.number)"
+                case .ignoredOutOfSequence:
+                    arrivalMessage = nil
                 }
             }
             UIAccessibility.post(
@@ -230,6 +245,13 @@ struct TourMapView: View {
         return lastStop
     }
 
+    private var startingStop: TourStop {
+        if let startingStopID, let stop = tour.stops.first(where: { $0.id == startingStopID }) {
+            return stop
+        }
+        return resumeStop
+    }
+
     private func previous() {
         guard let index = tour.stops.firstIndex(of: activeStop), index > 0 else { return }
         choose(tour.stops[index - 1])
@@ -275,6 +297,8 @@ struct TourMapView: View {
             return "Arrived at stop \(stop.number), \(stop.title). Audio will play after the current stop finishes."
         case .arrived:
             return "Arrived at stop \(stop.number), \(stop.title)."
+        case .ignoredOutOfSequence:
+            return ""
         }
     }
 
@@ -383,13 +407,10 @@ struct MapPlayerDock: View {
             HStack(spacing: 8) {
                 if let nextStop {
                     Button(action: onDirections) {
-                        Label(
-                            nextStop.id == stop.id ? "Walk to stop \(nextStop.number)" : "Next stop \(nextStop.number)",
-                            systemImage: "location.north"
-                        )
-                        .font(.trailBody(14, weight: .bold))
-                        .foregroundStyle(TrailColor.green)
-                        .frame(minHeight: 44)
+                        Label("Compass Navigation", systemImage: "location.north")
+                            .font(.trailBody(14, weight: .bold))
+                            .foregroundStyle(TrailColor.green)
+                            .frame(minHeight: 44)
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel("Directions to stop \(nextStop.number), \(nextStop.title)")
@@ -492,9 +513,20 @@ struct PlayerSheet: View {
     @EnvironmentObject private var player: AudioPlayerModel
     @ScaledMetric(relativeTo: .title2) private var numberDiameter = 46.0
 
+    private var displayTitle: String {
+        switch tour.id {
+        case "inner-harbour":
+            "Victoria Inner Harbour"
+        case "old-town":
+            "Victoria Old Town"
+        default:
+            tour.title
+        }
+    }
+
     var body: some View {
         VStack(spacing: 10) {
-            Text(tour.title)
+            Text(displayTitle)
                 .font(.trailBody(15, weight: .semibold))
                 .foregroundStyle(TrailColor.muted)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -507,29 +539,29 @@ struct PlayerSheet: View {
                 VStack(alignment: .leading, spacing: 3) {
                     TrailEyebrow(text: "Stop \(stop.number) of \(tour.stops.count)")
                     Text(stop.title).font(.trailTitle(22)).foregroundStyle(TrailColor.ink)
-                    Text(stop.summary)
-                        .font(.trailBody(14))
-                        .foregroundStyle(TrailColor.muted)
-                        .fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer(minLength: 0)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if let nextStop {
+            if let imageName = stop.imageName {
+                TourStopArtwork(
+                    imageName: imageName,
+                    accessibilityLabel: "Photo of \(stop.title)"
+                )
+                .frame(maxHeight: 180)
+                .padding(.top, 4)
+            }
+
+            if nextStop != nil {
                 Button(action: onDirections) {
-                    Label(
-                        nextStop.id == stop.id
-                            ? "Get to stop \(nextStop.number) · \(nextStop.title)"
-                            : "Next stop · \(nextStop.title)",
-                        systemImage: "location.north.fill"
-                    )
-                    .font(.trailBody(14, weight: .bold))
-                    .foregroundStyle(TrailColor.ink)
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 11)
-                    .background(TrailColor.action, in: RoundedRectangle(cornerRadius: TrailShape.button))
+                    Label("Compass Navigation", systemImage: "location.north.fill")
+                        .font(.trailBody(14, weight: .bold))
+                        .foregroundStyle(TrailColor.ink)
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 11)
+                        .background(TrailColor.action, in: RoundedRectangle(cornerRadius: TrailShape.button))
                 }
                 .buttonStyle(.plain)
             }

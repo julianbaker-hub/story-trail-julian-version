@@ -4,7 +4,6 @@ import CryptoKit
 import Foundation
 import MediaPlayer
 import OSLog
-import UIKit
 
 struct QueuedTourStop {
     let tour: Tour
@@ -29,10 +28,30 @@ struct TourStopPlaybackQueue {
     }
 }
 
+struct TourPlaybackSequence {
+    static func nextExpectedStop(in tour: Tour, after currentStop: TourStop) -> TourStop? {
+        let stops = tour.playbackStops
+        guard let currentIndex = stops.firstIndex(where: { $0.id == currentStop.id }) else { return nil }
+        let nextIndex = stops.index(after: currentIndex)
+        guard nextIndex < stops.endIndex else { return nil }
+        return stops[nextIndex]
+    }
+
+    static func acceptsAutomaticArrival(_ stop: TourStop, in tour: Tour, after currentStop: TourStop) -> Bool {
+        nextExpectedStop(in: tour, after: currentStop)?.id == stop.id
+    }
+}
+
 enum ProximityPlaybackResult {
     case playing
     case queued
     case arrived
+    case ignoredOutOfSequence
+
+    var acceptsArrival: Bool {
+        if case .ignoredOutOfSequence = self { return false }
+        return true
+    }
 }
 
 @MainActor
@@ -88,6 +107,25 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
         loadAudio(tour: tour, stop: stop, autoplay: autoplay)
     }
 
+    func resetSession() {
+        loadingTask?.cancel()
+        loadingTask = nil
+        activeLoadID = UUID()
+        timer?.invalidate()
+        player?.stop()
+        player = nil
+        proximityQueue.removeAll()
+        currentTour = nil
+        currentStop = nil
+        isPlaying = false
+        progress = 0
+        duration = 0
+        hasFinished = false
+        isLoading = false
+        lastError = nil
+        updateNowPlayingInfo()
+    }
+
     func handleProximityArrival(tour: Tour, stop: TourStop, autoplay: Bool) -> ProximityPlaybackResult {
         if currentTour?.id == tour.id, currentStop?.id == stop.id {
             if autoplay, !isPlaying, progress == 0, !hasFinished {
@@ -96,6 +134,12 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
             }
             return .arrived
         }
+
+        guard
+            currentTour?.id == tour.id,
+            let currentStop,
+            TourPlaybackSequence.acceptsAutomaticArrival(stop, in: tour, after: currentStop)
+        else { return .ignoredOutOfSequence }
 
         if isLoading || (player != nil && !hasFinished && progress < duration) {
             proximityQueue.enqueue(tour: tour, stop: stop)
@@ -179,21 +223,25 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     func toggle() { isPlaying ? pause() : play() }
 
     func play() {
-        guard let player else { return }
-        do {
-            try AVAudioSession.sharedInstance().setActive(true)
-            guard player.play() else {
-                lastError = "Audio playback could not start."
-                return
+        guard let preparedPlayer = player else { return }
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await Self.activateAudioSession()
+                guard self.player === preparedPlayer else { return }
+                guard preparedPlayer.play() else {
+                    lastError = "Audio playback could not start."
+                    return
+                }
+                hasFinished = false
+                isPlaying = true
+                startTimer()
+                updateNowPlayingInfo()
+                logger.notice("Playback started for \(self.currentStop?.id ?? "unknown", privacy: .public)")
+            } catch {
+                lastError = error.localizedDescription
+                logger.error("Playback failed: \(error.localizedDescription, privacy: .public)")
             }
-            hasFinished = false
-            isPlaying = true
-            startTimer()
-            updateNowPlayingInfo()
-            logger.notice("Playback started for \(self.currentStop?.id ?? "unknown", privacy: .public)")
-        } catch {
-            lastError = error.localizedDescription
-            logger.error("Playback failed: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -265,6 +313,12 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
         }
     }
 
+    private nonisolated static func activateAudioSession() async throws {
+        try await Task.detached(priority: .userInitiated) {
+            try AVAudioSession.sharedInstance().setActive(true)
+        }.value
+    }
+
     private func bundledURL(for file: String) -> URL? {
         let filename = file as NSString
         let fileExtension = filename.pathExtension
@@ -316,7 +370,6 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
         duration = preparedPlayer.duration
         progress = 0
         isLoading = false
-        updateRemoteCommandAvailability()
         updateNowPlayingInfo()
         logger.notice(
             "Loaded audio for \(stop.id, privacy: .public), duration \(self.duration, format: .fixed(precision: 1)) seconds"
@@ -356,16 +409,8 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
             Task { @MainActor in self?.skip(seconds: -15) }
             return .success
         }
-        register(commands.nextTrackCommand) { [weak self] _ in
-            guard let self else { return .commandFailed }
-            Task { @MainActor in _ = self.playNext() }
-            return .success
-        }
-        register(commands.previousTrackCommand) { [weak self] _ in
-            guard let self else { return .commandFailed }
-            Task { @MainActor in _ = self.playPrevious() }
-            return .success
-        }
+        commands.nextTrackCommand.isEnabled = false
+        commands.previousTrackCommand.isEnabled = false
         register(commands.changePlaybackPositionCommand) { [weak self] event in
             guard let positionEvent = event as? MPChangePlaybackPositionCommandEvent else { return .commandFailed }
             Task { @MainActor in
@@ -383,38 +428,24 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
         remoteCommandTargets.append((command, command.addTarget(handler: handler)))
     }
 
-    private func updateRemoteCommandAvailability() {
-        guard let tour = currentTour,
-            let stop = currentStop,
-            let index = tour.stops.firstIndex(of: stop)
-        else { return }
-        let commands = MPRemoteCommandCenter.shared()
-        commands.previousTrackCommand.isEnabled = index > 0 || progress > 4
-        commands.nextTrackCommand.isEnabled = index < tour.stops.count - 1
-    }
-
     private func updateNowPlayingInfo() {
         guard let tour = currentTour, let stop = currentStop else {
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
             return
         }
 
-        var info: [String: Any] = [
+        let info: [String: Any] = [
             MPMediaItemPropertyTitle: stop.title,
-            MPMediaItemPropertyAlbumTitle: tour.title,
-            MPMediaItemPropertyArtist: "StoryTrail",
+            MPMediaItemPropertyAlbumTitle: Self.displayTitle(for: tour),
+            MPMediaItemPropertyArtist: "Stop \(stop.number) of \(tour.stops.count)",
             MPMediaItemPropertyPlaybackDuration: duration,
             MPNowPlayingInfoPropertyElapsedPlaybackTime: progress,
             MPNowPlayingInfoPropertyPlaybackRate: isPlaying ? 1.0 : 0.0,
             MPNowPlayingInfoPropertyMediaType: MPNowPlayingInfoMediaType.audio.rawValue,
             MPNowPlayingInfoPropertyExternalContentIdentifier: stop.id,
         ]
-        if let artwork = Self.makeArtwork() {
-            info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: artwork.size) { _ in artwork }
-        }
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
         MPNowPlayingInfoCenter.default().playbackState = isPlaying ? .playing : .paused
-        updateRemoteCommandAvailability()
     }
 
     private func startTimer() {
@@ -461,7 +492,14 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
         if isPlaying { pause() }
     }
 
-    private static func makeArtwork() -> UIImage? {
-        UIImage(named: "BrandIcon")
+    private static func displayTitle(for tour: Tour) -> String {
+        switch tour.id {
+        case "inner-harbour":
+            "Victoria Inner Harbour"
+        case "old-town":
+            "Victoria Old Town"
+        default:
+            tour.title
+        }
     }
 }

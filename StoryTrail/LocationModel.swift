@@ -39,6 +39,45 @@ struct ProximityEvent: Equatable {
     let distance: CLLocationDistance
 }
 
+enum TourStartLocationState: Equatable {
+    case requestingPermission
+    case denied
+    case locating
+    case inaccurate
+    case outside(distance: CLLocationDistance)
+    case arrived
+}
+
+struct TourStartLocationGate {
+    static let radius: CLLocationDistance = 25
+    static let maximumAccuracy: CLLocationAccuracy = 65
+
+    static func state(
+        authorization: CLAuthorizationStatus,
+        location: CLLocation?,
+        stop: TourStop
+    ) -> TourStartLocationState {
+        switch authorization {
+        case .denied, .restricted:
+            return .denied
+        case .notDetermined:
+            return .requestingPermission
+        case .authorizedAlways, .authorizedWhenInUse:
+            break
+        @unknown default:
+            return .requestingPermission
+        }
+
+        guard let location else { return .locating }
+        guard location.horizontalAccuracy >= 0, location.horizontalAccuracy <= maximumAccuracy else {
+            return .inaccurate
+        }
+        let stopLocation = CLLocation(latitude: stop.coordinate.latitude, longitude: stop.coordinate.longitude)
+        let distance = location.distance(from: stopLocation)
+        return distance <= radius ? .arrived : .outside(distance: distance)
+    }
+}
+
 struct ProximityEngine {
     let enterRadius: CLLocationDistance
     let exitRadius: CLLocationDistance

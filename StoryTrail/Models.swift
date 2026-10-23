@@ -8,6 +8,7 @@ struct TourStop: Identifiable, Hashable, Codable {
     let title: String
     let summary: String
     let transcript: String
+    let imageName: String?
     let coordinate: CLLocationCoordinate2D
     let triggerRadiusMeters: CLLocationDistance
     let audioURL: URL?
@@ -15,6 +16,7 @@ struct TourStop: Identifiable, Hashable, Codable {
 
     enum CodingKeys: String, CodingKey {
         case id, number, title, summary, transcript, latitude, longitude
+        case imageName = "image_name"
         case triggerRadiusMeters = "trigger_radius_meters"
         case audioURL = "audio_url"
         case audioFile = "audio_file"
@@ -26,6 +28,7 @@ struct TourStop: Identifiable, Hashable, Codable {
         title: String,
         summary: String,
         transcript: String,
+        imageName: String? = nil,
         coordinate: CLLocationCoordinate2D,
         triggerRadiusMeters: CLLocationDistance = 20,
         audioURL: URL? = nil,
@@ -36,6 +39,7 @@ struct TourStop: Identifiable, Hashable, Codable {
         self.title = title
         self.summary = summary
         self.transcript = transcript
+        self.imageName = imageName
         self.coordinate = coordinate
         self.triggerRadiusMeters = min(max(triggerRadiusMeters, 5), 100)
         self.audioURL = audioURL
@@ -49,6 +53,7 @@ struct TourStop: Identifiable, Hashable, Codable {
         title = try values.decode(String.self, forKey: .title)
         summary = try values.decode(String.self, forKey: .summary)
         transcript = try values.decode(String.self, forKey: .transcript)
+        imageName = try values.decodeIfPresent(String.self, forKey: .imageName)
         coordinate = CLLocationCoordinate2D(
             latitude: try values.decode(Double.self, forKey: .latitude),
             longitude: try values.decode(Double.self, forKey: .longitude),
@@ -66,6 +71,7 @@ struct TourStop: Identifiable, Hashable, Codable {
         try values.encode(title, forKey: .title)
         try values.encode(summary, forKey: .summary)
         try values.encode(transcript, forKey: .transcript)
+        try values.encodeIfPresent(imageName, forKey: .imageName)
         try values.encode(coordinate.latitude, forKey: .latitude)
         try values.encode(coordinate.longitude, forKey: .longitude)
         try values.encode(triggerRadiusMeters, forKey: .triggerRadiusMeters)
@@ -207,6 +213,7 @@ struct Tour: Identifiable, Hashable, Codable {
                     title: stop.title,
                     summary: stop.summary,
                     transcript: stop.transcript,
+                    imageName: stop.imageName,
                     coordinate: trigger.coordinate,
                     triggerRadiusMeters: trigger.triggerRadiusMeters,
                     audioURL: stop.audioURL,
@@ -296,7 +303,27 @@ enum TourProgress {
         UserDefaults.standard.set(Array(visited), forKey: key(for: tourID))
     }
 
+    static func clearVisitedStopIDs(for tourID: String) {
+        UserDefaults.standard.removeObject(forKey: key(for: tourID))
+    }
+
+    static func startState(for tour: Tour) -> TourStartState {
+        let visited = visitedStopIDs(for: tour.id)
+        let visitedTourStops = tour.stops.filter { visited.contains($0.id) }
+        guard !visitedTourStops.isEmpty else { return .notStarted }
+        guard let firstIncomplete = tour.stops.first(where: { !visited.contains($0.id) }) else {
+            return .completed
+        }
+        return .partiallyCompleted(firstIncompleteStopID: firstIncomplete.id)
+    }
+
     private static func key(for tourID: String) -> String {
         "visited-stop-ids.\(tourID)"
     }
+}
+
+enum TourStartState: Equatable {
+    case notStarted
+    case partiallyCompleted(firstIncompleteStopID: String)
+    case completed
 }

@@ -47,6 +47,12 @@ struct StopDetailSection: View {
                 Text(stop.title)
                     .font(.trailTitle(20))
                     .foregroundStyle(TrailColor.ink)
+                if let imageName = stop.imageName {
+                    TourStopArtwork(
+                        imageName: imageName,
+                        accessibilityLabel: "Photo of \(stop.title)"
+                    )
+                }
                 Text(stop.transcript.isEmpty ? stop.summary : stop.transcript)
                     .font(.trailBody(17))
                     .foregroundStyle(TrailColor.muted)
@@ -71,5 +77,23 @@ struct StopDetailSection: View {
             }
         }
         .accessibilityElement(children: .combine)
+    }
+}
+
+struct TourStopArtwork: View {
+    let imageName: String
+    let accessibilityLabel: String
+
+    var body: some View {
+        Color.clear
+            .aspectRatio(16 / 9, contentMode: .fit)
+            .overlay {
+                Image(imageName)
+                    .resizable()
+                    .scaledToFill()
+            }
+            .clipShape(RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous))
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(accessibilityLabel)
     }
 }

@@ -1,13 +1,23 @@
+import MapKit
 import SwiftUI
+import UIKit
 
 struct TourDetailView: View {
     let tour: Tour
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var library: TourLibrary
+    @EnvironmentObject private var player: AudioPlayerModel
     @EnvironmentObject private var purchaseStore: PurchaseStore
     @State private var visitedCount = 0
     @State private var showsPurchase = false
     @State private var showsFullRoute = false
+    @State private var showsResumeConfirmation = false
+    @State private var showsSafetyNotice = false
+    @State private var showsStartLocationGate = false
+    @State private var showsStartedTour = false
+    @State private var startingStopID: String?
+    @State private var safetyNoticeClearsProgress = false
+    @State private var startLocationConfirmed = false
     @State private var startTourHapticTrigger = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -149,12 +159,11 @@ struct TourDetailView: View {
         .safeAreaInset(edge: .bottom, spacing: 0) {
             Group {
                 if purchaseStore.hasAccess(to: tour) {
-                    NavigationLink {
-                        TourMapView(tour: tour, startsPlayer: true)
+                    Button {
+                        prepareToStartTour()
                     } label: {
                         startButton
                     }
-                    .simultaneousGesture(TapGesture().onEnded { startTourHapticTrigger += 1 })
                     .sensoryFeedback(.impact(weight: .light), trigger: startTourHapticTrigger)
                 } else {
                     Button {
@@ -169,6 +178,38 @@ struct TourDetailView: View {
         }
         .sheet(isPresented: $showsPurchase) {
             PurchaseView(tour: tour)
+        }
+        .fullScreenCover(isPresented: $showsSafetyNotice, onDismiss: completeSafetyNotice) {
+            TourSafetyNoticeView {
+                showsSafetyNotice = false
+            }
+        }
+        .fullScreenCover(isPresented: $showsStartLocationGate, onDismiss: completeStartLocationGate) {
+            if let firstStop = tour.stops.first {
+                TourStartLocationView(
+                    tour: tour,
+                    stop: firstStop,
+                    onCancel: { showsStartLocationGate = false },
+                    onArrival: {
+                        startLocationConfirmed = true
+                        showsStartLocationGate = false
+                    }
+                )
+            }
+        }
+        .confirmationDialog(
+            "Continue your tour?",
+            isPresented: $showsResumeConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Resume Tour") { resumeTour() }
+            Button("Start Again") { startAgain() }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Resume at your first incomplete stop, or start again from Stop 1.")
+        }
+        .navigationDestination(isPresented: $showsStartedTour) {
+            TourMapView(tour: tour, startsPlayer: true, startingStopID: startingStopID)
         }
         .toolbar(.hidden, for: .navigationBar)
         .creamBackground()
@@ -196,6 +237,64 @@ struct TourDetailView: View {
 
     private var visibleStops: [TourStop] {
         showsFullRoute ? tour.stops : Array(tour.stops.prefix(3))
+    }
+
+    private func prepareToStartTour() {
+        startTourHapticTrigger += 1
+        switch TourProgress.startState(for: tour) {
+        case .notStarted:
+            presentSafetyNotice(clearingProgress: false)
+        case .partiallyCompleted:
+            showsResumeConfirmation = true
+        case .completed:
+            presentSafetyNotice(clearingProgress: true)
+        }
+    }
+
+    private func resumeTour() {
+        guard case .partiallyCompleted(let firstIncompleteStopID) = TourProgress.startState(for: tour),
+            let stop = tour.stops.first(where: { $0.id == firstIncompleteStopID })
+        else {
+            startAgain()
+            return
+        }
+        openTour(at: stop)
+    }
+
+    private func startAgain() {
+        TourProgress.clearVisitedStopIDs(for: tour.id)
+        visitedCount = 0
+        openTour(at: tour.stops.first)
+    }
+
+    private func openTour(at stop: TourStop?) {
+        guard let stop else { return }
+        startingStopID = stop.id
+        showsStartedTour = true
+    }
+
+    private func presentSafetyNotice(clearingProgress: Bool) {
+        player.resetSession()
+        safetyNoticeClearsProgress = clearingProgress
+        showsSafetyNotice = true
+    }
+
+    private func completeSafetyNotice() {
+        showsStartLocationGate = true
+    }
+
+    private func completeStartLocationGate() {
+        guard startLocationConfirmed else {
+            safetyNoticeClearsProgress = false
+            return
+        }
+        startLocationConfirmed = false
+        if safetyNoticeClearsProgress {
+            TourProgress.clearVisitedStopIDs(for: tour.id)
+            visitedCount = 0
+        }
+        safetyNoticeClearsProgress = false
+        openTour(at: tour.stops.first)
     }
 
     private var tourStartImageName: String? {
@@ -265,6 +364,310 @@ struct TourDetailView: View {
                 .padding(.leading, 20)
                 .padding(.top, 12)
         }
+    }
+}
+
+private struct TourStartLocationView: View {
+    let tour: Tour
+    let stop: TourStop
+    let onCancel: () -> Void
+    let onArrival: () -> Void
+
+    @StateObject private var location = LocationModel()
+    @State private var showsCompass = false
+    @State private var showsMap = false
+    @State private var hasConfirmedArrival = false
+    @Environment(\.openURL) private var openURL
+
+    private var locationState: TourStartLocationState {
+        TourStartLocationGate.state(
+            authorization: location.authorization,
+            location: location.location,
+            stop: stop
+        )
+    }
+
+    private var displayTourTitle: String {
+        switch tour.id {
+        case "inner-harbour":
+            return "Victoria Inner Harbour Tour"
+        case "old-town":
+            return "Victoria Old Town Tour"
+        case "james-bay":
+            return "James Bay Tour"
+        case "beacon-hill":
+            return "Beacon Hill Park Tour"
+        default:
+            return tour.title.hasSuffix("Tour") ? tour.title : "\(tour.title) Tour"
+        }
+    }
+
+    private var navigationStop: TourStop {
+        TourStop(
+            id: stop.id,
+            number: stop.number,
+            title: stop.title,
+            summary: stop.summary,
+            transcript: stop.transcript,
+            imageName: stop.imageName,
+            coordinate: stop.coordinate,
+            triggerRadiusMeters: TourStartLocationGate.radius,
+            audioURL: stop.audioURL,
+            audioFile: stop.audioFile
+        )
+    }
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 22) {
+                    Image(systemName: "mappin.and.ellipse")
+                        .font(.system(size: 62, weight: .semibold))
+                        .foregroundStyle(TrailColor.coral)
+                        .accessibilityHidden(true)
+
+                    Text("Go to the Tour Start")
+                        .font(.trailTitle(32))
+                        .foregroundStyle(TrailColor.ink)
+                        .multilineTextAlignment(.center)
+
+                    Text(
+                        "You are not currently at the \(displayTourTitle) start location. Please proceed to Stop 1 before starting the tour."
+                    )
+                    .font(.trailBody(18))
+                    .foregroundStyle(TrailColor.ink)
+                    .multilineTextAlignment(.center)
+
+                    VStack(spacing: 8) {
+                        TrailEyebrow(text: "Stop 1")
+                        Text(stop.title)
+                            .font(.trailTitle(25))
+                            .foregroundStyle(TrailColor.ink)
+                            .multilineTextAlignment(.center)
+                        Text(distanceText)
+                            .font(.trailTitle(32))
+                            .foregroundStyle(TrailColor.ink)
+                        Label(statusText, systemImage: statusSymbol)
+                            .font(.trailBody(17, weight: .semibold))
+                            .foregroundStyle(statusColor)
+                            .multilineTextAlignment(.center)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(20)
+                    .background(TrailColor.paper, in: RoundedRectangle(cornerRadius: TrailShape.card))
+
+                    VStack(spacing: 12) {
+                        Button {
+                            showsCompass = true
+                        } label: {
+                            Label("Compass Navigation", systemImage: "location.north.fill")
+                                .frame(maxWidth: .infinity, minHeight: 54)
+                        }
+                        .buttonStyle(StartLocationButtonStyle())
+
+                        Button {
+                            showsMap = true
+                        } label: {
+                            Label("View Start Location Map", systemImage: "map.fill")
+                                .frame(maxWidth: .infinity, minHeight: 54)
+                        }
+                        .buttonStyle(StartLocationButtonStyle())
+
+                        if locationState == .denied {
+                            Button("Open Settings") {
+                                guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
+                                openURL(settingsURL)
+                            }
+                            .font(.trailBody(17, weight: .bold))
+                            .foregroundStyle(TrailColor.ink)
+                            .frame(maxWidth: .infinity, minHeight: 54)
+                            .background(
+                                TrailColor.yellow,
+                                in: RoundedRectangle(cornerRadius: TrailShape.button)
+                            )
+                        }
+                    }
+                }
+                .padding(.horizontal, 24)
+                .padding(.vertical, 28)
+            }
+            .scrollBounceBehavior(.basedOnSize)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: onCancel) {
+                        Image(systemName: "xmark")
+                    }
+                    .accessibilityLabel("Cancel starting tour")
+                }
+            }
+        }
+        .background(TrailColor.cream.ignoresSafeArea())
+        .interactiveDismissDisabled()
+        .onAppear { location.begin(for: []) }
+        .onDisappear { location.stop() }
+        .onChange(of: locationState, initial: true) { _, state in
+            guard case .arrived = state, !hasConfirmedArrival else { return }
+            hasConfirmedArrival = true
+            UIAccessibility.post(notification: .announcement, argument: "You have arrived at Stop 1.")
+            onArrival()
+        }
+        .fullScreenCover(isPresented: $showsCompass) {
+            DirectionView(tour: tour, target: navigationStop, location: location)
+        }
+        .sheet(isPresented: $showsMap) {
+            TourStartMapView(tourTitle: displayTourTitle, stop: stop)
+        }
+    }
+
+    private var distanceText: String {
+        switch locationState {
+        case .outside(let distance):
+            return NavigationMath.distanceText(distance)
+        case .arrived:
+            return "At Stop 1"
+        default:
+            return "Locating…"
+        }
+    }
+
+    private var statusText: String {
+        switch locationState {
+        case .requestingPermission:
+            return "Requesting location access…"
+        case .denied:
+            return "Location access is required to start this tour."
+        case .locating:
+            return "Finding your location…"
+        case .inaccurate:
+            return "Waiting for an accurate location…"
+        case .outside:
+            return "Live location active"
+        case .arrived:
+            return "You have arrived"
+        }
+    }
+
+    private var statusSymbol: String {
+        switch locationState {
+        case .denied:
+            return "location.slash.fill"
+        case .inaccurate, .locating, .requestingPermission:
+            return "location.circle"
+        case .outside, .arrived:
+            return "location.fill"
+        }
+    }
+
+    private var statusColor: Color {
+        switch locationState {
+        case .denied:
+            return TrailColor.coral
+        case .arrived:
+            return TrailColor.green
+        default:
+            return TrailColor.muted
+        }
+    }
+}
+
+private struct StartLocationButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.trailBody(17, weight: .bold))
+            .foregroundStyle(TrailColor.ink)
+            .padding(.horizontal, 16)
+            .background(TrailColor.action, in: RoundedRectangle(cornerRadius: TrailShape.button))
+            .opacity(configuration.isPressed ? 0.8 : 1)
+    }
+}
+
+private struct TourStartMapView: View {
+    let tourTitle: String
+    let stop: TourStop
+    @Environment(\.dismiss) private var dismiss
+    @State private var position: MapCameraPosition
+
+    init(tourTitle: String, stop: TourStop) {
+        self.tourTitle = tourTitle
+        self.stop = stop
+        _position = State(
+            initialValue: .region(
+                MKCoordinateRegion(
+                    center: stop.coordinate,
+                    span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003)
+                )
+            )
+        )
+    }
+
+    var body: some View {
+        NavigationStack {
+            Map(position: $position) {
+                Marker("Stop 1 · \(stop.title)", coordinate: stop.coordinate)
+                    .tint(TrailColor.coral)
+            }
+            .navigationTitle(tourTitle)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
+                }
+            }
+        }
+    }
+}
+
+private struct TourSafetyNoticeView: View {
+    let onUnderstand: () -> Void
+    @ScaledMetric(relativeTo: .largeTitle) private var warningSymbolSize = 64.0
+
+    var body: some View {
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: 24) {
+                    Spacer(minLength: 32)
+
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: warningSymbolSize, weight: .semibold))
+                        .foregroundStyle(TrailColor.yellow)
+                        .accessibilityHidden(true)
+
+                    VStack(spacing: 18) {
+                        Text("Safety is Your Responsibility")
+                            .font(.trailTitle(32))
+                            .foregroundStyle(TrailColor.ink)
+
+                        Text(
+                            "StoryTrail tours guide you around urban pedestrian areas and point out visual features."
+                        )
+                        .font(.trailBody(18))
+                        .foregroundStyle(TrailColor.ink)
+
+                        Text(
+                            "But it is your responsibility to stay safe and use good judgement. You are responsible for your own safety."
+                        )
+                        .font(.trailBody(18, weight: .semibold))
+                        .foregroundStyle(TrailColor.ink)
+                    }
+                    .multilineTextAlignment(.center)
+
+                    Button("I Understand", action: onUnderstand)
+                        .font(.trailBody(18, weight: .bold))
+                        .foregroundStyle(TrailColor.ink)
+                        .frame(maxWidth: .infinity, minHeight: 56)
+                        .background(TrailColor.action, in: RoundedRectangle(cornerRadius: TrailShape.button))
+                        .buttonStyle(TrailPressStyle())
+                        .accessibilityHint("Starts the tour")
+
+                    Spacer(minLength: 32)
+                }
+                .padding(.horizontal, 28)
+                .frame(maxWidth: .infinity, minHeight: geometry.size.height)
+            }
+            .scrollBounceBehavior(.basedOnSize)
+        }
+        .background(TrailColor.cream.ignoresSafeArea())
+        .interactiveDismissDisabled()
     }
 }
 
