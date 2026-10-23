@@ -178,7 +178,7 @@ final class NavigationAndProximityTests: XCTestCase {
         XCTAssertEqual(
             tour.stops.map(\.imageName),
             [
-                "OldTownStop01", "OldTownStop02", "OldTownStop03", nil, "OldTownStop05", "OldTownStop06",
+                "OldTownStop01", "OldTownStop02", "OldTownStop03", "OldTownStop04", "OldTownStop05", "OldTownStop06",
                 "OldTownStop07", "OldTownStop08", "OldTownStop09", "OldTownStop10", "OldTownStop11",
             ]
         )
