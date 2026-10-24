@@ -760,7 +760,6 @@ private struct RoutePreviewConnector: View {
             Rectangle()
                 .frame(width: 2, height: 33)
             RoutePreviewArrowhead()
-                .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
                 .frame(width: 8, height: 5)
         }
         .foregroundStyle(TrailColor.green.opacity(0.24))
@@ -771,11 +770,10 @@ private struct RoutePreviewConnector: View {
 private struct RoutePreviewArrowhead: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
-        path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
         path.move(to: CGPoint(x: rect.minX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+        path.closeSubpath()
         return path
     }
 }
