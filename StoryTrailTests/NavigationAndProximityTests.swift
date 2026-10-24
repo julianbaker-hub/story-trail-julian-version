@@ -178,6 +178,10 @@ final class NavigationAndProximityTests: XCTestCase {
         XCTAssertEqual(tour.stops.count, 12)
         XCTAssertEqual(tour.stops.last?.title, "Chinatown")
         XCTAssertEqual(
+            tour.stops.last?.summary,
+            "Explore the heart of Victoria's historic Chinatown, from its ceremonial gate and neon signs to the stories of a once-thriving immigrant community."
+        )
+        XCTAssertEqual(
             tour.stops.map(\.imageName),
             [
                 "OldTownStop01", "OldTownStop02", "OldTownStop03", "OldTownStop04", "OldTownStop05", "OldTownStop06",
