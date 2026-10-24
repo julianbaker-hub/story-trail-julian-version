@@ -110,7 +110,8 @@ struct ToursView: View {
                         )
                         Divider().overlay(TrailColor.line)
                         HomeInfoRow(
-                            icon: "battery.25",
+                            icon: "battery.50",
+                            iconRotation: .degrees(-90),
                             title: "GPS & Battery Usage",
                             detail:
                                 "Continuous location tracking can drain your battery faster than normal. We recommend starting with a well-charged phone."
@@ -148,14 +149,23 @@ struct ToursView: View {
 
 private struct HomeInfoRow: View {
     let icon: String
+    let iconRotation: Angle
     let title: String
     let detail: String
+
+    init(icon: String, iconRotation: Angle = .zero, title: String, detail: String) {
+        self.icon = icon
+        self.iconRotation = iconRotation
+        self.title = title
+        self.detail = detail
+    }
 
     var body: some View {
         HStack(alignment: .top, spacing: 13) {
             Image(systemName: icon)
                 .font(.system(size: 24, weight: .semibold))
                 .foregroundStyle(TrailColor.green)
+                .rotationEffect(iconRotation)
                 .frame(width: 24)
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
