@@ -760,7 +760,7 @@ private struct RoutePreviewConnector: View {
             Rectangle()
                 .frame(width: 2, height: 33)
             RoutePreviewArrowhead()
-                .frame(width: 8, height: 5)
+                .frame(width: 16, height: 10)
         }
         .foregroundStyle(TrailColor.green.opacity(0.24))
         .accessibilityHidden(true)
