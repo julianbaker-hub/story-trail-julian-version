@@ -158,6 +158,7 @@ final class NavigationAndProximityTests: XCTestCase {
         let tours = try await BundledTourRepository().fetchTours()
         let tour = try XCTUnwrap(tours.first { $0.id == "old-town" })
         let triggers = try XCTUnwrap(tour.audioTriggers)
+        let trigger7 = try XCTUnwrap(triggers.first { $0.label == "7" })
         let expectedStopCoordinates = [
             CLLocationCoordinate2D(latitude: 48.423056, longitude: -123.368299),
             CLLocationCoordinate2D(latitude: 48.423923, longitude: -123.368076),
@@ -165,8 +166,8 @@ final class NavigationAndProximityTests: XCTestCase {
             CLLocationCoordinate2D(latitude: 48.424426, longitude: -123.368086),
             CLLocationCoordinate2D(latitude: 48.425194, longitude: -123.367915),
             CLLocationCoordinate2D(latitude: 48.425664, longitude: -123.367812),
-            CLLocationCoordinate2D(latitude: 48.425679, longitude: -123.367870),
-            CLLocationCoordinate2D(latitude: 48.426973, longitude: -123.369619),
+            CLLocationCoordinate2D(latitude: 48.425928, longitude: -123.369535),
+            CLLocationCoordinate2D(latitude: 48.426966, longitude: -123.369622),
             CLLocationCoordinate2D(latitude: 48.427658, longitude: -123.369444),
             CLLocationCoordinate2D(latitude: 48.427993, longitude: -123.368495),
             CLLocationCoordinate2D(latitude: 48.428602, longitude: -123.367902),
@@ -191,8 +192,20 @@ final class NavigationAndProximityTests: XCTestCase {
         XCTAssertEqual(tour.stops.map(\.coordinate.latitude), expectedStopCoordinates.map(\.latitude))
         XCTAssertEqual(tour.stops.map(\.coordinate.longitude), expectedStopCoordinates.map(\.longitude))
         XCTAssertEqual(
+            Array(tour.routeCoordinates[7...12]).map(\.latitude),
+            [48.425679, 48.425928, 48.426772, 48.426846, 48.427010, 48.426966]
+        )
+        XCTAssertEqual(
+            Array(tour.routeCoordinates[7...12]).map(\.longitude),
+            [-123.367870, -123.369535, -123.369353, -123.370151, -123.370102, -123.369622]
+        )
+        XCTAssertEqual(
             triggers.map(\.label),
-            ["1", "2", "3", "4", "5", "6", "7", "7.5 navigation prompt", "8", "9", "9.5 continued", "10", "11", "12"])
+            ["1", "2", "3", "4", "5", "6", "7", "8", "9", "9.5 continued", "10", "11", "12"])
+        XCTAssertEqual(trigger7.stopID, "old-town-7")
+        XCTAssertEqual(trigger7.coordinate.latitude, 48.425679, accuracy: 0.000_001)
+        XCTAssertEqual(trigger7.coordinate.longitude, -123.367870, accuracy: 0.000_001)
+        XCTAssertNil(triggers.first { $0.label == "7.5 navigation prompt" })
         XCTAssertTrue(triggers.allSatisfy { $0.triggerRadiusMeters == 20 })
         XCTAssertEqual(
             triggers.compactMap(\.audioFile),
@@ -204,7 +217,6 @@ final class NavigationAndProximityTests: XCTestCase {
                 "old-town-05-munros-murchies-morris.mp3",
                 "old-town-06-bank-of-montreal.mp3",
                 "old-town-07-bastion-square-black-pioneers.mp3",
-                "old-town-07-5-navigation.mp3",
                 "old-town-08-waddington-alley.mp3",
                 "old-town-09-lower-johnson-street.mp3",
                 "old-town-09-5-continued.mp3",
@@ -212,7 +224,8 @@ final class NavigationAndProximityTests: XCTestCase {
                 "old-town-11-fan-tan-alley.mp3",
                 "old-town-12.mp3",
             ])
-        XCTAssertEqual(tour.playbackStops.count, 14)
+        XCTAssertEqual(tour.playbackStops.count, 13)
+        XCTAssertNil(Bundle.main.url(forResource: "old-town-07-5-navigation", withExtension: "mp3"))
         for stop in tour.playbackStops {
             let file = try XCTUnwrap(stop.audioFile, "Missing audio for \(stop.id)")
             let name = (file as NSString).deletingPathExtension
@@ -334,18 +347,18 @@ final class NavigationAndProximityTests: XCTestCase {
         XCTAssertFalse(TourPlaybackSequence.acceptsAutomaticArrival(fifth, in: tour, after: third))
     }
 
-    func testOldTownAutomaticSequenceIncludesHiddenAudioCues() async throws {
+    func testOldTownAutomaticSequenceUsesUpdatedStopSevenAndRetainsOtherHiddenAudioCues() async throws {
         let tours = try await BundledTourRepository().fetchTours()
         let tour = try XCTUnwrap(tours.first { $0.id == "old-town" })
         let playbackStops = tour.playbackStops
         let stop7 = try XCTUnwrap(playbackStops.first { $0.id == "old-town-7" })
-        let stop75 = try XCTUnwrap(playbackStops.first { $0.id == "old-town-trigger-7-5" })
         let stop8 = try XCTUnwrap(playbackStops.first { $0.id == "old-town-8" })
         let stop9 = try XCTUnwrap(playbackStops.first { $0.id == "old-town-9" })
         let stop95 = try XCTUnwrap(playbackStops.first { $0.id == "old-town-trigger-9-5" })
 
-        XCTAssertEqual(TourPlaybackSequence.nextExpectedStop(in: tour, after: stop7)?.id, stop75.id)
-        XCTAssertEqual(TourPlaybackSequence.nextExpectedStop(in: tour, after: stop75)?.id, stop8.id)
+        XCTAssertEqual(stop7.coordinate.latitude, 48.425679, accuracy: 0.000_001)
+        XCTAssertEqual(stop7.coordinate.longitude, -123.367870, accuracy: 0.000_001)
+        XCTAssertEqual(TourPlaybackSequence.nextExpectedStop(in: tour, after: stop7)?.id, stop8.id)
         XCTAssertEqual(TourPlaybackSequence.nextExpectedStop(in: tour, after: stop9)?.id, stop95.id)
     }
 

@@ -94,6 +94,7 @@ struct TourRoutePoint: Hashable, Codable {
 
 struct TourAudioTrigger: Identifiable, Hashable, Codable {
     let id: String
+    let stopID: String?
     let label: String
     let latitude: Double
     let longitude: Double
@@ -102,6 +103,7 @@ struct TourAudioTrigger: Identifiable, Hashable, Codable {
 
     enum CodingKeys: String, CodingKey {
         case id, label, latitude, longitude
+        case stopID = "stop_id"
         case triggerRadiusMeters = "trigger_radius_meters"
         case audioFile = "audio_file"
     }
@@ -112,6 +114,7 @@ struct TourAudioTrigger: Identifiable, Hashable, Codable {
 
     init(
         id: String,
+        stopID: String? = nil,
         label: String,
         latitude: Double,
         longitude: Double,
@@ -119,6 +122,7 @@ struct TourAudioTrigger: Identifiable, Hashable, Codable {
         audioFile: String? = nil
     ) {
         self.id = id
+        self.stopID = stopID
         self.label = label
         self.latitude = latitude
         self.longitude = longitude
@@ -129,6 +133,7 @@ struct TourAudioTrigger: Identifiable, Hashable, Codable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(String.self, forKey: .id)
+        stopID = try values.decodeIfPresent(String.self, forKey: .stopID)
         label = try values.decode(String.self, forKey: .label)
         latitude = try values.decode(Double.self, forKey: .latitude)
         longitude = try values.decode(Double.self, forKey: .longitude)
@@ -206,7 +211,12 @@ struct Tour: Identifiable, Hashable, Codable {
         guard let audioTriggers, !audioTriggers.isEmpty else { return stops }
 
         return audioTriggers.compactMap { trigger in
-            if let stop = stops.first(where: { $0.coordinate.distance(to: trigger.coordinate) < 2 }) {
+            let matchingStop =
+                trigger.stopID.flatMap { stopID in
+                    stops.first(where: { $0.id == stopID })
+                } ?? stops.first(where: { $0.coordinate.distance(to: trigger.coordinate) < 2 })
+
+            if let stop = matchingStop {
                 return TourStop(
                     id: stop.id,
                     number: stop.number,

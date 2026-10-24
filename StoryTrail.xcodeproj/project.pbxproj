@@ -26,7 +26,6 @@
 		37D7462D3087D2180013BD08 /* old-town-05-munros-murchies-morris.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D7462C3087D2180013BD08 /* old-town-05-munros-murchies-morris.mp3 */; };
 		37D7462F3087D21F0013BD08 /* old-town-06-bank-of-montreal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D7462E3087D21F0013BD08 /* old-town-06-bank-of-montreal.mp3 */; };
 		37D746313087D23C0013BD08 /* old-town-07-bastion-square-black-pioneers.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D746303087D23C0013BD08 /* old-town-07-bastion-square-black-pioneers.mp3 */; };
-		37D746333087D2420013BD08 /* old-town-07-5-navigation.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D746323087D2420013BD08 /* old-town-07-5-navigation.mp3 */; };
 		37D746353087D2480013BD08 /* old-town-08-waddington-alley.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D746343087D2480013BD08 /* old-town-08-waddington-alley.mp3 */; };
 		37D746373087D24E0013BD08 /* old-town-09-5-continued.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D746363087D24E0013BD08 /* old-town-09-5-continued.mp3 */; };
 		37D746393087D2540013BD08 /* old-town-09-lower-johnson-street.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D746383087D2540013BD08 /* old-town-09-lower-johnson-street.mp3 */; };
@@ -120,7 +119,6 @@
 		37D7462C3087D2180013BD08 /* old-town-05-munros-murchies-morris.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-05-munros-murchies-morris.mp3"; sourceTree = "<group>"; };
 		37D7462E3087D21F0013BD08 /* old-town-06-bank-of-montreal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-06-bank-of-montreal.mp3"; sourceTree = "<group>"; };
 		37D746303087D23C0013BD08 /* old-town-07-bastion-square-black-pioneers.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-07-bastion-square-black-pioneers.mp3"; sourceTree = "<group>"; };
-		37D746323087D2420013BD08 /* old-town-07-5-navigation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-07-5-navigation.mp3"; sourceTree = "<group>"; };
 		37D746343087D2480013BD08 /* old-town-08-waddington-alley.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-08-waddington-alley.mp3"; sourceTree = "<group>"; };
 		37D746363087D24E0013BD08 /* old-town-09-5-continued.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-09-5-continued.mp3"; sourceTree = "<group>"; };
 		37D746383087D2540013BD08 /* old-town-09-lower-johnson-street.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-09-lower-johnson-street.mp3"; sourceTree = "<group>"; };
@@ -224,7 +222,6 @@
 				37D746283087D2090013BD08 /* old-town-03-customs-house.mp3 */,
 				37D7462C3087D2180013BD08 /* old-town-05-munros-murchies-morris.mp3 */,
 				37D7462E3087D21F0013BD08 /* old-town-06-bank-of-montreal.mp3 */,
-				37D746323087D2420013BD08 /* old-town-07-5-navigation.mp3 */,
 				37D746343087D2480013BD08 /* old-town-08-waddington-alley.mp3 */,
 				37D746363087D24E0013BD08 /* old-town-09-5-continued.mp3 */,
 				37D746383087D2540013BD08 /* old-town-09-lower-johnson-street.mp3 */,
@@ -395,7 +392,6 @@
 				C95F8D831E9E30CA92012DF0 /* inner-harbour-07-thunderbird-park.mp3 in Resources */,
 				37D746253087D1EC0013BD08 /* old-town-01-introduction-old-victoria-hotel.mp3 in Resources */,
 				37D7463D3087D25E0013BD08 /* old-town-11-fan-tan-alley.mp3 in Resources */,
-				37D746333087D2420013BD08 /* old-town-07-5-navigation.mp3 in Resources */,
 				37D7463F3087D2650013BD08 /* old-town-12.mp3 in Resources */,
 				6254B4857CB3BAC575812D6B /* inner-harbour-08-emily-carr-statue.mp3 in Resources */,
 				9DE3B505EBB12889D2E9699A /* tours.json in Resources */,
