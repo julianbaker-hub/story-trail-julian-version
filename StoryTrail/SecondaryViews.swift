@@ -299,6 +299,13 @@ struct SupportView: View {
                         detail:
                             "The app, downloaded tours, and GPS work without cellular data or wifi. Apple Maps may need a connection for uncached map detail.",
                     )
+                    SupportCard(
+                        icon: "battery.50",
+                        iconRotation: .degrees(-90),
+                        title: "GPS & Battery Usage",
+                        detail:
+                            "Continuous location tracking can drain your battery faster than normal. We recommend starting with a well-charged phone."
+                    )
                 }
 
                 Text(versionDescription)
@@ -1370,11 +1377,21 @@ private struct SupportActionCard: View {
 
 struct SupportCard: View {
     let icon: String
+    let iconRotation: Angle
     let title: String
     let detail: String
+
+    init(icon: String, iconRotation: Angle = .zero, title: String, detail: String) {
+        self.icon = icon
+        self.iconRotation = iconRotation
+        self.title = title
+        self.detail = detail
+    }
+
     var body: some View {
         HStack(alignment: .top, spacing: 16) {
             Image(systemName: icon).font(.system(size: 20, weight: .bold)).foregroundStyle(TrailColor.green)
+                .rotationEffect(iconRotation)
                 .frame(width: 30, height: 30)
             VStack(alignment: .leading, spacing: 5) {
                 Text(title).font(.trailBody(18, weight: .bold)).foregroundStyle(TrailColor.ink)
