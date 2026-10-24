@@ -736,9 +736,7 @@ struct RoutePreviewRow: View {
                     .frame(width: 30, height: 30)
                     .background(TrailColor.action, in: Circle())
                 if !isLast {
-                    Rectangle()
-                        .fill(TrailColor.green.opacity(0.24))
-                        .frame(width: 2, height: 22)
+                    RoutePreviewConnector()
                 }
             }
             VStack(alignment: .leading, spacing: 3) {
@@ -753,6 +751,32 @@ struct RoutePreviewRow: View {
             Spacer(minLength: 0)
         }
         .accessibilityElement(children: .combine)
+    }
+}
+
+private struct RoutePreviewConnector: View {
+    var body: some View {
+        VStack(spacing: 0) {
+            Rectangle()
+                .frame(width: 2, height: 33)
+            RoutePreviewArrowhead()
+                .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                .frame(width: 8, height: 5)
+        }
+        .foregroundStyle(TrailColor.green.opacity(0.24))
+        .accessibilityHidden(true)
+    }
+}
+
+private struct RoutePreviewArrowhead: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
+        path.move(to: CGPoint(x: rect.minX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+        return path
     }
 }
 
