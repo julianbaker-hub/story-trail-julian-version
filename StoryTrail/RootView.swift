@@ -108,6 +108,13 @@ struct ToursView: View {
                             title: "Headphones recommended",
                             detail: "For the best listening experience, we strongly recommend you use headphones."
                         )
+                        Divider().overlay(TrailColor.line)
+                        HomeInfoRow(
+                            icon: "battery.25",
+                            title: "GPS & Battery Usage",
+                            detail:
+                                "Continuous location tracking can drain your battery faster than normal. We recommend starting with a well-charged phone."
+                        )
                     }
                     .overlay(alignment: .top) { Divider().overlay(TrailColor.line) }
                     .padding(.top, 8)
