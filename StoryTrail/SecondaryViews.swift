@@ -1255,7 +1255,7 @@ private struct HelpCenterView: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                Text("Office hours: Mon–Fri, 8:00 AM–5:00 PM Pacific")
+                Text("Office hours: 8:00 AM - 5:00 PM Pacific Standard Time")
                     .font(.trailBody(15))
                     .foregroundStyle(TrailColor.muted)
 
@@ -1306,7 +1306,7 @@ private struct ContactSupportView: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                Text("Office hours: Mon–Fri, 8:00 AM–5:00 PM Pacific")
+                Text("Office hours: 8:00 AM - 5:00 PM Pacific Standard Time")
                     .font(.trailBody(15))
                     .foregroundStyle(TrailColor.muted)
                     .multilineTextAlignment(.center)
