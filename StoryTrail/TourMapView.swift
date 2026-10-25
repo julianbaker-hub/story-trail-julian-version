@@ -425,27 +425,7 @@ struct MapPlayerDock: View {
                 .tint(TrailColor.green)
                 .accessibilityHidden(true)
 
-            HStack(spacing: 8) {
-                if let nextStop {
-                    Button(action: onDirections) {
-                        Label("Compass Navigation", systemImage: "location.north")
-                            .font(.trailBody(14, weight: .bold))
-                            .foregroundStyle(TrailColor.green)
-                            .frame(minHeight: 44)
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("Directions to stop \(nextStop.number), \(nextStop.title)")
-                    .accessibilityHint("Opens GPS and compass directions, available offline")
-                }
-                Spacer(minLength: 0)
-                if !typeSize.isAccessibilitySize {
-                    Text("\(playbackTime(player.progress)) / \(playbackTime(player.duration))")
-                        .font(.trailBody(12, weight: .semibold))
-                        .monospacedDigit()
-                        .foregroundStyle(TrailColor.muted)
-                        .accessibilityLabel("\(playbackTime(player.progress)) of \(playbackTime(player.duration))")
-                }
-            }
+            CollapsedPlayerFooterControls(nextStop: nextStop, onDirections: onDirections)
         }
         .padding(.horizontal, 14)
         .padding(.top, 14)
@@ -453,6 +433,89 @@ struct MapPlayerDock: View {
         .background(TrailColor.paper, in: RoundedRectangle(cornerRadius: TrailShape.card))
         .overlay(RoundedRectangle(cornerRadius: TrailShape.card).stroke(TrailColor.line.opacity(0.55)))
         .shadow(color: .black.opacity(0.1), radius: 10, y: 3)
+    }
+}
+
+private struct CollapsedPlayerFooterControls: View {
+    let nextStop: TourStop?
+    let onDirections: () -> Void
+
+    var body: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 8) {
+                if let nextStop {
+                    CollapsedCompassButton(
+                        nextStop: nextStop,
+                        fixesHorizontalSize: true,
+                        action: onDirections
+                    )
+                }
+                Spacer(minLength: 0)
+                CollapsedSkipControls()
+            }
+
+            VStack(alignment: .leading, spacing: 0) {
+                if let nextStop {
+                    CollapsedCompassButton(
+                        nextStop: nextStop,
+                        fixesHorizontalSize: false,
+                        action: onDirections
+                    )
+                }
+                CollapsedSkipControls()
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
+        }
+    }
+}
+
+private struct CollapsedCompassButton: View {
+    let nextStop: TourStop
+    let fixesHorizontalSize: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Label("Compass Navigation", systemImage: "location.north")
+                .font(.trailBody(14, weight: .bold))
+                .foregroundStyle(TrailColor.green)
+                .frame(minHeight: 44)
+                .fixedSize(horizontal: fixesHorizontalSize, vertical: false)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Directions to stop \(nextStop.number), \(nextStop.title)")
+        .accessibilityHint("Opens GPS and compass directions, available offline")
+    }
+}
+
+private struct CollapsedSkipControls: View {
+    @EnvironmentObject private var player: AudioPlayerModel
+    @State private var skipHapticTrigger = 0
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Button {
+                skipHapticTrigger += 1
+                player.skip(seconds: -15)
+            } label: {
+                Image(systemName: "gobackward.15")
+                    .frame(width: 44, height: 44)
+            }
+            .accessibilityLabel("Rewind 15 seconds")
+
+            Button {
+                skipHapticTrigger += 1
+                player.skip(seconds: 15)
+            } label: {
+                Image(systemName: "goforward.15")
+                    .frame(width: 44, height: 44)
+            }
+            .accessibilityLabel("Forward 15 seconds")
+        }
+        .font(.system(size: 22, weight: .semibold))
+        .foregroundStyle(TrailColor.ink)
+        .buttonStyle(.plain)
+        .sensoryFeedback(.impact(weight: .light), trigger: skipHapticTrigger)
     }
 }
 
