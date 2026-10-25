@@ -612,17 +612,17 @@ struct PlayerSheet: View {
                     player.skip(seconds: -15)
                 } label: {
                     Image(systemName: "gobackward.15")
-                        .frame(width: 48, height: 48)
+                        .frame(width: 58, height: 58)
                 }
                 .accessibilityLabel("Rewind 15 seconds")
 
-                StoryPlaybackButton(tour: tour, stop: stop, diameter: 64)
+                StoryPlaybackButton(tour: tour, stop: stop, diameter: 74)
 
                 Button {
                     player.skip(seconds: 15)
                 } label: {
                     Image(systemName: "goforward.15")
-                        .frame(width: 48, height: 48)
+                        .frame(width: 58, height: 58)
                 }
                 .accessibilityLabel("Forward 15 seconds")
             }
@@ -631,6 +631,7 @@ struct PlayerSheet: View {
 
             SystemAudioRoutePicker()
                 .frame(width: 44, height: 44)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, 22)
         .padding(.top, 18)
