@@ -67,7 +67,6 @@ struct TourMapView: View {
             ScrollView {
                 PlayerSheet(
                     tour: tour, stop: activeStop, nextStop: navigationStop,
-                    onPrevious: previous, onNext: next,
                     onDirections: {
                         opensDirectionsAfterPlayer = true
                         showsPlayer = false
@@ -509,8 +508,6 @@ struct PlayerSheet: View {
     let tour: Tour
     let stop: TourStop
     let nextStop: TourStop?
-    let onPrevious: () -> Void
-    let onNext: () -> Void
     let onDirections: () -> Void
     @EnvironmentObject private var player: AudioPlayerModel
     @ScaledMetric(relativeTo: .title2) private var numberDiameter = 46.0
@@ -590,38 +587,26 @@ struct PlayerSheet: View {
             .font(.trailBody(12, weight: .semibold))
             .foregroundStyle(TrailColor.muted)
 
-            HStack {
-                Button(action: onPrevious) {
-                    Image(systemName: "backward.end.fill").frame(width: 44, height: 44)
-                }
-                .disabled(stop.number == 1)
-                .accessibilityLabel("Previous story")
-                Spacer()
+            HStack(spacing: 36) {
                 Button {
                     player.skip(seconds: -15)
                 } label: {
                     Image(systemName: "gobackward.15")
-                        .frame(width: 44, height: 44)
+                        .frame(width: 48, height: 48)
                 }
                 .accessibilityLabel("Rewind 15 seconds")
-                Spacer()
+
                 StoryPlaybackButton(tour: tour, stop: stop, diameter: 64)
-                Spacer()
+
                 Button {
                     player.skip(seconds: 15)
                 } label: {
                     Image(systemName: "goforward.15")
-                        .frame(width: 44, height: 44)
+                        .frame(width: 48, height: 48)
                 }
                 .accessibilityLabel("Forward 15 seconds")
-                Spacer()
-                Button(action: onNext) {
-                    Image(systemName: "forward.end.fill").frame(width: 44, height: 44)
-                }
-                .disabled(stop.number == tour.stops.count)
-                .accessibilityLabel("Next story")
             }
-            .font(.system(size: 21, weight: .semibold))
+            .font(.system(size: 30, weight: .semibold))
             .foregroundStyle(TrailColor.ink)
         }
         .padding(.horizontal, 22)
