@@ -530,6 +530,7 @@ struct PlayerSheet: View {
     let nextStop: TourStop?
     let onDirections: () -> Void
     @EnvironmentObject private var player: AudioPlayerModel
+    @State private var showsTourStops = false
     @ScaledMetric(relativeTo: .title2) private var numberDiameter = 46.0
 
     private var displayTitle: String {
@@ -629,12 +630,132 @@ struct PlayerSheet: View {
             .font(.system(size: 30, weight: .semibold))
             .foregroundStyle(TrailColor.ink)
 
-            SystemAudioRoutePicker()
-                .frame(width: 44, height: 44)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            HStack {
+                SystemAudioRoutePicker()
+                    .frame(width: 44, height: 44)
+
+                Spacer()
+
+                Button {
+                    showsTourStops = true
+                } label: {
+                    Image(systemName: "list.number")
+                        .font(.system(size: 22, weight: .semibold))
+                        .foregroundStyle(TrailColor.green)
+                        .frame(width: 44, height: 44)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Tour stops")
+            }
         }
         .padding(.horizontal, 22)
         .padding(.top, 18)
         .padding(.bottom, 12)
+        .sheet(isPresented: $showsTourStops) {
+            TourStopListSheet(
+                tour: tour,
+                currentStopID: player.currentTour?.id == tour.id ? player.currentStop?.id : nil
+            )
+            .presentationDetents([.medium, .large])
+            .presentationDragIndicator(.visible)
+        }
+    }
+}
+
+private struct TourStopListSheet: View {
+    let tour: Tour
+    let currentStopID: String?
+
+    var body: some View {
+        VStack(spacing: 0) {
+            VStack(spacing: 3) {
+                Text("Tour Stops")
+                    .font(.trailTitle(24))
+                    .foregroundStyle(TrailColor.ink)
+                Text(tour.title)
+                    .font(.trailBody(14, weight: .semibold))
+                    .foregroundStyle(TrailColor.muted)
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 24)
+            .padding(.bottom, 12)
+
+            ScrollViewReader { proxy in
+                List(tour.stops) { stop in
+                    TourStopListRow(stop: stop, isCurrentStop: stop.id == currentStopID)
+                        .id(stop.id)
+                        .listRowBackground(
+                            stop.id == currentStopID ? TrailColor.action.opacity(0.12) : TrailColor.paper
+                        )
+                }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
+                .task(id: currentStopID) {
+                    guard let currentStopID else { return }
+                    await Task.yield()
+                    proxy.scrollTo(currentStopID, anchor: .center)
+                }
+            }
+        }
+        .background(TrailColor.paper)
+    }
+}
+
+private struct TourStopListRow: View {
+    let stop: TourStop
+    let isCurrentStop: Bool
+
+    var body: some View {
+        HStack(spacing: 12) {
+            TourStopListThumbnail(imageName: stop.imageName)
+
+            Text("\(stop.number)")
+                .font(.trailBody(16, weight: .bold))
+                .foregroundStyle(TrailColor.ink)
+                .frame(width: 36, height: 36)
+                .background(TrailColor.action, in: Circle())
+                .accessibilityHidden(true)
+
+            Text(stop.title)
+                .font(.trailBody(16, weight: .semibold))
+                .foregroundStyle(TrailColor.ink)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            if isCurrentStop {
+                Label("Playing", systemImage: "waveform")
+                    .font(.trailBody(12, weight: .bold))
+                    .foregroundStyle(TrailColor.green)
+            }
+        }
+        .padding(.vertical, 6)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(
+            isCurrentStop
+                ? "Stop \(stop.number), \(stop.title), Playing"
+                : "Stop \(stop.number), \(stop.title)"
+        )
+    }
+}
+
+private struct TourStopListThumbnail: View {
+    let imageName: String?
+
+    var body: some View {
+        ZStack {
+            TrailColor.line.opacity(0.25)
+
+            if let imageName {
+                Image(imageName)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                Image(systemName: "photo")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(TrailColor.muted)
+            }
+        }
+        .frame(width: 72, height: 48)
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .accessibilityHidden(true)
     }
 }
