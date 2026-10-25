@@ -1,3 +1,4 @@
+import AVKit
 import MapKit
 import SwiftUI
 
@@ -322,6 +323,25 @@ struct TourMapView: View {
     }
 }
 
+private struct SystemAudioRoutePicker: UIViewRepresentable {
+    func makeUIView(context: Context) -> AVRoutePickerView {
+        let routePicker = AVRoutePickerView()
+        configure(routePicker)
+        return routePicker
+    }
+
+    func updateUIView(_ routePicker: AVRoutePickerView, context: Context) {
+        configure(routePicker)
+    }
+
+    private func configure(_ routePicker: AVRoutePickerView) {
+        let green = UIColor(TrailColor.green)
+        routePicker.tintColor = green
+        routePicker.activeTintColor = green
+        routePicker.prioritizesVideoDevices = false
+    }
+}
+
 struct StopMapPin: View {
     let number: Int
     let active: Bool
@@ -608,6 +628,9 @@ struct PlayerSheet: View {
             }
             .font(.system(size: 30, weight: .semibold))
             .foregroundStyle(TrailColor.ink)
+
+            SystemAudioRoutePicker()
+                .frame(width: 44, height: 44)
         }
         .padding(.horizontal, 22)
         .padding(.top, 18)
