@@ -551,7 +551,7 @@ struct PlayerSheet: View {
                     imageName: imageName,
                     accessibilityLabel: "Photo of \(stop.title)"
                 )
-                .frame(maxHeight: 180)
+                .frame(maxWidth: 320, maxHeight: 180)
                 .padding(.top, 4)
             }
 
@@ -560,12 +560,13 @@ struct PlayerSheet: View {
                     Label("Compass Navigation", systemImage: "location.north.fill")
                         .font(.trailBody(14, weight: .bold))
                         .foregroundStyle(TrailColor.ink)
-                        .frame(maxWidth: .infinity)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 11)
+                        .frame(maxWidth: .infinity)
                         .background(TrailColor.action, in: RoundedRectangle(cornerRadius: TrailShape.button))
                 }
                 .buttonStyle(.plain)
+                .frame(maxWidth: 320)
             }
 
             StoryAudioStatus(tour: tour, stop: stop)
