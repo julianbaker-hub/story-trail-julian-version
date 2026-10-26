@@ -92,6 +92,7 @@
         { "id": "old-town-trigger-5", "label": "5", "audio_file": "old-town-05-munros-murchies-morris.mp3", "latitude": 48.425194, "longitude": -123.367915, "trigger_radius_meters": 20 },
         { "id": "old-town-trigger-6", "label": "6", "audio_file": "old-town-06-bank-of-montreal.mp3", "latitude": 48.425664, "longitude": -123.367812, "trigger_radius_meters": 20 },
         { "id": "old-town-trigger-7", "stop_id": "old-town-7", "label": "7", "audio_file": "old-town-07-bastion-square-black-pioneers.mp3", "latitude": 48.425679, "longitude": -123.367870, "trigger_radius_meters": 20 },
+        { "id": "old-town-trigger-7-5", "label": "7.5 navigation prompt", "audio_file": "old-town-07-5-navigation-prompt.mp3", "latitude": 48.426772, "longitude": -123.369353, "trigger_radius_meters": 20 },
         { "id": "old-town-trigger-8", "label": "8", "audio_file": "old-town-08-waddington-alley.mp3", "latitude": 48.426966, "longitude": -123.369622, "trigger_radius_meters": 20 },
         { "id": "old-town-trigger-9", "label": "9", "audio_file": "old-town-09-lower-johnson-street.mp3", "latitude": 48.427658, "longitude": -123.369444, "trigger_radius_meters": 20 },
         { "id": "old-town-trigger-9-5", "label": "9.5 continued", "audio_file": "old-town-09-5-continued.mp3", "latitude": 48.427696, "longitude": -123.368464, "trigger_radius_meters": 20 },

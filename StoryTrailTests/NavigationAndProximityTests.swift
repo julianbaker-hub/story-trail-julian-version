@@ -177,6 +177,7 @@ final class NavigationAndProximityTests: XCTestCase {
         XCTAssertEqual(tour.routeCoordinates.count, 21)
         XCTAssertEqual(tour.routeArrows.count, 11)
         XCTAssertEqual(tour.stops.count, 12)
+        XCTAssertFalse(tour.stops.contains { $0.id == "old-town-trigger-7-5" })
         XCTAssertEqual(tour.stops.last?.title, "Chinatown")
         XCTAssertEqual(
             tour.stops.last?.summary,
@@ -201,11 +202,17 @@ final class NavigationAndProximityTests: XCTestCase {
         )
         XCTAssertEqual(
             triggers.map(\.label),
-            ["1", "2", "3", "4", "5", "6", "7", "8", "9", "9.5 continued", "10", "11", "12"])
+            [
+                "1", "2", "3", "4", "5", "6", "7", "7.5 navigation prompt", "8", "9",
+                "9.5 continued", "10", "11", "12",
+            ])
         XCTAssertEqual(trigger7.stopID, "old-town-7")
         XCTAssertEqual(trigger7.coordinate.latitude, 48.425679, accuracy: 0.000_001)
         XCTAssertEqual(trigger7.coordinate.longitude, -123.367870, accuracy: 0.000_001)
-        XCTAssertNil(triggers.first { $0.label == "7.5 navigation prompt" })
+        let navigationPrompt = try XCTUnwrap(triggers.first { $0.label == "7.5 navigation prompt" })
+        XCTAssertNil(navigationPrompt.stopID)
+        XCTAssertEqual(navigationPrompt.coordinate.latitude, 48.426772, accuracy: 0.000_001)
+        XCTAssertEqual(navigationPrompt.coordinate.longitude, -123.369353, accuracy: 0.000_001)
         XCTAssertTrue(triggers.allSatisfy { $0.triggerRadiusMeters == 20 })
         XCTAssertEqual(
             triggers.compactMap(\.audioFile),
@@ -217,6 +224,7 @@ final class NavigationAndProximityTests: XCTestCase {
                 "old-town-05-munros-murchies-morris.mp3",
                 "old-town-06-bank-of-montreal.mp3",
                 "old-town-07-bastion-square-black-pioneers.mp3",
+                "old-town-07-5-navigation-prompt.mp3",
                 "old-town-08-waddington-alley.mp3",
                 "old-town-09-lower-johnson-street.mp3",
                 "old-town-09-5-continued.mp3",
@@ -224,8 +232,8 @@ final class NavigationAndProximityTests: XCTestCase {
                 "old-town-11-fan-tan-alley.mp3",
                 "old-town-12.mp3",
             ])
-        XCTAssertEqual(tour.playbackStops.count, 13)
-        XCTAssertNil(Bundle.main.url(forResource: "old-town-07-5-navigation", withExtension: "mp3"))
+        XCTAssertEqual(tour.playbackStops.count, 14)
+        XCTAssertNotNil(Bundle.main.url(forResource: "old-town-07-5-navigation-prompt", withExtension: "mp3"))
         for stop in tour.playbackStops {
             let file = try XCTUnwrap(stop.audioFile, "Missing audio for \(stop.id)")
             let name = (file as NSString).deletingPathExtension
@@ -352,13 +360,17 @@ final class NavigationAndProximityTests: XCTestCase {
         let tour = try XCTUnwrap(tours.first { $0.id == "old-town" })
         let playbackStops = tour.playbackStops
         let stop7 = try XCTUnwrap(playbackStops.first { $0.id == "old-town-7" })
+        let prompt75 = try XCTUnwrap(playbackStops.first { $0.id == "old-town-trigger-7-5" })
         let stop8 = try XCTUnwrap(playbackStops.first { $0.id == "old-town-8" })
         let stop9 = try XCTUnwrap(playbackStops.first { $0.id == "old-town-9" })
         let stop95 = try XCTUnwrap(playbackStops.first { $0.id == "old-town-trigger-9-5" })
 
         XCTAssertEqual(stop7.coordinate.latitude, 48.425679, accuracy: 0.000_001)
         XCTAssertEqual(stop7.coordinate.longitude, -123.367870, accuracy: 0.000_001)
-        XCTAssertEqual(TourPlaybackSequence.nextExpectedStop(in: tour, after: stop7)?.id, stop8.id)
+        XCTAssertEqual(prompt75.coordinate.latitude, 48.426772, accuracy: 0.000_001)
+        XCTAssertEqual(prompt75.coordinate.longitude, -123.369353, accuracy: 0.000_001)
+        XCTAssertEqual(TourPlaybackSequence.nextExpectedStop(in: tour, after: stop7)?.id, prompt75.id)
+        XCTAssertEqual(TourPlaybackSequence.nextExpectedStop(in: tour, after: prompt75)?.id, stop8.id)
         XCTAssertEqual(TourPlaybackSequence.nextExpectedStop(in: tour, after: stop9)?.id, stop95.id)
     }
 
