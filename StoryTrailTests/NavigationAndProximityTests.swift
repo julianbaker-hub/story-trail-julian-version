@@ -217,7 +217,9 @@ final class NavigationAndProximityTests: XCTestCase {
         XCTAssertEqual(stop4.triggerRadiusMeters, 16)
         let continuedPrompt = try XCTUnwrap(triggers.first { $0.id == "old-town-trigger-9-5" })
         XCTAssertEqual(continuedPrompt.triggerRadiusMeters, 16)
-        let reducedRadiusTriggerIDs = Set([stop4.id, continuedPrompt.id])
+        let stop12 = try XCTUnwrap(triggers.first { $0.id == "old-town-trigger-12" })
+        XCTAssertEqual(stop12.triggerRadiusMeters, 16)
+        let reducedRadiusTriggerIDs = Set([stop4.id, continuedPrompt.id, stop12.id])
         XCTAssertTrue(
             triggers.filter { !reducedRadiusTriggerIDs.contains($0.id) }.allSatisfy { $0.triggerRadiusMeters == 20 })
         XCTAssertEqual(
