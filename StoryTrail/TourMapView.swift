@@ -348,19 +348,17 @@ struct StopMapPin: View {
     let visited: Bool
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     var body: some View {
-        Group {
-            if visited && !active { Image(systemName: "checkmark").fontWeight(.bold) } else { Text("\(number)") }
-        }
-        // Keep geographic markers compact; VoiceOver exposes their number and state.
-        .font(.system(size: active ? 16 : 14, weight: .bold, design: .rounded))
-        .foregroundStyle(active ? TrailColor.cream : TrailColor.ink)
-        .frame(width: active ? 48 : 44, height: active ? 48 : 44)
-        .background(active ? TrailColor.coral : TrailColor.action, in: Circle())
-        .overlay(Circle().stroke(.white, lineWidth: 3))
-        .shadow(color: .black.opacity(0.18), radius: 5, y: 2)
-        .animation(reduceMotion ? nil : .spring(response: 0.3), value: active)
-        .accessibilityLabel("Stop \(number)")
-        .accessibilityValue(active ? "Selected" : visited ? "Visited" : "Not visited")
+        Text("\(number)")
+            // Keep geographic markers compact; VoiceOver exposes their number and state.
+            .font(.system(size: active ? 16 : 14, weight: .bold, design: .rounded))
+            .foregroundStyle(active ? TrailColor.cream : TrailColor.ink)
+            .frame(width: active ? 48 : 44, height: active ? 48 : 44)
+            .background(active ? TrailColor.coral : TrailColor.action, in: Circle())
+            .overlay(Circle().stroke(.white, lineWidth: 3))
+            .shadow(color: .black.opacity(0.18), radius: 5, y: 2)
+            .animation(reduceMotion ? nil : .spring(response: 0.3), value: active)
+            .accessibilityLabel("Stop \(number)")
+            .accessibilityValue(active ? "Selected" : visited ? "Visited" : "Not visited")
     }
 }
 
