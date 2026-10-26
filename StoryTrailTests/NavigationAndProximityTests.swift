@@ -213,9 +213,13 @@ final class NavigationAndProximityTests: XCTestCase {
         XCTAssertNil(navigationPrompt.stopID)
         XCTAssertEqual(navigationPrompt.coordinate.latitude, 48.426772, accuracy: 0.000_001)
         XCTAssertEqual(navigationPrompt.coordinate.longitude, -123.369353, accuracy: 0.000_001)
+        let stop4 = try XCTUnwrap(triggers.first { $0.id == "old-town-trigger-4" })
+        XCTAssertEqual(stop4.triggerRadiusMeters, 16)
         let continuedPrompt = try XCTUnwrap(triggers.first { $0.id == "old-town-trigger-9-5" })
         XCTAssertEqual(continuedPrompt.triggerRadiusMeters, 16)
-        XCTAssertTrue(triggers.filter { $0.id != continuedPrompt.id }.allSatisfy { $0.triggerRadiusMeters == 20 })
+        let reducedRadiusTriggerIDs = Set([stop4.id, continuedPrompt.id])
+        XCTAssertTrue(
+            triggers.filter { !reducedRadiusTriggerIDs.contains($0.id) }.allSatisfy { $0.triggerRadiusMeters == 20 })
         XCTAssertEqual(
             triggers.compactMap(\.audioFile),
             [

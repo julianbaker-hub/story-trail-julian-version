@@ -88,7 +88,7 @@
         { "id": "old-town-trigger-1", "label": "1", "audio_file": "old-town-01-introduction-old-victoria-hotel.mp3", "latitude": 48.423056, "longitude": -123.368299, "trigger_radius_meters": 20 },
         { "id": "old-town-trigger-2", "label": "2", "audio_file": "old-town-02-rogers-chocolates.mp3", "latitude": 48.423923, "longitude": -123.368076, "trigger_radius_meters": 20 },
         { "id": "old-town-trigger-3", "label": "3", "audio_file": "old-town-03-customs-house.mp3", "latitude": 48.424189, "longitude": -123.368158, "trigger_radius_meters": 20 },
-        { "id": "old-town-trigger-4", "label": "4", "audio_file": "old-town-04-fort-victoria.mp3", "latitude": 48.424426, "longitude": -123.368086, "trigger_radius_meters": 20 },
+        { "id": "old-town-trigger-4", "label": "4", "audio_file": "old-town-04-fort-victoria.mp3", "latitude": 48.424426, "longitude": -123.368086, "trigger_radius_meters": 16 },
         { "id": "old-town-trigger-5", "label": "5", "audio_file": "old-town-05-munros-murchies-morris.mp3", "latitude": 48.425194, "longitude": -123.367915, "trigger_radius_meters": 20 },
         { "id": "old-town-trigger-6", "label": "6", "audio_file": "old-town-06-bank-of-montreal.mp3", "latitude": 48.425664, "longitude": -123.367812, "trigger_radius_meters": 20 },
         { "id": "old-town-trigger-7", "stop_id": "old-town-7", "label": "7", "audio_file": "old-town-07-bastion-square-black-pioneers.mp3", "latitude": 48.425679, "longitude": -123.367870, "trigger_radius_meters": 20 },
