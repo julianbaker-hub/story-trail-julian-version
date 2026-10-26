@@ -98,7 +98,7 @@
         { "id": "old-town-trigger-9-5", "label": "9.5 continued", "audio_file": "old-town-09-5-continued.mp3", "latitude": 48.427696, "longitude": -123.368464, "trigger_radius_meters": 16 },
         { "id": "old-town-trigger-10", "label": "10", "audio_file": "old-town-10-market-square.mp3", "latitude": 48.427993, "longitude": -123.368495, "trigger_radius_meters": 20 },
         { "id": "old-town-trigger-11", "label": "11", "audio_file": "old-town-11-fan-tan-alley.mp3", "latitude": 48.428602, "longitude": -123.367902, "trigger_radius_meters": 20 },
-        { "id": "old-town-trigger-12", "label": "12", "audio_file": "old-town-12.mp3", "latitude": 48.429350, "longitude": -123.367941, "trigger_radius_meters": 20 }
+        { "id": "old-town-trigger-12", "label": "12", "audio_file": "old-town-12-chinatown.mp3", "latitude": 48.429350, "longitude": -123.367941, "trigger_radius_meters": 20 }
       ],
       "stops": [
         { "id": "old-town-1", "number": 1, "image_name": "OldTownStop01", "title": "Introduction & Old Victoria Hotel", "summary": "Get started on Victoria's historic main street and see a remarkable 1858 structure that survived an explosion.", "transcript": "Begin your Old Town adventure on Government Street, the historic heart of Victoria. Discover one of British Columbia's oldest brick buildings, originally constructed as the Victoria Hotel in 1858, the year the Fraser River Gold Rush transformed the city. Hear the bizarre story of a hotel owner whose search for a gas leak ended in an explosion. And learn why this frontier-era brick building was later disguised as a quaint English cottage.", "latitude": 48.423056, "longitude": -123.368299 },

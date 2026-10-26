@@ -31,7 +31,7 @@
 		37D746393087D2540013BD08 /* old-town-09-lower-johnson-street.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D746383087D2540013BD08 /* old-town-09-lower-johnson-street.mp3 */; };
 		37D7463B3087D2590013BD08 /* old-town-10-market-square.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D7463A3087D2590013BD08 /* old-town-10-market-square.mp3 */; };
 		37D7463D3087D25E0013BD08 /* old-town-11-fan-tan-alley.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D7463C3087D25E0013BD08 /* old-town-11-fan-tan-alley.mp3 */; };
-		37D7463F3087D2650013BD08 /* old-town-12.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D7463E3087D2650013BD08 /* old-town-12.mp3 */; };
+		37D7463F3087D2650013BD08 /* old-town-12-chinatown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D7463E3087D2650013BD08 /* old-town-12-chinatown.mp3 */; };
 		37D8F22A308FE85A009AFF06 /* old-town-07-5-navigation-prompt.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D8F229308FE85A009AFF06 /* old-town-07-5-navigation-prompt.mp3 */; };
 		44DBB4C7118E837874E44EB4 /* inner-harbour-02-fairmont-empress-hotel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 573AC9477C9FD9AF71EA69DD /* inner-harbour-02-fairmont-empress-hotel.mp3 */; };
 		545B942F78111C87B1E6ACA3 /* TourDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B51FA5FA238A3E41608135 /* TourDetailView.swift */; };
@@ -125,7 +125,7 @@
 		37D746383087D2540013BD08 /* old-town-09-lower-johnson-street.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-09-lower-johnson-street.mp3"; sourceTree = "<group>"; };
 		37D7463A3087D2590013BD08 /* old-town-10-market-square.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-10-market-square.mp3"; sourceTree = "<group>"; };
 		37D7463C3087D25E0013BD08 /* old-town-11-fan-tan-alley.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-11-fan-tan-alley.mp3"; sourceTree = "<group>"; };
-		37D7463E3087D2650013BD08 /* old-town-12.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-12.mp3"; sourceTree = "<group>"; };
+		37D7463E3087D2650013BD08 /* old-town-12-chinatown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-12-chinatown.mp3"; sourceTree = "<group>"; };
 		37D8F229308FE85A009AFF06 /* old-town-07-5-navigation-prompt.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-07-5-navigation-prompt.mp3"; sourceTree = "<group>"; };
 		3BEA563DAC19057DEEF31443 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		45B91682E8C418258B29AD12 /* DirectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionView.swift; sourceTree = "<group>"; };
@@ -229,7 +229,7 @@
 				37D746383087D2540013BD08 /* old-town-09-lower-johnson-street.mp3 */,
 				37D7463A3087D2590013BD08 /* old-town-10-market-square.mp3 */,
 				37D7463C3087D25E0013BD08 /* old-town-11-fan-tan-alley.mp3 */,
-				37D7463E3087D2650013BD08 /* old-town-12.mp3 */,
+				37D7463E3087D2650013BD08 /* old-town-12-chinatown.mp3 */,
 				37D8F229308FE85A009AFF06 /* old-town-07-5-navigation-prompt.mp3 */,
 			);
 			path = Audio;
@@ -396,7 +396,7 @@
 				C95F8D831E9E30CA92012DF0 /* inner-harbour-07-thunderbird-park.mp3 in Resources */,
 				37D746253087D1EC0013BD08 /* old-town-01-introduction-old-victoria-hotel.mp3 in Resources */,
 				37D7463D3087D25E0013BD08 /* old-town-11-fan-tan-alley.mp3 in Resources */,
-				37D7463F3087D2650013BD08 /* old-town-12.mp3 in Resources */,
+				37D7463F3087D2650013BD08 /* old-town-12-chinatown.mp3 in Resources */,
 				6254B4857CB3BAC575812D6B /* inner-harbour-08-emily-carr-statue.mp3 in Resources */,
 				9DE3B505EBB12889D2E9699A /* tours.json in Resources */,
 			);

@@ -232,7 +232,7 @@ final class NavigationAndProximityTests: XCTestCase {
                 "old-town-09-5-continued.mp3",
                 "old-town-10-market-square.mp3",
                 "old-town-11-fan-tan-alley.mp3",
-                "old-town-12.mp3",
+                "old-town-12-chinatown.mp3",
             ])
         XCTAssertEqual(tour.playbackStops.count, 14)
         XCTAssertNotNil(Bundle.main.url(forResource: "old-town-07-5-navigation-prompt", withExtension: "mp3"))
@@ -262,7 +262,7 @@ final class NavigationAndProximityTests: XCTestCase {
                 "old-town-09-lower-johnson-street.mp3",
                 "old-town-10-market-square.mp3",
                 "old-town-11-fan-tan-alley.mp3",
-                "old-town-12.mp3",
+                "old-town-12-chinatown.mp3",
             ]
         )
         XCTAssertTrue(resolvedStops.allSatisfy { TourAudioSource.source(for: $0) != .unavailable })
