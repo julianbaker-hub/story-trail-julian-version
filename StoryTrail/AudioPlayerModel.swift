@@ -189,11 +189,11 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
                 failLoading("The audio file \(file) could not be found.")
                 return
             }
-            preparePlayer(url: url, stop: stop, autoplay: autoplay)
+            preparePlayer(url: url, stop: stop, autoplay: autoplay, loadID: loadID)
         case .remote(let remoteURL):
             if let cachedURL = cachedAudioURL(for: remoteURL), FileManager.default.fileExists(atPath: cachedURL.path) {
                 logger.notice("Using cached audio for \(stop.id, privacy: .public)")
-                preparePlayer(url: cachedURL, stop: stop, autoplay: autoplay)
+                preparePlayer(url: cachedURL, stop: stop, autoplay: autoplay, loadID: loadID)
                 return
             }
             isLoading = true
@@ -208,13 +208,13 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
                     if let cachedURL = self.cachedAudioURL(for: remoteURL) {
                         do {
                             try data.write(to: cachedURL, options: .atomic)
-                            self.preparePlayer(url: cachedURL, stop: stop, autoplay: autoplay)
+                            self.preparePlayer(url: cachedURL, stop: stop, autoplay: autoplay, loadID: loadID)
                         } catch {
                             self.logger.error("Could not cache audio: \(error.localizedDescription, privacy: .public)")
-                            self.preparePlayer(data: data, stop: stop, autoplay: autoplay)
+                            self.preparePlayer(data: data, stop: stop, autoplay: autoplay, loadID: loadID)
                         }
                     } else {
-                        self.preparePlayer(data: data, stop: stop, autoplay: autoplay)
+                        self.preparePlayer(data: data, stop: stop, autoplay: autoplay, loadID: loadID)
                     }
                 } catch is CancellationError {
                     return
@@ -323,6 +323,26 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     }
 
     private nonisolated static func activateAudioSession() async throws {
+        if #available(iOS 27.0, *) {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                AVAudioSession.sharedInstance().activate { activated, error in
+                    if let error {
+                        continuation.resume(throwing: error)
+                    } else if activated {
+                        continuation.resume()
+                    } else {
+                        continuation.resume(
+                            throwing: NSError(
+                                domain: "StoryTrail.AudioSession",
+                                code: 1,
+                                userInfo: [NSLocalizedDescriptionKey: "The audio session could not be activated."],
+                            ))
+                    }
+                }
+            }
+            return
+        }
+
         try await Task.detached(priority: .userInitiated) {
             try AVAudioSession.sharedInstance().setActive(true)
         }.value
@@ -356,19 +376,43 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
         return directory.appendingPathComponent(digest).appendingPathExtension(fileExtension)
     }
 
-    private func preparePlayer(url: URL, stop: TourStop, autoplay: Bool) {
+    private func preparePlayer(url: URL, stop: TourStop, autoplay: Bool, loadID: UUID) {
         do {
-            finishPreparing(try AVAudioPlayer(contentsOf: url), stop: stop, autoplay: autoplay)
+            activateAndFinishPreparing(
+                try AVAudioPlayer(contentsOf: url), stop: stop, autoplay: autoplay, loadID: loadID)
         } catch {
             failLoading("This story could not be opened.", error: error)
         }
     }
 
-    private func preparePlayer(data: Data, stop: TourStop, autoplay: Bool) {
+    private func preparePlayer(data: Data, stop: TourStop, autoplay: Bool, loadID: UUID) {
         do {
-            finishPreparing(try AVAudioPlayer(data: data), stop: stop, autoplay: autoplay)
+            activateAndFinishPreparing(
+                try AVAudioPlayer(data: data), stop: stop, autoplay: autoplay, loadID: loadID)
         } catch {
             failLoading("The downloaded story is not a supported audio file.", error: error)
+        }
+    }
+
+    private func activateAndFinishPreparing(
+        _ preparedPlayer: AVAudioPlayer,
+        stop: TourStop,
+        autoplay: Bool,
+        loadID: UUID
+    ) {
+        isLoading = true
+        loadingTask = Task { [weak self] in
+            do {
+                try await Self.activateAudioSession()
+                try Task.checkCancellation()
+                guard let self, self.activeLoadID == loadID else { return }
+                self.finishPreparing(preparedPlayer, stop: stop, autoplay: autoplay)
+            } catch is CancellationError {
+                return
+            } catch {
+                guard let self, self.activeLoadID == loadID else { return }
+                self.failLoading("Audio playback could not be prepared.", error: error)
+            }
         }
     }
 
