@@ -47,7 +47,7 @@
 		A10000000000000000000003 /* StoryTrailWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* StoryTrailWidgets.swift */; };
 		A10000000000000000000004 /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* WidgetSnapshot.swift */; };
 		A10000000000000000000005 /* WidgetSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* WidgetSnapshotTests.swift */; };
-		A10000000000000000000006 /* StoryTrailWidgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* StoryTrailWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A10000000000000000000006 /* StoryTrailWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* StoryTrailWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A62769413BEC5194F348F4B9 /* TourRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CCD516384D37F08D17077B /* TourRepository.swift */; };
 		B10000000000000000000001 /* TourShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000001 /* TourShortcuts.swift */; };
 		B10000000000000000000002 /* TourShortcutsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000002 /* TourShortcutsTests.swift */; };
@@ -91,15 +91,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A50000000000000000000001 /* Embed App Extensions */ = {
+		A50000000000000000000001 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A10000000000000000000006 /* StoryTrailWidgets.appex in Embed App Extensions */,
+				A10000000000000000000006 /* StoryTrailWidgets.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -303,7 +303,7 @@
 			buildPhases = (
 				40E20F7809484019099F1594 /* Sources */,
 				689738D3C224C178EE601202 /* Resources */,
-				A50000000000000000000001 /* Embed App Extensions */,
+				A50000000000000000000001 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -340,7 +340,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					9EB6CEA398F76867BD0E5CC3 = {
 						DevelopmentTeam = 9JY5CE8B5H;
@@ -507,6 +507,7 @@
 				DEVELOPMENT_TEAM = 924QL56G7G;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -521,6 +522,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -554,7 +556,7 @@
 				CODE_SIGN_ENTITLEMENTS = StoryTrail/StoryTrail.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 924QL56G7G;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = StoryTrail/Info.plist;
@@ -606,7 +608,7 @@
 				CODE_SIGN_ENTITLEMENTS = StoryTrailWidgets/StoryTrailWidgets.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 924QL56G7G;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = StoryTrailWidgets/Info.plist;
@@ -627,9 +629,11 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = StoryTrailWidgets/StoryTrailWidgets.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = 924QL56G7G;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 924QL56G7G;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = StoryTrailWidgets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -637,6 +641,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.storytrail.app.widgets;
 				PRODUCT_NAME = StoryTrailWidgets;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "StoryTrailWidgets App Store Distribution";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -682,6 +687,7 @@
 				DEVELOPMENT_TEAM = 924QL56G7G;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -703,6 +709,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -716,9 +723,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StoryTrail/StoryTrail.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
-				DEVELOPMENT_TEAM = 924QL56G7G;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 924QL56G7G;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = StoryTrail/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = StoryTrail;
@@ -738,6 +747,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.storytrail.app;
 				PRODUCT_NAME = StoryTrail;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "StoryTrail App Store Distribution";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
