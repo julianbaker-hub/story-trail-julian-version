@@ -155,7 +155,7 @@ private struct HowItWorksButton: View {
                 .font(.system(size: 15, weight: .bold))
                 .accessibilityHidden(true)
         }
-        .foregroundStyle(TrailColor.ink)
+        .foregroundStyle(TrailColor.coral)
         .padding(.horizontal, 20)
         .padding(.vertical, 18)
         .frame(maxWidth: .infinity, minHeight: 64)
