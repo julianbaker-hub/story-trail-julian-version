@@ -19,6 +19,7 @@ struct TourDetailView: View {
     @State private var safetyNoticeClearsProgress = false
     @State private var startLocationConfirmed = false
     @State private var startTourHapticTrigger = 0
+    @State private var showsTourPreview = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -58,6 +59,15 @@ struct TourDetailView: View {
                                 .foregroundStyle(TrailColor.ink)
                                 .lineSpacing(5)
                             TourHighlightsView(highlights: highlights)
+                        }
+
+                        if let previewStop = tour.previewStop {
+                            Button {
+                                presentPreview()
+                            } label: {
+                                TourPreviewCard(stop: previewStop)
+                            }
+                            .buttonStyle(TrailPressStyle())
                         }
 
                         VStack(alignment: .leading, spacing: 14) {
@@ -176,6 +186,13 @@ struct TourDetailView: View {
             .buttonStyle(TrailPressStyle())
             .background(TrailColor.cream)
         }
+        .overlay {
+            if showsTourPreview, let previewStop = tour.previewStop {
+                TourPreviewOverlay(tour: tour, stop: previewStop, onDismiss: dismissPreview)
+                    .transition(.opacity)
+                    .zIndex(10)
+            }
+        }
         .sheet(isPresented: $showsPurchase) {
             PurchaseView(tour: tour)
         }
@@ -218,6 +235,9 @@ struct TourDetailView: View {
                 visitedCount = TourProgress.visitedStopIDs(for: tour.id).count
             }
         }
+        .onDisappear {
+            if showsTourPreview { dismissPreview() }
+        }
     }
 
     private var startButton: some View {
@@ -237,6 +257,21 @@ struct TourDetailView: View {
 
     private var visibleStops: [TourStop] {
         showsFullRoute ? tour.stops : Array(tour.stops.prefix(3))
+    }
+
+    private func presentPreview() {
+        guard tour.previewStop != nil else { return }
+        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
+            showsTourPreview = true
+        }
+        player.loadPreview(tour: tour)
+    }
+
+    private func dismissPreview() {
+        player.stopPreview()
+        withAnimation(reduceMotion ? nil : .easeIn(duration: 0.2)) {
+            showsTourPreview = false
+        }
     }
 
     private func prepareToStartTour() {
@@ -364,6 +399,208 @@ struct TourDetailView: View {
                 .padding(.leading, 20)
                 .padding(.top, 12)
         }
+    }
+}
+
+private struct TourPreviewCard: View {
+    let stop: TourStop
+
+    var body: some View {
+        HStack(spacing: 16) {
+            Image(systemName: "play.fill")
+                .font(.system(size: 22, weight: .bold))
+                .foregroundStyle(.white)
+                .frame(width: 52, height: 52)
+                .background(TrailColor.green, in: Circle())
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Preview Tour")
+                    .font(.trailBody(19, weight: .bold))
+                    .foregroundStyle(TrailColor.ink)
+                Text("Sample Stop \(stop.number) · \(stop.title)")
+                    .font(.trailBody(15))
+                    .foregroundStyle(TrailColor.muted)
+                    .multilineTextAlignment(.leading)
+            }
+            Spacer(minLength: 0)
+            Image(systemName: "chevron.right")
+                .font(.system(size: 14, weight: .bold))
+                .foregroundStyle(TrailColor.green)
+                .accessibilityHidden(true)
+        }
+        .padding(18)
+        .frame(maxWidth: .infinity, minHeight: 88)
+        .background(TrailColor.paper, in: RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Preview Tour, sample Stop \(stop.number), \(stop.title)")
+        .accessibilityHint("Plays a free tour preview")
+    }
+}
+
+private struct TourPreviewOverlay: View {
+    let tour: Tour
+    let stop: TourStop
+    let onDismiss: () -> Void
+
+    @EnvironmentObject private var player: AudioPlayerModel
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.62)
+                .ignoresSafeArea()
+                .contentShape(Rectangle())
+                .onTapGesture(perform: onDismiss)
+                .accessibilityHidden(true)
+
+            ScrollView {
+                VStack(spacing: 0) {
+                    TourPreviewMap(tour: tour, stop: stop)
+                        .frame(height: dynamicTypeSize.isAccessibilitySize ? 230 : 330)
+                    TourPreviewPlayer(stop: stop)
+                }
+                .background(Color(red: 0.12, green: 0.11, blue: 0.09))
+                .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+                .overlay(alignment: .topTrailing) {
+                    Button(action: onDismiss) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundStyle(.white)
+                            .frame(width: 44, height: 44)
+                            .background(.black.opacity(0.62), in: Circle())
+                    }
+                    .accessibilityLabel("Close tour preview")
+                    .padding(14)
+                }
+                .shadow(color: .black.opacity(0.35), radius: 20, y: 8)
+            }
+            .scrollBounceBehavior(.basedOnSize)
+            .frame(maxWidth: 620, maxHeight: dynamicTypeSize.isAccessibilitySize ? .infinity : 690)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 34)
+        }
+        .accessibilityAction(.escape, onDismiss)
+    }
+}
+
+private struct TourPreviewMap: View {
+    let tour: Tour
+    let stop: TourStop
+
+    private var region: MKCoordinateRegion {
+        MKCoordinateRegion(
+            center: stop.coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.004, longitudeDelta: 0.004)
+        )
+    }
+
+    var body: some View {
+        Map(initialPosition: .region(region), interactionModes: []) {
+            MapPolyline(coordinates: tour.routeCoordinates)
+                .stroke(TrailColor.green, style: StrokeStyle(lineWidth: 7, lineCap: .round, lineJoin: .round))
+            Annotation("Stop \(stop.number)", coordinate: stop.coordinate) {
+                Text("\(stop.number)")
+                    .font(.trailBody(18, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(width: 52, height: 52)
+                    .background(TrailColor.green, in: Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 3))
+            }
+        }
+        .mapStyle(.standard(pointsOfInterest: .excludingAll))
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+}
+
+private struct TourPreviewPlayer: View {
+    let stop: TourStop
+    @EnvironmentObject private var player: AudioPlayerModel
+
+    private var progressBinding: Binding<Double> {
+        Binding(
+            get: { player.duration > 0 ? player.progress / player.duration : 0 },
+            set: { player.seek(to: $0) }
+        )
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            VStack(alignment: .leading, spacing: 5) {
+                Text("Tour Preview · Stop \(stop.number)")
+                    .font(.trailBody(14, weight: .bold))
+                    .foregroundStyle(Color.white.opacity(0.72))
+                    .textCase(.uppercase)
+                    .tracking(0.7)
+                Text(stop.title)
+                    .font(.trailTitle(25))
+                    .foregroundStyle(.white)
+            }
+
+            Slider(value: progressBinding, in: 0...1)
+                .tint(TrailColor.green)
+                .disabled(player.duration <= 0)
+                .accessibilityLabel("Preview playback position")
+                .accessibilityValue("\(timeText(player.progress)) of \(timeText(player.duration))")
+
+            HStack {
+                Text(timeText(player.progress))
+                Spacer()
+                Text(timeText(player.duration))
+            }
+            .font(.trailBody(12, weight: .semibold))
+            .foregroundStyle(Color.white.opacity(0.7))
+            .accessibilityHidden(true)
+
+            HStack(spacing: 34) {
+                previewControl(systemName: "gobackward.15", label: "Go back 15 seconds") {
+                    player.skip(seconds: -15)
+                }
+                Button(action: player.toggle) {
+                    Image(systemName: player.isPlaying ? "pause.fill" : "play.fill")
+                        .font(.system(size: 30, weight: .bold))
+                        .foregroundStyle(Color(red: 0.12, green: 0.11, blue: 0.09))
+                        .frame(width: 66, height: 66)
+                        .background(TrailColor.action, in: Circle())
+                }
+                .accessibilityLabel(player.isPlaying ? "Pause preview" : "Play preview")
+                previewControl(systemName: "goforward.15", label: "Go forward 15 seconds") {
+                    player.skip(seconds: 15)
+                }
+            }
+            .frame(maxWidth: .infinity)
+
+            if player.isLoading {
+                ProgressView("Preparing preview…")
+                    .tint(.white)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+            } else if let lastError = player.lastError {
+                Text(lastError)
+                    .font(.trailBody(14, weight: .semibold))
+                    .foregroundStyle(TrailColor.action)
+                    .frame(maxWidth: .infinity)
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .padding(22)
+    }
+
+    private func previewControl(systemName: String, label: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: systemName)
+                .font(.system(size: 30, weight: .regular))
+                .foregroundStyle(.white)
+                .frame(width: 54, height: 54)
+        }
+        .accessibilityLabel(label)
+    }
+
+    private func timeText(_ seconds: Double) -> String {
+        guard seconds.isFinite, seconds >= 0 else { return "0:00" }
+        let totalSeconds = Int(seconds.rounded(.down))
+        return String(format: "%d:%02d", totalSeconds / 60, totalSeconds % 60)
     }
 }
 

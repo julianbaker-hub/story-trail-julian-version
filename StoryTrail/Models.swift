@@ -160,6 +160,8 @@ struct Tour: Identifiable, Hashable, Codable {
     let route: [TourRoutePoint]?
     let audioTriggers: [TourAudioTrigger]?
     let mapPin: TourRoutePoint?
+    let previewAudioFile: String?
+    let previewStopID: String?
     let imageName: String
     let palette: TourPalette
 
@@ -167,6 +169,8 @@ struct Tour: Identifiable, Hashable, Codable {
         case id, title, subtitle, about, minutes, distance, stops, route, palette
         case audioTriggers = "audio_triggers"
         case mapPin = "map_pin"
+        case previewAudioFile = "preview_audio_file"
+        case previewStopID = "preview_stop_id"
         case imageName = "image_name"
     }
 
@@ -181,6 +185,8 @@ struct Tour: Identifiable, Hashable, Codable {
         route: [TourRoutePoint]? = nil,
         audioTriggers: [TourAudioTrigger]? = nil,
         mapPin: TourRoutePoint? = nil,
+        previewAudioFile: String? = nil,
+        previewStopID: String? = nil,
         imageName: String,
         palette: TourPalette,
     ) {
@@ -194,6 +200,8 @@ struct Tour: Identifiable, Hashable, Codable {
         self.route = route
         self.audioTriggers = audioTriggers
         self.mapPin = mapPin
+        self.previewAudioFile = previewAudioFile
+        self.previewStopID = previewStopID
         self.imageName = imageName
         self.palette = palette
     }
@@ -205,6 +213,11 @@ struct Tour: Identifiable, Hashable, Codable {
 
     var mapPinCoordinate: CLLocationCoordinate2D? {
         mapPin?.coordinate ?? stops.first?.coordinate
+    }
+
+    var previewStop: TourStop? {
+        guard previewAudioFile != nil, let previewStopID else { return nil }
+        return stops.first { $0.id == previewStopID }
     }
 
     var playbackStops: [TourStop] {

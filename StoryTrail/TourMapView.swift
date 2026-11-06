@@ -180,6 +180,7 @@ struct TourMapView: View {
             let shouldAutoplay = startsPlayer || player.isPlaying
             let playbackResult = player.handleProximityArrival(
                 tour: tour, stop: event.stop, autoplay: shouldAutoplay)
+            location.resolveProximityEvent(event, accepted: playbackResult.acceptsArrival)
             guard playbackResult.acceptsArrival else { return }
             if tour.stops.contains(where: { $0.id == event.stop.id }) {
                 visitedStopIDs.insert(event.stop.id)

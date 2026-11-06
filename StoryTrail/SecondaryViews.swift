@@ -343,6 +343,8 @@ struct SupportView: View {
             PrivacyPolicyView()
         case .termsOfService:
             TermsOfServiceView()
+        case .aboutStoryTrail:
+            AboutStoryTrailView()
         }
     }
 
@@ -353,6 +355,7 @@ private enum SupportDestination: String, CaseIterable, Hashable, Identifiable {
     case contactSupport
     case termsOfService
     case privacyPolicy
+    case aboutStoryTrail
 
     var id: String { rawValue }
 
@@ -362,6 +365,7 @@ private enum SupportDestination: String, CaseIterable, Hashable, Identifiable {
         case .contactSupport: "envelope.fill"
         case .termsOfService: "doc.text.fill"
         case .privacyPolicy: "hand.raised.fill"
+        case .aboutStoryTrail: "book.closed.fill"
         }
     }
 
@@ -371,6 +375,7 @@ private enum SupportDestination: String, CaseIterable, Hashable, Identifiable {
         case .contactSupport: "Contact Support"
         case .termsOfService: "Terms of Service"
         case .privacyPolicy: "Privacy Policy"
+        case .aboutStoryTrail: "About StoryTrail"
         }
     }
 
@@ -380,9 +385,87 @@ private enum SupportDestination: String, CaseIterable, Hashable, Identifiable {
         case .contactSupport: "Get help from our team"
         case .termsOfService: "Read our terms"
         case .privacyPolicy: "How we protect your data"
+        case .aboutStoryTrail: "StoryTrail's origin story"
         }
     }
 
+}
+
+private struct AboutStoryTrailView: View {
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 28) {
+                AboutStoryTrailHeader()
+                AboutStoryTrailDescription()
+            }
+            .padding(22)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .navigationTitle("About StoryTrail")
+        .navigationBarTitleDisplayMode(.inline)
+        .textSelection(.enabled)
+        .creamBackground()
+    }
+}
+
+private struct AboutStoryTrailHeader: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("StoryTrail")
+                .font(.trailBody(17, weight: .bold))
+                .foregroundStyle(TrailColor.green)
+                .textCase(.uppercase)
+            Text("About StoryTrail")
+                .font(.trailTitle(36))
+                .foregroundStyle(TrailColor.ink)
+            Text("A short story about StoryTrail.")
+                .font(.trailBody(17, weight: .semibold))
+                .foregroundStyle(TrailColor.muted)
+        }
+    }
+}
+
+private struct AboutStoryTrailDescription: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 22) {
+            AboutStoryTrailParagraph(
+                text:
+                    "StoryTrail began with a small frustration: the best stories about a place are almost never the ones on the plaque."
+            )
+            AboutStoryTrailParagraph(
+                text:
+                    "So we decided to put those stories where they belong: on the street itself, heard aloud, while you walk. StoryTrail is a collection of GPS-based audio tours. Each one is researched, written, and recorded as a piece of narrative tied to the ground you're standing on."
+            )
+            AboutStoryTrailParagraph(
+                text:
+                    "Visitors who take guided tours have better travel experiences. But guided tours can vary in quality and rarely fit into your schedule."
+            )
+            AboutStoryTrailParagraph(
+                text:
+                    "So we built an app that puts a well researched guide in your pocket, accessible whenever you want. Begin when you like. Pause when you like. And receive a top-notch tour every time, with music and audio production too."
+            )
+            AboutStoryTrailParagraph(
+                text:
+                    "We started in Victoria, British Columbia — a small city with a big history — because it's the kind of city that rewards attention. We'll be adding more cities soon."
+            )
+            AboutStoryTrailParagraph(
+                text:
+                    "StoryTrail was (and is being) created by Julian Baker, who holds a PhD in Historical Geography, and his wife Eunjin Choi, a well-travelled paralegal."
+            )
+        }
+    }
+}
+
+private struct AboutStoryTrailParagraph: View {
+    let text: LocalizedStringKey
+
+    var body: some View {
+        Text(text)
+            .font(.trailBody(17))
+            .foregroundStyle(TrailColor.ink)
+            .lineSpacing(5)
+            .fixedSize(horizontal: false, vertical: true)
+    }
 }
 
 private struct PrivacyPolicyView: View {

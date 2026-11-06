@@ -17,6 +17,8 @@
 		2AF04EF1E24345879477A003 /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF04EF1E24345879477B003 /* PurchaseView.swift */; };
 		2AF04EF1E24345879477A004 /* TourAccessPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF04EF1E24345879477B004 /* TourAccessPolicyTests.swift */; };
 		32689AEC41C9581B0CC1D7DE /* AudioPlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D9459DA13195A08D8C9523 /* AudioPlayerModel.swift */; };
+		378EBB053090D70F0004FA2B /* old-town-preview.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 378EBB043090D70F0004FA2B /* old-town-preview.mp3 */; };
+		378EBB073090D7100004FA2B /* inner-harbour-preview.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 378EBB063090D7100004FA2B /* inner-harbour-preview.mp3 */; };
 		37D7462130827F3E0013BD08 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 37D7462030827C410013BD08 /* PrivacyInfo.xcprivacy */; };
 		37D7462330827F860013BD08 /* PrivacyInfo.xcprivacy in CopyFiles */ = {isa = PBXBuildFile; fileRef = 37D7462030827C410013BD08 /* PrivacyInfo.xcprivacy */; };
 		37D746253087D1EC0013BD08 /* old-town-01-introduction-old-victoria-hotel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D746243087D1EC0013BD08 /* old-town-01-introduction-old-victoria-hotel.mp3 */; };
@@ -112,6 +114,8 @@
 		2AF04EF1E24345879477B004 /* TourAccessPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourAccessPolicyTests.swift; sourceTree = "<group>"; };
 		3382E908EF9D3B53C877BF94 /* tours.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tours.json; sourceTree = "<group>"; };
 		33A4894C1681E6530A2F5F82 /* TourStopsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourStopsView.swift; sourceTree = "<group>"; };
+		378EBB043090D70F0004FA2B /* old-town-preview.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-preview.mp3"; sourceTree = "<group>"; };
+		378EBB063090D7100004FA2B /* inner-harbour-preview.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-preview.mp3"; sourceTree = "<group>"; };
 		37D7462030827C410013BD08 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		37D746243087D1EC0013BD08 /* old-town-01-introduction-old-victoria-hotel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-01-introduction-old-victoria-hotel.mp3"; sourceTree = "<group>"; };
 		37D746263087D1F30013BD08 /* old-town-02-rogers-chocolates.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-02-rogers-chocolates.mp3"; sourceTree = "<group>"; };
@@ -231,6 +235,8 @@
 				37D7463C3087D25E0013BD08 /* old-town-11-fan-tan-alley.mp3 */,
 				37D7463E3087D2650013BD08 /* old-town-12-chinatown.mp3 */,
 				37D8F229308FE85A009AFF06 /* old-town-07-5-navigation-prompt.mp3 */,
+				378EBB043090D70F0004FA2B /* old-town-preview.mp3 */,
+				378EBB063090D7100004FA2B /* inner-harbour-preview.mp3 */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -387,6 +393,7 @@
 				37D746393087D2540013BD08 /* old-town-09-lower-johnson-street.mp3 in Resources */,
 				D9159EFB60672FEF83291E10 /* inner-harbour-03-causeway-promenade.mp3 in Resources */,
 				0A9F7361A152FC19F92931D0 /* inner-harbour-04-steamship-terminal.mp3 in Resources */,
+				378EBB073090D7100004FA2B /* inner-harbour-preview.mp3 in Resources */,
 				37D746353087D2480013BD08 /* old-town-08-waddington-alley.mp3 in Resources */,
 				37D7462D3087D2180013BD08 /* old-town-05-munros-murchies-morris.mp3 in Resources */,
 				E34FE420DB13C0C391C65A8B /* inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3 in Resources */,
@@ -395,6 +402,7 @@
 				37D746313087D23C0013BD08 /* old-town-07-bastion-square-black-pioneers.mp3 in Resources */,
 				C95F8D831E9E30CA92012DF0 /* inner-harbour-07-thunderbird-park.mp3 in Resources */,
 				37D746253087D1EC0013BD08 /* old-town-01-introduction-old-victoria-hotel.mp3 in Resources */,
+				378EBB053090D70F0004FA2B /* old-town-preview.mp3 in Resources */,
 				37D7463D3087D25E0013BD08 /* old-town-11-fan-tan-alley.mp3 in Resources */,
 				37D7463F3087D2650013BD08 /* old-town-12-chinatown.mp3 in Resources */,
 				6254B4857CB3BAC575812D6B /* inner-harbour-08-emily-carr-statue.mp3 in Resources */,

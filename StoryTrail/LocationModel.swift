@@ -84,6 +84,7 @@ struct ProximityEngine {
     let maximumAccuracy: CLLocationAccuracy
 
     private(set) var insideStopIDs: Set<String> = []
+    private var deferredStopIDs: Set<String> = []
     private var sequence = 0
 
     init(
@@ -109,6 +110,7 @@ struct ProximityEngine {
 
         for (stop, distance) in measured where distance > max(exitRadius, stop.triggerRadiusMeters + 15) {
             insideStopIDs.remove(stop.id)
+            deferredStopIDs.remove(stop.id)
         }
 
         let entered =
@@ -124,6 +126,16 @@ struct ProximityEngine {
         insideStopIDs.insert(nearest.0.id)
         sequence += 1
         return ProximityEvent(sequence: sequence, stop: nearest.0, distance: nearest.1)
+    }
+
+    mutating func resolve(_ event: ProximityEvent, accepted: Bool) {
+        guard insideStopIDs.contains(event.stop.id) else { return }
+        if accepted {
+            insideStopIDs.subtract(deferredStopIDs)
+            deferredStopIDs.removeAll()
+        } else {
+            deferredStopIDs.insert(event.stop.id)
+        }
     }
 }
 
@@ -177,6 +189,10 @@ final class LocationModel: NSObject, ObservableObject, @preconcurrency CLLocatio
 
     func distance(to stop: TourStop) -> CLLocationDistance? {
         location?.distance(from: CLLocation(latitude: stop.coordinate.latitude, longitude: stop.coordinate.longitude))
+    }
+
+    func resolveProximityEvent(_ event: ProximityEvent, accepted: Bool) {
+        proximity.resolve(event, accepted: accepted)
     }
 
     func bearing(to stop: TourStop) -> CLLocationDirection? {

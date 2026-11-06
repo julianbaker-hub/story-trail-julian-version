@@ -51,9 +51,7 @@ struct RootView: View {
 struct ToursView: View {
     @EnvironmentObject private var library: TourLibrary
     @State private var tourCardHapticTrigger = 0
-
-    private var featuredTour: Tour? { library.tours.first }
-    private var remainingTours: [Tour] { Array(library.tours.dropFirst()) }
+    @State private var showsHowToStartTour = false
 
     var body: some View {
         ZStack {
@@ -64,31 +62,22 @@ struct ToursView: View {
 
                     TrailPageHeader(
                         eyebrow: "",
-                        title: "Explore Victoria",
-                        subtitle: "Choose a tour, download it, and listen as each landmark comes to life"
+                        title: "Tour Victoria",
+                        subtitle: "Explore at your own pace with stories that play automatically as you walk."
                     )
-                    .padding(.bottom, 8)
 
-                    if let featuredTour {
-                        NavigationLink(value: featuredTour) {
-                            FeaturedTourCard(tour: featuredTour)
-                        }
-                        .buttonStyle(TrailPressStyle())
-                        .simultaneousGesture(TapGesture().onEnded { tourCardHapticTrigger += 1 })
+                    Button {
+                        showsHowToStartTour = true
+                    } label: {
+                        HowItWorksButton()
                     }
+                    .buttonStyle(TrailPressStyle())
 
-                    if !remainingTours.isEmpty {
-                        HStack {
-                            TrailEyebrow(text: "More tours", color: TrailColor.muted)
-                            Spacer()
-                            Text("VICTORIA, B.C.")
-                                .font(.trailBody(10, weight: .bold))
-                                .tracking(1.4)
-                                .foregroundStyle(TrailColor.muted)
-                        }
+                    if !library.tours.isEmpty {
+                        TourChooserHeader()
 
                         LazyVStack(spacing: 12) {
-                            ForEach(remainingTours) { tour in
+                            ForEach(library.tours) { tour in
                                 NavigationLink(value: tour) { CompactTourCard(tour: tour) }
                                     .buttonStyle(TrailPressStyle())
                                     .simultaneousGesture(TapGesture().onEnded { tourCardHapticTrigger += 1 })
@@ -144,6 +133,147 @@ struct ToursView: View {
         .sensoryFeedback(.impact(weight: .light), trigger: tourCardHapticTrigger)
         .toolbar(.hidden, for: .navigationBar)
         .creamBackground()
+        .fullScreenCover(isPresented: $showsHowToStartTour) {
+            HowToStartTourOverlay {
+                showsHowToStartTour = false
+            }
+            .presentationBackground(.clear)
+        }
+    }
+}
+
+private struct HowItWorksButton: View {
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "info.circle.fill")
+                .font(.system(size: 19, weight: .bold))
+                .accessibilityHidden(true)
+            Text("How it works")
+                .font(.system(.title2, design: .rounded, weight: .bold))
+            Spacer(minLength: 0)
+            Image(systemName: "chevron.right")
+                .font(.system(size: 15, weight: .bold))
+                .accessibilityHidden(true)
+        }
+        .foregroundStyle(TrailColor.ink)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 18)
+        .frame(maxWidth: .infinity, minHeight: 64)
+        .background(TrailColor.paper, in: RoundedRectangle(cornerRadius: TrailShape.button))
+        .contentShape(RoundedRectangle(cornerRadius: TrailShape.button))
+        .accessibilityElement(children: .combine)
+        .accessibilityHint("Opens instructions for taking a tour")
+    }
+}
+
+private struct TourChooserHeader: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            TrailEyebrow(text: "Choose a Victoria tour", color: TrailColor.muted)
+            HStack(spacing: 8) {
+                Image(systemName: "headphones")
+                    .accessibilityHidden(true)
+                Text("Free demos available for each")
+            }
+            .font(.trailBody(15, weight: .semibold))
+            .foregroundStyle(TrailColor.green)
+            .accessibilityElement(children: .combine)
+        }
+    }
+}
+
+private struct HowToStartTourOverlay: View {
+    let onDismiss: () -> Void
+
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                Color.black.opacity(0.62)
+                    .ignoresSafeArea()
+                    .contentShape(Rectangle())
+                    .onTapGesture(perform: onDismiss)
+                    .accessibilityHidden(true)
+
+                HowToStartTourSheet(onDismiss: onDismiss)
+                    .frame(maxWidth: 620)
+                    .frame(height: geometry.size.height * (dynamicTypeSize.isAccessibilitySize ? 0.9 : 0.75))
+                    .padding(.horizontal, 20)
+            }
+        }
+        .accessibilityAction(.escape, onDismiss)
+    }
+}
+
+private struct HowToStartTourSheet: View {
+    let onDismiss: () -> Void
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+                HStack(alignment: .top) {
+                    Text("How to Start a Tour")
+                        .font(.trailTitle(32))
+                        .foregroundStyle(TrailColor.ink)
+                        .accessibilityAddTraits(.isHeader)
+                    Spacer(minLength: 12)
+                    Button(action: onDismiss) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundStyle(TrailColor.ink)
+                            .frame(width: 44, height: 44)
+                            .background(TrailColor.unavailableAction, in: Circle())
+                    }
+                    .accessibilityLabel("Close instructions")
+                }
+
+                VStack(alignment: .leading, spacing: 22) {
+                    HowToStartTourStep(
+                        title: "Step 1: Choose a tour",
+                        detail:
+                            "Browse our walking tours, listen to a free demo, and purchase the one you'd like to take."
+                    )
+                    HowToStartTourStep(
+                        title: "Step 2: Download for offline use",
+                        detail: "It's best download your tour using Wi-Fi before heading out."
+                    )
+                    HowToStartTourStep(
+                        title: "Step 3: Find your starting point",
+                        detail: "Check the tour map and make your way to Stop 1."
+                    )
+                    HowToStartTourStep(
+                        title: "Step 4: Press play and explore",
+                        detail:
+                            "Start your tour at Stop 1. Stories play automatically as you reach each stop and guide you to the next stop."
+                    )
+                }
+            }
+            .padding(24)
+        }
+        .scrollBounceBehavior(.basedOnSize)
+        .background(TrailColor.paper, in: RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous))
+        .shadow(color: .black.opacity(0.35), radius: 20, y: 8)
+    }
+}
+
+private struct HowToStartTourStep: View {
+    let title: LocalizedStringKey
+    let detail: LocalizedStringKey
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.trailBody(19, weight: .bold))
+                .foregroundStyle(TrailColor.green)
+                .accessibilityAddTraits(.isHeader)
+            Text(detail)
+                .font(.trailBody(17))
+                .foregroundStyle(TrailColor.ink)
+                .lineSpacing(4)
+                .fixedSize(horizontal: false, vertical: true)
+        }
     }
 }
 
@@ -201,59 +331,6 @@ struct BrandMark: View {
     }
 }
 
-struct FeaturedTourCard: View {
-    let tour: Tour
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            ZStack(alignment: .topTrailing) {
-                TourImage(tour: tour)
-                    .frame(height: 230)
-                    .clipped()
-                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-
-                Text("FEATURED TOUR")
-                    .font(.trailBody(11, weight: .bold))
-                    .tracking(1.3)
-                    .foregroundStyle(TrailColor.cream)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(TrailColor.yellow, in: Capsule())
-                    .padding(14)
-
-                VStack {
-                    Spacer()
-                    HStack {
-                        Text("$10")
-                            .font(.trailBody(11, weight: .bold))
-                            .tracking(1.1)
-                            .foregroundStyle(TrailColor.ink)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .background(TrailColor.paper, in: Capsule())
-                        Spacer()
-                    }
-                    .padding(14)
-                }
-            }
-
-            VStack(alignment: .leading, spacing: 11) {
-                Text(tour.id == "inner-harbour" ? "Victoria Inner Harbour" : tour.title)
-                    .font(.trailTitle(28))
-                    .foregroundStyle(TrailColor.ink)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-                TourMetadata(tour: tour)
-            }
-        }
-        .padding(14)
-        .background(TrailColor.paper, in: RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous))
-        .contentShape(RoundedRectangle(cornerRadius: TrailShape.card, style: .continuous))
-        .accessibilityElement(children: .combine)
-        .accessibilityHint("Opens tour details")
-    }
-}
-
 struct CompactTourCard: View {
     let tour: Tour
     var accessLabel: String? = nil
@@ -270,15 +347,22 @@ struct CompactTourCard: View {
                 Text(displayTitle)
                     .font(.trailTitle(19))
                     .foregroundStyle(TrailColor.ink)
-                Text(displayMetadata)
-                    .font(.trailBody(12, weight: .semibold))
+                Text(displaySubtitle)
+                    .font(.system(.caption, design: .rounded, weight: .medium))
                     .foregroundStyle(TrailColor.muted)
-                Text(displayAccessLabel)
-                    .font(.trailBody(11, weight: .bold))
-                    .tracking(1)
-                    .foregroundStyle(TrailColor.muted)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                HStack(spacing: 8) {
+                    Text(displayMetadata)
+                        .font(.trailBody(12, weight: .semibold))
+                    Spacer(minLength: 8)
+                    Text(displayAccessLabel)
+                        .font(.trailBody(11, weight: .bold))
+                        .tracking(1)
+                }
+                .foregroundStyle(TrailColor.muted)
             }
-            Spacer(minLength: 0)
+            .frame(maxWidth: .infinity, alignment: .leading)
             Image(systemName: "chevron.right")
                 .font(.system(size: 13, weight: .bold))
                 .foregroundStyle(TrailColor.muted)
@@ -292,7 +376,21 @@ struct CompactTourCard: View {
     }
 
     private var displayTitle: String {
-        tour.id == "old-town" ? "Victoria Old Town" : tour.title
+        switch tour.id {
+        case "inner-harbour": "Inner Harbour"
+        case "old-town": "Old Town"
+        default: tour.title
+        }
+    }
+
+    private var displaySubtitle: LocalizedStringResource {
+        switch tour.id {
+        case "inner-harbour": "Iconic waterfront & landmarks"
+        case "old-town": "Hidden alleys & beautiful buildings"
+        case "james-bay": "Victoria's historic neighbourhood"
+        case "beacon-hill": "Landscape, views & stories"
+        default: "Victoria walking tour"
+        }
     }
 
     private var displayMetadata: String {
@@ -313,7 +411,7 @@ struct CompactTourCard: View {
             return accessLabel
         }
         switch tour.id {
-        case "old-town", "james-bay", "beacon-hill":
+        case "inner-harbour", "old-town", "james-bay", "beacon-hill":
             return "$10"
         default:
             return purchaseStore.accessLabel(for: tour)

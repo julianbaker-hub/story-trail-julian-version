@@ -90,10 +90,12 @@ struct TrailPageHeader: View {
                 .font(.trailTitle(34))
                 .foregroundStyle(TrailColor.ink)
                 .fixedSize(horizontal: false, vertical: true)
-            Text(subtitle)
-                .font(.trailBody(16))
-                .foregroundStyle(TrailColor.muted)
-                .fixedSize(horizontal: false, vertical: true)
+            if !subtitle.isEmpty {
+                Text(subtitle)
+                    .font(.trailBody(16))
+                    .foregroundStyle(TrailColor.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

@@ -42,7 +42,7 @@ struct TourPlaybackSequence {
     }
 }
 
-enum ProximityPlaybackResult {
+enum ProximityPlaybackResult: Equatable {
     case playing
     case queued
     case arrived
@@ -70,10 +70,23 @@ enum TourAudioSource: Equatable {
     }
 }
 
+enum AudioPlaybackMode: Equatable {
+    case tour
+    case preview
+}
+
+private struct SuspendedTourPlayback {
+    let tour: Tour
+    let stop: TourStop
+    let progress: Double
+    let wasPlaying: Bool
+}
+
 @MainActor
 final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     @Published private(set) var currentTour: Tour?
     @Published private(set) var currentStop: TourStop?
+    @Published private(set) var playbackMode: AudioPlaybackMode?
     @Published private(set) var isPlaying = false
     @Published private(set) var progress: Double = 0
     @Published private(set) var duration: Double = 0
@@ -89,6 +102,8 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     private var wasPlayingBeforeInterruption = false
     private var remoteCommandTargets: [(MPRemoteCommand, Any)] = []
     private var proximityQueue = TourStopPlaybackQueue()
+    private var suspendedTourPlayback: SuspendedTourPlayback?
+    private var pendingInitialTime: Double = 0
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "StoryTrail", category: "Audio")
 
     override init() {
@@ -119,8 +134,55 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     }
 
     func load(tour: Tour, stop: TourStop, autoplay: Bool = false) {
+        suspendedTourPlayback = nil
         proximityQueue.removeAll()
-        loadAudio(tour: tour, stop: tour.playbackStop(for: stop), autoplay: autoplay)
+        loadAudio(tour: tour, stop: tour.playbackStop(for: stop), mode: .tour, autoplay: autoplay)
+    }
+
+    func loadPreview(tour: Tour, autoplay: Bool = true) {
+        guard let sourceStop = tour.previewStop, let previewAudioFile = tour.previewAudioFile else {
+            failLoading("A preview is not available for this tour.")
+            return
+        }
+        if playbackMode == .tour, let currentTour, let currentStop {
+            suspendedTourPlayback = SuspendedTourPlayback(
+                tour: currentTour,
+                stop: currentStop,
+                progress: progress,
+                wasPlaying: isPlaying
+            )
+        } else {
+            suspendedTourPlayback = nil
+        }
+        let previewStop = TourStop(
+            id: "preview-\(sourceStop.id)",
+            number: sourceStop.number,
+            title: sourceStop.title,
+            summary: sourceStop.summary,
+            transcript: "",
+            imageName: sourceStop.imageName,
+            coordinate: sourceStop.coordinate,
+            triggerRadiusMeters: sourceStop.triggerRadiusMeters,
+            audioFile: previewAudioFile
+        )
+        proximityQueue.removeAll()
+        loadAudio(tour: tour, stop: previewStop, mode: .preview, autoplay: autoplay)
+    }
+
+    func stopPreview() {
+        guard playbackMode == .preview else { return }
+        guard let suspendedTourPlayback else {
+            resetSession()
+            return
+        }
+        self.suspendedTourPlayback = nil
+        loadAudio(
+            tour: suspendedTourPlayback.tour,
+            stop: suspendedTourPlayback.stop,
+            mode: .tour,
+            autoplay: suspendedTourPlayback.wasPlaying,
+            initialTime: suspendedTourPlayback.progress
+        )
     }
 
     func resetSession() {
@@ -131,8 +193,11 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
         player?.stop()
         player = nil
         proximityQueue.removeAll()
+        suspendedTourPlayback = nil
+        pendingInitialTime = 0
         currentTour = nil
         currentStop = nil
+        playbackMode = nil
         isPlaying = false
         progress = 0
         duration = 0
@@ -143,6 +208,7 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     }
 
     func handleProximityArrival(tour: Tour, stop: TourStop, autoplay: Bool) -> ProximityPlaybackResult {
+        guard playbackMode != .preview else { return .ignoredOutOfSequence }
         if currentTour?.id == tour.id, currentStop?.id == stop.id {
             if autoplay, !isPlaying, progress == 0, !hasFinished {
                 play()
@@ -162,11 +228,17 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
             return .queued
         }
 
-        loadAudio(tour: tour, stop: stop, autoplay: autoplay)
+        loadAudio(tour: tour, stop: stop, mode: .tour, autoplay: autoplay)
         return autoplay ? .playing : .arrived
     }
 
-    private func loadAudio(tour: Tour, stop: TourStop, autoplay: Bool) {
+    private func loadAudio(
+        tour: Tour,
+        stop: TourStop,
+        mode: AudioPlaybackMode,
+        autoplay: Bool,
+        initialTime: Double = 0
+    ) {
         loadingTask?.cancel()
         let loadID = UUID()
         activeLoadID = loadID
@@ -175,12 +247,14 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
         player = nil
         currentTour = tour
         currentStop = stop
+        playbackMode = mode
         isPlaying = false
         hasFinished = false
         isLoading = false
         lastError = nil
         progress = 0
         duration = 0
+        pendingInitialTime = max(0, initialTime)
         updateNowPlayingInfo()
 
         switch TourAudioSource.source(for: stop) {
@@ -279,7 +353,8 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     }
 
     func playNext() -> Bool {
-        guard let tour = currentTour,
+        guard playbackMode == .tour,
+            let tour = currentTour,
             let stop = currentStop,
             let index = tour.stops.firstIndex(where: { $0.id == stop.id }),
             index < tour.stops.count - 1
@@ -289,7 +364,8 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     }
 
     func playPrevious() -> Bool {
-        guard let tour = currentTour,
+        guard playbackMode == .tour,
+            let tour = currentTour,
             let stop = currentStop,
             let index = tour.stops.firstIndex(where: { $0.id == stop.id })
         else { return false }
@@ -309,8 +385,8 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
         progress = duration
         timer?.invalidate()
         updateNowPlayingInfo()
-        if let next = proximityQueue.popFirst() {
-            loadAudio(tour: next.tour, stop: next.stop, autoplay: true)
+        if playbackMode == .tour, let next = proximityQueue.popFirst() {
+            loadAudio(tour: next.tour, stop: next.stop, mode: .tour, autoplay: true)
         }
     }
 
@@ -405,6 +481,14 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
             do {
                 try await Self.activateAudioSession()
                 try Task.checkCancellation()
+                guard await Self.prepareForPlayback(preparedPlayer) else {
+                    throw NSError(
+                        domain: "StoryTrail.AudioPlayer",
+                        code: 1,
+                        userInfo: [NSLocalizedDescriptionKey: "The audio player could not prepare this recording."],
+                    )
+                }
+                try Task.checkCancellation()
                 guard let self, self.activeLoadID == loadID else { return }
                 self.finishPreparing(preparedPlayer, stop: stop, autoplay: autoplay)
             } catch is CancellationError {
@@ -419,15 +503,22 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
     private func finishPreparing(_ preparedPlayer: AVAudioPlayer, stop: TourStop, autoplay: Bool) {
         player = preparedPlayer
         preparedPlayer.delegate = self
-        preparedPlayer.prepareToPlay()
         duration = preparedPlayer.duration
-        progress = 0
+        preparedPlayer.currentTime = min(pendingInitialTime, preparedPlayer.duration)
+        progress = preparedPlayer.currentTime
+        pendingInitialTime = 0
         isLoading = false
         updateNowPlayingInfo()
         logger.notice(
             "Loaded audio for \(stop.id, privacy: .public), duration \(self.duration, format: .fixed(precision: 1)) seconds"
         )
         if autoplay { play() }
+    }
+
+    private nonisolated static func prepareForPlayback(_ player: AVAudioPlayer) async -> Bool {
+        await Task.detached(priority: .userInitiated) {
+            player.prepareToPlay()
+        }.value
     }
 
     private func failLoading(_ message: String, error: Error? = nil) {
@@ -489,8 +580,10 @@ final class AudioPlayerModel: NSObject, ObservableObject, AVAudioPlayerDelegate 
 
         let info: [String: Any] = [
             MPMediaItemPropertyTitle: stop.title,
-            MPMediaItemPropertyAlbumTitle: Self.displayTitle(for: tour),
-            MPMediaItemPropertyArtist: "Stop \(stop.number) of \(tour.stops.count)",
+            MPMediaItemPropertyAlbumTitle: playbackMode == .preview ? "Tour Preview" : Self.displayTitle(for: tour),
+            MPMediaItemPropertyArtist: playbackMode == .preview
+                ? "Preview · Stop \(stop.number)"
+                : "Stop \(stop.number) of \(tour.stops.count)",
             MPMediaItemPropertyPlaybackDuration: duration,
             MPNowPlayingInfoPropertyElapsedPlaybackTime: progress,
             MPNowPlayingInfoPropertyPlaybackRate: isPlaying ? 1.0 : 0.0,

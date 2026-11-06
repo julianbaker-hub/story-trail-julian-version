@@ -42,6 +42,31 @@ final class NavigationAndProximityTests: XCTestCase {
         XCTAssertEqual(engine.update(location: location(northMetres: 15), stops: [stop])?.sequence, 2)
     }
 
+    func testRejectedOverlappingTriggerIsReconsideredAfterExpectedTriggerIsAccepted() throws {
+        var engine = ProximityEngine()
+        let expectedStop = makeStop(
+            number: 1,
+            coordinate: CLLocationCoordinate2D(
+                latitude: origin.latitude + 5 / 111_111,
+                longitude: origin.longitude
+            )
+        )
+        let futureStop = makeStop(number: 2, coordinate: origin)
+        let currentLocation = location(northMetres: 0)
+
+        let prematureEvent = try XCTUnwrap(engine.update(location: currentLocation, stops: [expectedStop, futureStop]))
+        XCTAssertEqual(prematureEvent.stop.id, futureStop.id)
+        engine.resolve(prematureEvent, accepted: false)
+
+        let expectedEvent = try XCTUnwrap(engine.update(location: currentLocation, stops: [expectedStop, futureStop]))
+        XCTAssertEqual(expectedEvent.stop.id, expectedStop.id)
+        engine.resolve(expectedEvent, accepted: true)
+
+        let reconsideredEvent = try XCTUnwrap(
+            engine.update(location: currentLocation, stops: [expectedStop, futureStop]))
+        XCTAssertEqual(reconsideredEvent.stop.id, futureStop.id)
+    }
+
     func testProximityRejectsInaccurateLocations() {
         var engine = ProximityEngine()
         let stop = makeStop(number: 1, coordinate: origin)
@@ -213,15 +238,24 @@ final class NavigationAndProximityTests: XCTestCase {
         XCTAssertNil(navigationPrompt.stopID)
         XCTAssertEqual(navigationPrompt.coordinate.latitude, 48.426772, accuracy: 0.000_001)
         XCTAssertEqual(navigationPrompt.coordinate.longitude, -123.369353, accuracy: 0.000_001)
-        let stop4 = try XCTUnwrap(triggers.first { $0.id == "old-town-trigger-4" })
-        XCTAssertEqual(stop4.triggerRadiusMeters, 16)
-        let continuedPrompt = try XCTUnwrap(triggers.first { $0.id == "old-town-trigger-9-5" })
-        XCTAssertEqual(continuedPrompt.triggerRadiusMeters, 16)
-        let stop12 = try XCTUnwrap(triggers.first { $0.id == "old-town-trigger-12" })
-        XCTAssertEqual(stop12.triggerRadiusMeters, 16)
-        let reducedRadiusTriggerIDs = Set([stop4.id, continuedPrompt.id, stop12.id])
-        XCTAssertTrue(
-            triggers.filter { !reducedRadiusTriggerIDs.contains($0.id) }.allSatisfy { $0.triggerRadiusMeters == 20 })
+        let expectedTriggerRadii: [String: CLLocationDistance] = [
+            "old-town-trigger-1": 20,
+            "old-town-trigger-2": 20,
+            "old-town-trigger-3": 16,
+            "old-town-trigger-4": 14,
+            "old-town-trigger-5": 18,
+            "old-town-trigger-6": 16,
+            "old-town-trigger-7": 16,
+            "old-town-trigger-7-5": 20,
+            "old-town-trigger-8": 16,
+            "old-town-trigger-9": 18,
+            "old-town-trigger-9-5": 14,
+            "old-town-trigger-10": 18,
+            "old-town-trigger-11": 20,
+            "old-town-trigger-12": 16,
+        ]
+        XCTAssertEqual(
+            Dictionary(uniqueKeysWithValues: triggers.map { ($0.id, $0.triggerRadiusMeters) }), expectedTriggerRadii)
         XCTAssertEqual(
             triggers.compactMap(\.audioFile),
             [
@@ -273,6 +307,79 @@ final class NavigationAndProximityTests: XCTestCase {
         )
         XCTAssertTrue(resolvedStops.allSatisfy { TourAudioSource.source(for: $0) != .unavailable })
         XCTAssertFalse(resolvedStops.compactMap(\.audioFile).contains("inner-harbor.mp3"))
+    }
+
+    func testOnlyConfiguredTourPreviewsResolveToBundledFiles() async throws {
+        let tours = try await BundledTourRepository().fetchTours()
+        let configuredPreviews = tours.compactMap { tour -> (Tour, TourStop, String)? in
+            guard let stop = tour.previewStop, let audioFile = tour.previewAudioFile else { return nil }
+            return (tour, stop, audioFile)
+        }
+
+        XCTAssertEqual(Set(configuredPreviews.map { $0.0.id }), ["inner-harbour", "old-town"])
+        XCTAssertEqual(configuredPreviews.first { $0.0.id == "inner-harbour" }?.1.id, "inner-harbour-2")
+        XCTAssertEqual(configuredPreviews.first { $0.0.id == "old-town" }?.1.id, "old-town-4")
+        for (_, _, audioFile) in configuredPreviews {
+            let filename = audioFile as NSString
+            XCTAssertNotNil(
+                Bundle.main.url(
+                    forResource: filename.deletingPathExtension,
+                    withExtension: filename.pathExtension
+                ),
+                "Unbundled preview audio: \(audioFile)"
+            )
+        }
+        XCTAssertNil(tours.first { $0.id == "james-bay" }?.previewStop)
+        XCTAssertNil(tours.first { $0.id == "beacon-hill" }?.previewStop)
+    }
+
+    func testPreviewAvailabilityIsIndependentOfPurchasedTourAccess() async throws {
+        let tours = try await BundledTourRepository().fetchTours()
+        let oldTown = try XCTUnwrap(tours.first { $0.id == "old-town" })
+        let lockedPolicy = TourAccessPolicy(allToursUnlockedForTesting: false)
+
+        XCTAssertFalse(lockedPolicy.hasAccess(to: oldTown.id, purchasedProductIDs: []))
+        XCTAssertNotNil(oldTown.previewStop)
+        XCTAssertEqual(oldTown.previewAudioFile, "old-town-preview.mp3")
+    }
+
+    @MainActor
+    func testPreviewPlaybackIsolatesProgressAndTransitionsToFullTour() async throws {
+        let tours = try await BundledTourRepository().fetchTours()
+        let tour = try XCTUnwrap(tours.first { $0.id == "old-town" })
+        let previewStop = try XCTUnwrap(tour.previewStop)
+        let nextStop = try XCTUnwrap(tour.stops.first)
+        let player = AudioPlayerModel()
+        TourProgress.clearVisitedStopIDs(for: tour.id)
+        defer {
+            player.resetSession()
+            TourProgress.clearVisitedStopIDs(for: tour.id)
+        }
+
+        player.load(tour: tour, stop: nextStop, autoplay: false)
+        XCTAssertEqual(player.playbackMode, .tour)
+
+        player.loadPreview(tour: tour, autoplay: false)
+
+        XCTAssertEqual(player.playbackMode, .preview)
+        XCTAssertEqual(player.currentStop?.id, "preview-\(previewStop.id)")
+        XCTAssertTrue(TourProgress.visitedStopIDs(for: tour.id).isEmpty)
+        XCTAssertEqual(
+            player.handleProximityArrival(tour: tour, stop: nextStop, autoplay: true),
+            .ignoredOutOfSequence
+        )
+
+        player.stopPreview()
+
+        XCTAssertEqual(player.playbackMode, .tour)
+        XCTAssertEqual(player.currentStop?.id, nextStop.id)
+
+        player.loadPreview(tour: tour, autoplay: false)
+        player.load(tour: tour, stop: nextStop, autoplay: false)
+        player.stopPreview()
+        XCTAssertEqual(player.playbackMode, .tour)
+        XCTAssertEqual(player.currentStop?.id, nextStop.id)
+        XCTAssertTrue(TourProgress.visitedStopIDs(for: tour.id).isEmpty)
     }
 
     func testStopWithoutConfiguredAudioIsUnavailable() {
