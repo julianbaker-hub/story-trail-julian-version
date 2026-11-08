@@ -181,10 +181,10 @@ struct AllToursMapView: View {
 
     private func previewPrice(for tour: Tour) -> String {
         switch tour.id {
-        case "old-town":
-            "$13"
-        case "inner-harbour", "james-bay", "beacon-hill":
-            "$10"
+        case "inner-harbour", "beacon-hill":
+            "$9.99"
+        case "old-town", "james-bay":
+            "$12.99"
         default:
             purchaseStore.accessLabel(for: tour)
         }
