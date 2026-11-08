@@ -411,7 +411,9 @@ struct CompactTourCard: View {
             return accessLabel
         }
         switch tour.id {
-        case "inner-harbour", "old-town", "james-bay", "beacon-hill":
+        case "old-town":
+            return "$13"
+        case "inner-harbour", "james-bay", "beacon-hill":
             return "$10"
         default:
             return purchaseStore.accessLabel(for: tour)
