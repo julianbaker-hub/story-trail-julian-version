@@ -1,0 +1,159 @@
+{
+  "identifier" : "5E5A7F10",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "9.99",
+      "familyShareable" : false,
+      "internalID" : "A14F2031",
+      "localizations" : [
+        {
+          "description" : "Permanent access to the complete Inner Harbour walking tour.",
+          "displayName" : "Inner Harbour",
+          "locale" : "en_CA"
+        }
+      ],
+      "offerCodes" : [
+        {
+          "internalID" : "A14F2032",
+          "paymentMode" : "free",
+          "referenceName" : "Free Inner Harbour Test"
+        }
+      ],
+      "productID" : "com.storytrailguide.app.innerharbour",
+      "referenceName" : "Inner Harbour",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "12.99",
+      "familyShareable" : false,
+      "internalID" : "B25A3041",
+      "localizations" : [
+        {
+          "description" : "Permanent access to the complete Old Town walking tour.",
+          "displayName" : "Old Town",
+          "locale" : "en_CA"
+        }
+      ],
+      "offerCodes" : [
+        {
+          "internalID" : "B25A3042",
+          "paymentMode" : "free",
+          "referenceName" : "Free Old Town Test"
+        }
+      ],
+      "productID" : "com.storytrailguide.app.oldtown",
+      "referenceName" : "Old Town",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "12.99",
+      "familyShareable" : false,
+      "internalID" : "C36B4051",
+      "localizations" : [
+        {
+          "description" : "Permanent access to the complete James Bay walking tour.",
+          "displayName" : "James Bay",
+          "locale" : "en_CA"
+        }
+      ],
+      "offerCodes" : [
+        {
+          "internalID" : "C36B4052",
+          "paymentMode" : "free",
+          "referenceName" : "Free James Bay Test"
+        }
+      ],
+      "productID" : "com.storytrailguide.app.tour.jamesbay",
+      "referenceName" : "James Bay",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "9.99",
+      "familyShareable" : false,
+      "internalID" : "D47C5061",
+      "localizations" : [
+        {
+          "description" : "Permanent access to the complete Beacon Hill Park walking tour.",
+          "displayName" : "Beacon Hill Park",
+          "locale" : "en_CA"
+        }
+      ],
+      "offerCodes" : [
+        {
+          "internalID" : "D47C5062",
+          "paymentMode" : "free",
+          "referenceName" : "Free Beacon Hill Park Test"
+        }
+      ],
+      "productID" : "com.storytrailguide.app.tour.beaconhill",
+      "referenceName" : "Beacon Hill Park",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_compatibilityTimeRate" : {
+      "3" : 6
+    },
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_CA",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "CAN",
+    "_storeKitErrors" : [
+      {
+        "current" : {
+          "index" : 2,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : {
+          "index" : 1,
+          "type" : "purchase"
+        },
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : {
+          "index" : 0,
+          "type" : "verification"
+        },
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : {
+          "index" : 2,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : {
+          "index" : 4,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ],
+    "_timeRate" : 1003
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 6,
+    "minor" : 3
+  }
+}
