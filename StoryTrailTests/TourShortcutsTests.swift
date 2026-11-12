@@ -25,12 +25,24 @@ final class TourShortcutsTests: XCTestCase {
         let suggestions = try await query.suggestedEntities()
         let harbour = try XCTUnwrap(suggestions.first(where: { $0.id == "inner-harbour" }))
 
+        XCTAssertEqual(Set(suggestions.map(\.id)), ["inner-harbour", "old-town"])
         let resolved = try await query.entities(for: [harbour.id])
         let matching = try await query.entities(matching: "INNER HARBOUR")
         let missing = try await query.entities(for: ["missing-tour"])
+        let unfinished = try await query.entities(for: ["james-bay", "beacon-hill"])
         XCTAssertEqual(resolved.map(\.id), [harbour.id])
         XCTAssertEqual(matching.map(\.id), [harbour.id])
         XCTAssertTrue(missing.isEmpty)
+        XCTAssertTrue(unfinished.isEmpty)
+    }
+
+    func testLaunchAvailabilityPreservesUnfinishedCatalogueContent() async throws {
+        let catalogue = try await BundledTourRepository().fetchTours()
+        let launchTours = TourAvailability.launchTours(from: catalogue)
+
+        XCTAssertEqual(Set(launchTours.map(\.id)), ["inner-harbour", "old-town"])
+        XCTAssertNotNil(catalogue.first { $0.id == "james-bay" })
+        XCTAssertNotNil(catalogue.first { $0.id == "beacon-hill" })
     }
 
     func testProgressIgnoresUnknownStopIDs() async throws {

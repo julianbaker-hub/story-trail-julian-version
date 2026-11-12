@@ -37,7 +37,7 @@ struct TourEntityQuery: EntityStringQuery {
     }
 
     private func allTours() async throws -> [TourEntity] {
-        try await BundledTourRepository().fetchTours().map(TourEntity.init)
+        TourAvailability.launchTours(from: try await BundledTourRepository().fetchTours()).map(TourEntity.init)
     }
 }
 
@@ -51,7 +51,7 @@ private enum TourShortcutError: LocalizedError {
 
 private enum TourShortcutData {
     static func tour(for entity: TourEntity) async throws -> (Tour, [Tour]) {
-        let tours = try await BundledTourRepository().fetchTours()
+        let tours = TourAvailability.launchTours(from: try await BundledTourRepository().fetchTours())
         guard let tour = tours.first(where: { $0.id == entity.id }) else {
             throw TourShortcutError.missingTour
         }

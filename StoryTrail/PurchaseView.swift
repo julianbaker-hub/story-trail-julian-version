@@ -1,9 +1,11 @@
+import StoreKit
 import SwiftUI
 
 struct PurchaseView: View {
     let tour: Tour
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var purchaseStore: PurchaseStore
+    @State private var isPresentingOfferCodeRedemption = false
 
     var body: some View {
         NavigationStack {
@@ -13,7 +15,7 @@ struct PurchaseView: View {
                         eyebrow: "Unlock your walk",
                         title: "More stories, more places.",
                         subtitle:
-                            "Choose one walk or the whole collection. Pay once; bundled stories stay ready offline."
+                            "Unlock this complete walking tour once and keep its stories ready offline."
                     )
 
                     purchaseCard(
@@ -26,16 +28,6 @@ struct PurchaseView: View {
                         action: { await purchaseStore.purchaseTour(tour) },
                     )
 
-                    purchaseCard(
-                        eyebrow: "The whole collection",
-                        title: "All Victoria Tours",
-                        detail: "Every current walk and its stories, ready when curiosity strikes.",
-                        price: purchaseStore.allToursProduct?.displayPrice ?? "Unavailable",
-                        productID: PurchaseConfiguration.allToursProductID,
-                        highlighted: true,
-                        action: { await purchaseStore.purchaseAllTours() },
-                    )
-
                     Button("Restore Purchases") {
                         Task { await purchaseStore.restorePurchases() }
                     }
@@ -45,8 +37,17 @@ struct PurchaseView: View {
                     .frame(minHeight: 44)
                     .disabled(purchaseStore.isLoading || purchaseStore.purchasingProductID != nil)
 
-                    if purchaseStore.product(for: tour) == nil || purchaseStore.allToursProduct == nil {
-                        Text("Prices need a connection to load. Walks you already unlocked still work offline.")
+                    Button("Have a promo code? Redeem here") {
+                        isPresentingOfferCodeRedemption = true
+                    }
+                    .font(.trailBody(15, weight: .bold))
+                    .foregroundStyle(TrailColor.green)
+                    .frame(maxWidth: .infinity)
+                    .frame(minHeight: 44)
+                    .disabled(purchaseStore.purchasingProductID != nil)
+
+                    if purchaseStore.product(for: tour) == nil {
+                        Text(offlinePriceMessage)
                             .font(.trailBody(13))
                             .foregroundStyle(TrailColor.muted)
                             .multilineTextAlignment(.center)
@@ -73,6 +74,12 @@ struct PurchaseView: View {
         .onChange(of: purchaseStore.hasAccess(to: tour)) { _, hasAccess in
             if hasAccess { dismiss() }
         }
+        .modifier(
+            OfferCodeRedemptionPresenter(
+                isPresented: $isPresentingOfferCodeRedemption,
+                purchaseStore: purchaseStore
+            )
+        )
         .alert(
             "Purchase problem",
             isPresented: Binding(
@@ -82,6 +89,14 @@ struct PurchaseView: View {
             actions: { Button("OK") { purchaseStore.clearError() } },
             message: { Text(purchaseStore.errorMessage ?? "Please try again.") },
         )
+    }
+
+    private var offlinePriceMessage: String {
+        if let fallbackPrice = PurchaseConfiguration.fallbackCanadianPrice(for: tour.id) {
+            return "Expected Canadian price: \(fallbackPrice). Connect to load Apple's confirmed localized price. "
+                + "Tours you already unlocked still work offline."
+        }
+        return "Connect to load Apple's confirmed price. Tours you already unlocked still work offline."
     }
 
     private func purchaseCard(
@@ -137,5 +152,21 @@ struct PurchaseView: View {
         }
         .padding(.vertical, 20)
         .overlay(alignment: .top) { Divider().overlay(TrailColor.line) }
+    }
+}
+
+private struct OfferCodeRedemptionPresenter: ViewModifier {
+    @Binding var isPresented: Bool
+    @ObservedObject var purchaseStore: PurchaseStore
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if #available(iOS 27.0, *) {
+            content.offerCodeRedemption(options: [], isPresented: $isPresented) { result in
+                Task { await purchaseStore.processOfferCodeRedemption(result) }
+            }
+        } else {
+            content.offerCodeRedemption(isPresented: $isPresented)
+        }
     }
 }

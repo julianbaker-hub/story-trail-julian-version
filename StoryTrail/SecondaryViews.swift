@@ -180,13 +180,14 @@ struct AllToursMapView: View {
     }
 
     private func previewPrice(for tour: Tour) -> String {
+        if purchaseStore.product(for: tour) != nil || purchaseStore.hasAccess(to: tour) {
+            return purchaseStore.accessLabel(for: tour)
+        }
         switch tour.id {
-        case "inner-harbour", "beacon-hill":
-            "$9.99"
-        case "old-town", "james-bay":
-            "$12.99"
+        case let id where PurchaseConfiguration.fallbackCanadianPrice(for: id) != nil:
+            return PurchaseConfiguration.fallbackCanadianPrice(for: id) ?? "PAID TOUR"
         default:
-            purchaseStore.accessLabel(for: tour)
+            return purchaseStore.accessLabel(for: tour)
         }
     }
 
@@ -1297,7 +1298,7 @@ private struct HelpCenterView: View {
         HelpArticle(
             title: "How to use StoryTrail",
             detail:
-                "Choose a tour or tour bundle, complete the purchase and download the tour. Find your desired tour's start location. Once you arrive at the start location and tap Start Tour, the app will start the tour's first stop automatically. Enjoy! The audio will guide you to the next stop. Each stop will play automatically when you arrive at the correct location.",
+                "Choose a tour, complete the purchase and download it. Find your desired tour's start location. Once you arrive at the start location and tap Start Tour, the app will start the tour's first stop automatically. Enjoy! The audio will guide you to the next stop. Each stop will play automatically when you arrive at the correct location.",
         ),
         HelpArticle(
             title: "How to Redeem Purchased Tours",
@@ -1322,7 +1323,7 @@ private struct HelpCenterView: View {
         HelpArticle(
             title: "My Download isn't Working",
             detail:
-                "Check that you have downloaded the tour. Bundled tours may require individual downloads. If content is missing, restore purchases and reopen the app. Map detail can require a connection. Contact support if bundled audio still does not download or play.",
+                "Check that you have downloaded the tour. If content is missing, restore purchases and reopen the app. Map detail can require a connection. Contact support if the tour audio still does not download or play.",
         ),
     ]
 

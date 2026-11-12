@@ -336,7 +336,7 @@ final class NavigationAndProximityTests: XCTestCase {
     func testPreviewAvailabilityIsIndependentOfPurchasedTourAccess() async throws {
         let tours = try await BundledTourRepository().fetchTours()
         let oldTown = try XCTUnwrap(tours.first { $0.id == "old-town" })
-        let lockedPolicy = TourAccessPolicy(allToursUnlockedForTesting: false)
+        let lockedPolicy = TourAccessPolicy()
 
         XCTAssertFalse(lockedPolicy.hasAccess(to: oldTown.id, purchasedProductIDs: []))
         XCTAssertNotNil(oldTown.previewStop)

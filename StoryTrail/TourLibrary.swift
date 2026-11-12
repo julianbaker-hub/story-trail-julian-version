@@ -20,7 +20,7 @@ final class TourLibrary: ObservableObject {
         isLoading = true
         loadError = nil
         do {
-            tours = try await repository.fetchTours()
+            tours = TourAvailability.launchTours(from: try await repository.fetchTours())
             refreshSavedTours()
             WidgetSnapshotPublisher.publish(tours: tours, savedIDs: savedTourIDs)
         } catch {

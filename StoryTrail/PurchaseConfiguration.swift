@@ -1,48 +1,80 @@
 import Foundation
 
+enum TourAvailability {
+    static let launchTourIDs: Set<String> = ["inner-harbour", "old-town"]
+
+    static func isLaunchTour(_ tourID: String) -> Bool {
+        launchTourIDs.contains(tourID)
+    }
+
+    static func launchTours(from tours: [Tour]) -> [Tour] {
+        tours.filter { isLaunchTour($0.id) }
+    }
+}
+
 enum PurchaseConfiguration {
-    static let allToursUnlockedForTesting = true
-    static let demoTourID = "inner-harbour"
     static let allToursProductID = "com.storytrailguide.app.alltours"
 
     static let tourProductIDs: [String: String] = [
-        "old-town": "com.storytrailguide.app.tour.oldtown",
+        "inner-harbour": "com.storytrailguide.app.innerharbour",
+        "old-town": "com.storytrailguide.app.oldtown",
         "james-bay": "com.storytrailguide.app.tour.jamesbay",
         "beacon-hill": "com.storytrailguide.app.tour.beaconhill",
     ]
 
+    static let fallbackCanadianPrices: [String: String] = [
+        "inner-harbour": "$9.99",
+        "old-town": "$12.99",
+        "james-bay": "$12.99",
+        "beacon-hill": "$9.99",
+    ]
+
     static var productIDs: Set<String> {
-        Set(tourProductIDs.values).union([allToursProductID])
+        Set(tourProductIDs.values)
+    }
+
+    static var launchProductIDs: Set<String> {
+        Set(launchTourIDs.compactMap { tourProductIDs[$0] })
+    }
+
+    static var recognizedEntitlementProductIDs: Set<String> {
+        productIDs.union([allToursProductID])
     }
 
     static func productID(for tourID: String) -> String? {
         tourProductIDs[tourID]
     }
+
+    static func fallbackCanadianPrice(for tourID: String) -> String? {
+        fallbackCanadianPrices[tourID]
+    }
+
+    private static var launchTourIDs: Set<String> {
+        TourAvailability.launchTourIDs
+    }
 }
 
 struct TourAccessPolicy {
-    let allToursUnlockedForTesting: Bool
-    let demoTourID: String
+    let availableTourIDs: Set<String>
     let allToursProductID: String
     let tourProductIDs: [String: String]
 
     init(
-        allToursUnlockedForTesting: Bool = PurchaseConfiguration.allToursUnlockedForTesting,
-        demoTourID: String = PurchaseConfiguration.demoTourID,
+        availableTourIDs: Set<String> = TourAvailability.launchTourIDs,
         allToursProductID: String = PurchaseConfiguration.allToursProductID,
         tourProductIDs: [String: String] = PurchaseConfiguration.tourProductIDs,
     ) {
-        self.allToursUnlockedForTesting = allToursUnlockedForTesting
-        self.demoTourID = demoTourID
+        self.availableTourIDs = availableTourIDs
         self.allToursProductID = allToursProductID
         self.tourProductIDs = tourProductIDs
     }
 
     func hasAccess(to tourID: String, purchasedProductIDs: Set<String>) -> Bool {
-        if allToursUnlockedForTesting {
-            return true
+        guard availableTourIDs.contains(tourID) else {
+            return false
         }
-        if tourID == demoTourID || purchasedProductIDs.contains(allToursProductID) {
+
+        if purchasedProductIDs.contains(allToursProductID) {
             return true
         }
 

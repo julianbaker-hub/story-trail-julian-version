@@ -26,6 +26,7 @@ struct RootView: View {
         .preferredColorScheme(.dark)
         .onOpenURL { url in
             guard let tourID = WidgetTourLink.tourID(from: url) else { return }
+            guard TourAvailability.isLaunchTour(tourID) else { return }
             pendingTourID = tourID
             openPendingTour()
         }
@@ -410,11 +411,12 @@ struct CompactTourCard: View {
         if let accessLabel {
             return accessLabel
         }
+        if purchaseStore.product(for: tour) != nil || purchaseStore.hasAccess(to: tour) {
+            return purchaseStore.accessLabel(for: tour)
+        }
         switch tour.id {
-        case "inner-harbour", "beacon-hill":
-            return "$9.99"
-        case "old-town", "james-bay":
-            return "$12.99"
+        case let id where PurchaseConfiguration.fallbackCanadianPrice(for: id) != nil:
+            return PurchaseConfiguration.fallbackCanadianPrice(for: id) ?? "PAID TOUR"
         default:
             return purchaseStore.accessLabel(for: tour)
         }

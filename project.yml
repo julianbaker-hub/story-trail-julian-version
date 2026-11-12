@@ -28,6 +28,7 @@ targets:
     dependencies:
       - target: StoryTrailWidgets
     scheme:
+      storeKitConfiguration: StoreKit/StoryTrail.storekit
       testTargets:
         - StoryTrailTests
   StoryTrailWidgets:
