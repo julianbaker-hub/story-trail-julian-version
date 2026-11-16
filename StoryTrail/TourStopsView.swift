@@ -53,7 +53,7 @@ struct StopDetailSection: View {
                         accessibilityLabel: "Photo of \(stop.title)"
                     )
                 }
-                Text(stop.transcript.isEmpty ? stop.summary : stop.transcript)
+                Text(stop.summary)
                     .font(.trailBody(17))
                     .foregroundStyle(TrailColor.muted)
                     .lineSpacing(5)

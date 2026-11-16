@@ -320,8 +320,9 @@ enum TourPalette: String, Codable {
 }
 
 enum TourProgress {
-    static func visitedStopIDs(for tourID: String) -> Set<String> {
-        Set(UserDefaults.standard.stringArray(forKey: key(for: tourID)) ?? [])
+    static func visitedStopIDs(for tourID: String, defaults: UserDefaults = .standard) -> Set<String> {
+        migrateInnerHarbourProgressIfNeeded(defaults: defaults)
+        return Set(defaults.stringArray(forKey: key(for: tourID)) ?? [])
     }
 
     static func markVisited(stopID: String, in tourID: String) {
@@ -346,6 +347,24 @@ enum TourProgress {
 
     private static func key(for tourID: String) -> String {
         "visited-stop-ids.\(tourID)"
+    }
+
+    private static func migrateInnerHarbourProgressIfNeeded(defaults: UserDefaults) {
+        let migrationKey = "progress-migration.inner-harbour-nine-stops"
+        guard !defaults.bool(forKey: migrationKey) else { return }
+
+        let progressKey = key(for: "inner-harbour")
+        var visited = Set(defaults.stringArray(forKey: progressKey) ?? [])
+        let visitedFormerStop7 = visited.contains("inner-harbour-7")
+        let visitedFormerStop8 = visited.contains("inner-harbour-8")
+
+        visited.remove("inner-harbour-7")
+        visited.remove("inner-harbour-8")
+        if visitedFormerStop7 { visited.insert("inner-harbour-8") }
+        if visitedFormerStop8 { visited.insert("inner-harbour-9") }
+
+        if !visited.isEmpty { defaults.set(Array(visited), forKey: progressKey) }
+        defaults.set(true, forKey: migrationKey)
     }
 }
 

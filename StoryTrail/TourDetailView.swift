@@ -124,7 +124,7 @@ struct TourDetailView: View {
                                 } label: {
                                     DetailRow(
                                         icon: "waveform", color: TrailColor.coral, title: "Tour Stop Details",
-                                        subtitle: "\(tour.stops.count) audio stops and transcripts")
+                                        subtitle: "\(tour.stops.count) audio stops with images and summaries")
                                 }
                             } else {
                                 Button {
@@ -132,7 +132,8 @@ struct TourDetailView: View {
                                 } label: {
                                     DetailRow(
                                         icon: "lock.fill", color: TrailColor.green, title: "Unlock this tour",
-                                        subtitle: "Route, audio stories, transcripts, and offline access", isCard: true)
+                                        subtitle: "Route, audio stories, stop details, and offline access", isCard: true
+                                    )
                                 }
                             }
                             NavigationLink {
@@ -347,7 +348,7 @@ struct TourDetailView: View {
         switch tour.id {
         case "inner-harbour":
             return [
-                TourHighlight(icon: "mappin", title: "8 Must-See Stops"),
+                TourHighlight(icon: "mappin", title: "9 Must-See Stops"),
                 TourHighlight(icon: "star.fill", title: "10 Famous Landmarks"),
                 TourHighlight(icon: "music.note", title: "Curated Music"),
             ]

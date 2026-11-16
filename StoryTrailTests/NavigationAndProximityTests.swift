@@ -123,7 +123,7 @@ final class NavigationAndProximityTests: XCTestCase {
     func testInnerHarbourStopsHaveDistinctBundledAudio() async throws {
         let tours = try await BundledTourRepository().fetchTours()
         let tour = try XCTUnwrap(tours.first { $0.id == "inner-harbour" })
-        XCTAssertEqual(tour.stops.count, 8)
+        XCTAssertEqual(tour.stops.count, 9)
 
         let files = try tour.stops.map { stop in
             let file = try XCTUnwrap(stop.audioFile, "Missing audio for \(stop.id)")
@@ -162,12 +162,13 @@ final class NavigationAndProximityTests: XCTestCase {
             CLLocationCoordinate2D(latitude: 48.420939, longitude: -123.370996),
             CLLocationCoordinate2D(latitude: 48.420663, longitude: -123.370137),
             CLLocationCoordinate2D(latitude: 48.420529, longitude: -123.369870),
+            CLLocationCoordinate2D(latitude: 48.420517, longitude: -123.369221),
             CLLocationCoordinate2D(latitude: 48.420234, longitude: -123.366827),
             CLLocationCoordinate2D(latitude: 48.420776, longitude: -123.368596),
         ]
 
-        XCTAssertEqual(tour.routeCoordinates.count, 28)
-        XCTAssertEqual(tour.routeArrows.count, 7)
+        XCTAssertEqual(tour.routeCoordinates.count, 29)
+        XCTAssertEqual(tour.routeArrows.count, 8)
         XCTAssertEqual(tour.stops.map(\.coordinate.latitude), expectedStopCoordinates.map(\.latitude))
         XCTAssertEqual(tour.stops.map(\.coordinate.longitude), expectedStopCoordinates.map(\.longitude))
         XCTAssertEqual(
@@ -175,8 +176,55 @@ final class NavigationAndProximityTests: XCTestCase {
             [
                 "InnerHarbourStop01", "InnerHarbourStop02", "InnerHarbourStop03", "InnerHarbourStop04",
                 "InnerHarbourStop05", "InnerHarbourStop06", "InnerHarbourStop07", "InnerHarbourStop08",
+                "InnerHarbourStop09",
             ]
         )
+        XCTAssertEqual(
+            Array(tour.routeCoordinates[18...24]).map(\.latitude),
+            [48.420529, 48.420472, 48.420517, 48.420572, 48.420522, 48.420442, 48.420234]
+        )
+        XCTAssertEqual(
+            Array(tour.routeCoordinates[18...24]).map(\.longitude),
+            [-123.369870, -123.369430, -123.369221, -123.369035, -123.368447, -123.367910, -123.366827]
+        )
+    }
+
+    func testInnerHarbourIncludesHiddenMuseumPassByTrigger() async throws {
+        let tours = try await BundledTourRepository().fetchTours()
+        let tour = try XCTUnwrap(tours.first { $0.id == "inner-harbour" })
+        let triggers = try XCTUnwrap(tour.audioTriggers)
+        let passBy = try XCTUnwrap(triggers.first { $0.id == "inner-harbour-trigger-7-5" })
+
+        XCTAssertEqual(tour.stops.count, 9)
+        XCTAssertEqual(triggers.count, 10)
+        XCTAssertEqual(tour.playbackStops.count, 10)
+        XCTAssertFalse(tour.stops.contains { $0.id == passBy.id })
+        XCTAssertNil(passBy.stopID)
+        XCTAssertEqual(passBy.audioFile, "inner-harbour-07-5-museum-pass-by.mp3")
+        XCTAssertEqual(passBy.coordinate.latitude, 48.420522, accuracy: 0.000_001)
+        XCTAssertEqual(passBy.coordinate.longitude, -123.368447, accuracy: 0.000_001)
+
+        for stop in tour.playbackStops {
+            let file = try XCTUnwrap(stop.audioFile, "Missing audio for \(stop.id)")
+            let filename = file as NSString
+            XCTAssertNotNil(
+                Bundle.main.url(forResource: filename.deletingPathExtension, withExtension: filename.pathExtension),
+                "Unbundled audio: \(file)"
+            )
+        }
+    }
+
+    func testInnerHarbourProgressMigrationRenumbersFormerStops() throws {
+        let suiteName = "NavigationAndProximityTests.\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        defaults.set(
+            ["inner-harbour-1", "inner-harbour-7", "inner-harbour-8"], forKey: "visited-stop-ids.inner-harbour")
+
+        let migrated = TourProgress.visitedStopIDs(for: "inner-harbour", defaults: defaults)
+
+        XCTAssertEqual(migrated, ["inner-harbour-1", "inner-harbour-8", "inner-harbour-9"])
+        XCTAssertFalse(migrated.contains("inner-harbour-7"))
     }
 
     func testOldTownUsesDetailedRouteVisibleStopsAndPreparedAudioTriggers() async throws {

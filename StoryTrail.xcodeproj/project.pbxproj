@@ -17,6 +17,8 @@
 		2AF04EF1E24345879477A003 /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF04EF1E24345879477B003 /* PurchaseView.swift */; };
 		2AF04EF1E24345879477A004 /* TourAccessPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF04EF1E24345879477B004 /* TourAccessPolicyTests.swift */; };
 		32689AEC41C9581B0CC1D7DE /* AudioPlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D9459DA13195A08D8C9523 /* AudioPlayerModel.swift */; };
+		375575F530AB4A3A001C9B36 /* inner-harbour-07-5-museum-pass-by.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 375575F430AB4A3A001C9B36 /* inner-harbour-07-5-museum-pass-by.mp3 */; };
+		375575F730AB4A3B001C9B36 /* inner-harbour-09-emily-carr-statue.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 375575F630AB4A3B001C9B36 /* inner-harbour-09-emily-carr-statue.mp3 */; };
 		378EBB053090D70F0004FA2B /* old-town-preview.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 378EBB043090D70F0004FA2B /* old-town-preview.mp3 */; };
 		378EBB073090D7100004FA2B /* inner-harbour-preview.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 378EBB063090D7100004FA2B /* inner-harbour-preview.mp3 */; };
 		37D7462130827F3E0013BD08 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 37D7462030827C410013BD08 /* PrivacyInfo.xcprivacy */; };
@@ -35,9 +37,9 @@
 		37D7463D3087D25E0013BD08 /* old-town-11-fan-tan-alley.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D7463C3087D25E0013BD08 /* old-town-11-fan-tan-alley.mp3 */; };
 		37D7463F3087D2650013BD08 /* old-town-12-chinatown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D7463E3087D2650013BD08 /* old-town-12-chinatown.mp3 */; };
 		37D8F22A308FE85A009AFF06 /* old-town-07-5-navigation-prompt.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37D8F229308FE85A009AFF06 /* old-town-07-5-navigation-prompt.mp3 */; };
-		44DBB4C7118E837874E44EB4 /* inner-harbour-02-fairmont-empress-hotel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 573AC9477C9FD9AF71EA69DD /* inner-harbour-02-fairmont-empress-hotel.mp3 */; };
+		44DBB4C7118E837874E44EB4 /* inner-harbour-02-empress-hotel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 573AC9477C9FD9AF71EA69DD /* inner-harbour-02-empress-hotel.mp3 */; };
 		545B942F78111C87B1E6ACA3 /* TourDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B51FA5FA238A3E41608135 /* TourDetailView.swift */; };
-		6254B4857CB3BAC575812D6B /* inner-harbour-08-emily-carr-statue.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AEE0709A04ECD45DACBA4EB0 /* inner-harbour-08-emily-carr-statue.mp3 */; };
+		6254B4857CB3BAC575812D6B /* inner-harbour-08-thunderbird-park.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AEE0709A04ECD45DACBA4EB0 /* inner-harbour-08-thunderbird-park.mp3 */; };
 		7239365A9FACC75BE9382DB9 /* StoryTrailApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F1B80E6DC60C51412E44DB /* StoryTrailApp.swift */; };
 		76229AA8D597A51DAFEDF0A6 /* inner-harbor.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7C6CAFAE98A3D776D6878BA7 /* inner-harbor.mp3 */; };
 		8AB697DBA96C232084644903 /* TourStopsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A4894C1681E6530A2F5F82 /* TourStopsView.swift */; };
@@ -53,11 +55,11 @@
 		A62769413BEC5194F348F4B9 /* TourRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CCD516384D37F08D17077B /* TourRepository.swift */; };
 		B10000000000000000000001 /* TourShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000001 /* TourShortcuts.swift */; };
 		B10000000000000000000002 /* TourShortcutsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000002 /* TourShortcutsTests.swift */; };
-		B5C0E85966050A6324E2896A /* inner-harbour-01-victoria-visitor-centre.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D27345F869D6B8B0E95412FF /* inner-harbour-01-victoria-visitor-centre.mp3 */; };
+		B5C0E85966050A6324E2896A /* inner-harbour-01-introduction.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D27345F869D6B8B0E95412FF /* inner-harbour-01-introduction.mp3 */; };
 		BAB4164CC6D4AC500D55627A /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEA563DAC19057DEEF31443 /* RootView.swift */; };
-		BD4D28C66DFFF88817459F79 /* inner-harbour-06-legislative-assembly.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CAD363AEBFD55F8266A009CF /* inner-harbour-06-legislative-assembly.mp3 */; };
+		BD4D28C66DFFF88817459F79 /* inner-harbour-06-parliament-buildings.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CAD363AEBFD55F8266A009CF /* inner-harbour-06-parliament-buildings.mp3 */; };
 		C1382BFB86AC260209E7806E /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2C96003D63C4B0200EA100 /* DesignSystem.swift */; };
-		C95F8D831E9E30CA92012DF0 /* inner-harbour-07-thunderbird-park.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 97BCB3902E0D488138E5F22D /* inner-harbour-07-thunderbird-park.mp3 */; };
+		C95F8D831E9E30CA92012DF0 /* inner-harbour-07-war-memorial.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 97BCB3902E0D488138E5F22D /* inner-harbour-07-war-memorial.mp3 */; };
 		D9159EFB60672FEF83291E10 /* inner-harbour-03-causeway-promenade.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 72AC3AEA01189D6AEA80DB5E /* inner-harbour-03-causeway-promenade.mp3 */; };
 		E34FE420DB13C0C391C65A8B /* inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4B7D0D9EBE07706E80BA187B /* inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3 */; };
 		F100ED4F9767A20ECF4FF361 /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50F30408A68C5958B9433AC /* LocationModel.swift */; };
@@ -114,6 +116,8 @@
 		2AF04EF1E24345879477B004 /* TourAccessPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourAccessPolicyTests.swift; sourceTree = "<group>"; };
 		3382E908EF9D3B53C877BF94 /* tours.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tours.json; sourceTree = "<group>"; };
 		33A4894C1681E6530A2F5F82 /* TourStopsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourStopsView.swift; sourceTree = "<group>"; };
+		375575F430AB4A3A001C9B36 /* inner-harbour-07-5-museum-pass-by.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-07-5-museum-pass-by.mp3"; sourceTree = "<group>"; };
+		375575F630AB4A3B001C9B36 /* inner-harbour-09-emily-carr-statue.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-09-emily-carr-statue.mp3"; sourceTree = "<group>"; };
 		378EBB043090D70F0004FA2B /* old-town-preview.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "old-town-preview.mp3"; sourceTree = "<group>"; };
 		378EBB063090D7100004FA2B /* inner-harbour-preview.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-preview.mp3"; sourceTree = "<group>"; };
 		37D7462030827C410013BD08 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -136,13 +140,13 @@
 		4B2C96003D63C4B0200EA100 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		4B7D0D9EBE07706E80BA187B /* inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3"; sourceTree = "<group>"; };
 		5678475970E8DF82B2FD3C9F /* TourMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourMapView.swift; sourceTree = "<group>"; };
-		573AC9477C9FD9AF71EA69DD /* inner-harbour-02-fairmont-empress-hotel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-02-fairmont-empress-hotel.mp3"; sourceTree = "<group>"; };
+		573AC9477C9FD9AF71EA69DD /* inner-harbour-02-empress-hotel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-02-empress-hotel.mp3"; sourceTree = "<group>"; };
 		6B5450AED213644C21D17801 /* SecondaryViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryViews.swift; sourceTree = "<group>"; };
 		72AC3AEA01189D6AEA80DB5E /* inner-harbour-03-causeway-promenade.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-03-causeway-promenade.mp3"; sourceTree = "<group>"; };
 		7C6CAFAE98A3D776D6878BA7 /* inner-harbor.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbor.mp3"; sourceTree = "<group>"; };
 		83CCD516384D37F08D17077B /* TourRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourRepository.swift; sourceTree = "<group>"; };
 		87F1B80E6DC60C51412E44DB /* StoryTrailApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryTrailApp.swift; sourceTree = "<group>"; };
-		97BCB3902E0D488138E5F22D /* inner-harbour-07-thunderbird-park.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-07-thunderbird-park.mp3"; sourceTree = "<group>"; };
+		97BCB3902E0D488138E5F22D /* inner-harbour-07-war-memorial.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-07-war-memorial.mp3"; sourceTree = "<group>"; };
 		A20000000000000000000001 /* WidgetSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshot.swift; sourceTree = "<group>"; };
 		A20000000000000000000002 /* WidgetSnapshotPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshotPublisher.swift; sourceTree = "<group>"; };
 		A20000000000000000000003 /* StoryTrailWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryTrailWidgets.swift; sourceTree = "<group>"; };
@@ -153,14 +157,14 @@
 		A20000000000000000000008 /* StoryTrail.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StoryTrail.entitlements; sourceTree = "<group>"; };
 		A21B96F4BD6ED676B28549ED /* TourLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourLibrary.swift; sourceTree = "<group>"; };
 		AA2E16F513DC7F78DFFF84AE /* NavigationMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationMath.swift; sourceTree = "<group>"; };
-		AEE0709A04ECD45DACBA4EB0 /* inner-harbour-08-emily-carr-statue.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-08-emily-carr-statue.mp3"; sourceTree = "<group>"; };
+		AEE0709A04ECD45DACBA4EB0 /* inner-harbour-08-thunderbird-park.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-08-thunderbird-park.mp3"; sourceTree = "<group>"; };
 		B15B862B54E1ACD23B487B91 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B20000000000000000000001 /* TourShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourShortcuts.swift; sourceTree = "<group>"; };
 		B20000000000000000000002 /* TourShortcutsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourShortcutsTests.swift; sourceTree = "<group>"; };
 		B50F30408A68C5958B9433AC /* LocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
 		C4B51FA5FA238A3E41608135 /* TourDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourDetailView.swift; sourceTree = "<group>"; };
-		CAD363AEBFD55F8266A009CF /* inner-harbour-06-legislative-assembly.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-06-legislative-assembly.mp3"; sourceTree = "<group>"; };
-		D27345F869D6B8B0E95412FF /* inner-harbour-01-victoria-visitor-centre.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-01-victoria-visitor-centre.mp3"; sourceTree = "<group>"; };
+		CAD363AEBFD55F8266A009CF /* inner-harbour-06-parliament-buildings.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-06-parliament-buildings.mp3"; sourceTree = "<group>"; };
+		D27345F869D6B8B0E95412FF /* inner-harbour-01-introduction.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-01-introduction.mp3"; sourceTree = "<group>"; };
 		D92B166D8D387482D96AE5E2 /* inner-harbour-04-steamship-terminal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "inner-harbour-04-steamship-terminal.mp3"; sourceTree = "<group>"; };
 		E1241C28BB01BCD8447B25C5 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		E12B9696FB042ACE9670E87C /* NavigationAndProximityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAndProximityTests.swift; sourceTree = "<group>"; };
@@ -216,14 +220,14 @@
 				37D746303087D23C0013BD08 /* old-town-07-bastion-square-black-pioneers.mp3 */,
 				37D7462A3087D2100013BD08 /* old-town-04-fort-victoria.mp3 */,
 				37D746263087D1F30013BD08 /* old-town-02-rogers-chocolates.mp3 */,
-				D27345F869D6B8B0E95412FF /* inner-harbour-01-victoria-visitor-centre.mp3 */,
-				573AC9477C9FD9AF71EA69DD /* inner-harbour-02-fairmont-empress-hotel.mp3 */,
+				D27345F869D6B8B0E95412FF /* inner-harbour-01-introduction.mp3 */,
+				573AC9477C9FD9AF71EA69DD /* inner-harbour-02-empress-hotel.mp3 */,
 				72AC3AEA01189D6AEA80DB5E /* inner-harbour-03-causeway-promenade.mp3 */,
 				D92B166D8D387482D96AE5E2 /* inner-harbour-04-steamship-terminal.mp3 */,
 				4B7D0D9EBE07706E80BA187B /* inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3 */,
-				CAD363AEBFD55F8266A009CF /* inner-harbour-06-legislative-assembly.mp3 */,
-				97BCB3902E0D488138E5F22D /* inner-harbour-07-thunderbird-park.mp3 */,
-				AEE0709A04ECD45DACBA4EB0 /* inner-harbour-08-emily-carr-statue.mp3 */,
+				CAD363AEBFD55F8266A009CF /* inner-harbour-06-parliament-buildings.mp3 */,
+				97BCB3902E0D488138E5F22D /* inner-harbour-07-war-memorial.mp3 */,
+				AEE0709A04ECD45DACBA4EB0 /* inner-harbour-08-thunderbird-park.mp3 */,
 				37D746243087D1EC0013BD08 /* old-town-01-introduction-old-victoria-hotel.mp3 */,
 				37D746283087D2090013BD08 /* old-town-03-customs-house.mp3 */,
 				37D7462C3087D2180013BD08 /* old-town-05-munros-murchies-morris.mp3 */,
@@ -237,6 +241,8 @@
 				37D8F229308FE85A009AFF06 /* old-town-07-5-navigation-prompt.mp3 */,
 				378EBB043090D70F0004FA2B /* old-town-preview.mp3 */,
 				378EBB063090D7100004FA2B /* inner-harbour-preview.mp3 */,
+				375575F430AB4A3A001C9B36 /* inner-harbour-07-5-museum-pass-by.mp3 */,
+				375575F630AB4A3B001C9B36 /* inner-harbour-09-emily-carr-statue.mp3 */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -382,9 +388,10 @@
 				37D7462130827F3E0013BD08 /* PrivacyInfo.xcprivacy in Resources */,
 				1C7780229738C17FC2BD3921 /* Assets.xcassets in Resources */,
 				76229AA8D597A51DAFEDF0A6 /* inner-harbor.mp3 in Resources */,
-				B5C0E85966050A6324E2896A /* inner-harbour-01-victoria-visitor-centre.mp3 in Resources */,
+				B5C0E85966050A6324E2896A /* inner-harbour-01-introduction.mp3 in Resources */,
 				37D7463B3087D2590013BD08 /* old-town-10-market-square.mp3 in Resources */,
-				44DBB4C7118E837874E44EB4 /* inner-harbour-02-fairmont-empress-hotel.mp3 in Resources */,
+				375575F730AB4A3B001C9B36 /* inner-harbour-09-emily-carr-statue.mp3 in Resources */,
+				44DBB4C7118E837874E44EB4 /* inner-harbour-02-empress-hotel.mp3 in Resources */,
 				37D746273087D1F30013BD08 /* old-town-02-rogers-chocolates.mp3 in Resources */,
 				37D7462B3087D2100013BD08 /* old-town-04-fort-victoria.mp3 in Resources */,
 				37D8F22A308FE85A009AFF06 /* old-town-07-5-navigation-prompt.mp3 in Resources */,
@@ -397,15 +404,16 @@
 				37D746353087D2480013BD08 /* old-town-08-waddington-alley.mp3 in Resources */,
 				37D7462D3087D2180013BD08 /* old-town-05-munros-murchies-morris.mp3 in Resources */,
 				E34FE420DB13C0C391C65A8B /* inner-harbour-05-james-douglas-sequoia-queen-victoria.mp3 in Resources */,
-				BD4D28C66DFFF88817459F79 /* inner-harbour-06-legislative-assembly.mp3 in Resources */,
+				BD4D28C66DFFF88817459F79 /* inner-harbour-06-parliament-buildings.mp3 in Resources */,
 				37D746373087D24E0013BD08 /* old-town-09-5-continued.mp3 in Resources */,
 				37D746313087D23C0013BD08 /* old-town-07-bastion-square-black-pioneers.mp3 in Resources */,
-				C95F8D831E9E30CA92012DF0 /* inner-harbour-07-thunderbird-park.mp3 in Resources */,
+				C95F8D831E9E30CA92012DF0 /* inner-harbour-07-war-memorial.mp3 in Resources */,
 				37D746253087D1EC0013BD08 /* old-town-01-introduction-old-victoria-hotel.mp3 in Resources */,
 				378EBB053090D70F0004FA2B /* old-town-preview.mp3 in Resources */,
 				37D7463D3087D25E0013BD08 /* old-town-11-fan-tan-alley.mp3 in Resources */,
 				37D7463F3087D2650013BD08 /* old-town-12-chinatown.mp3 in Resources */,
-				6254B4857CB3BAC575812D6B /* inner-harbour-08-emily-carr-statue.mp3 in Resources */,
+				6254B4857CB3BAC575812D6B /* inner-harbour-08-thunderbird-park.mp3 in Resources */,
+				375575F530AB4A3A001C9B36 /* inner-harbour-07-5-museum-pass-by.mp3 in Resources */,
 				9DE3B505EBB12889D2E9699A /* tours.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

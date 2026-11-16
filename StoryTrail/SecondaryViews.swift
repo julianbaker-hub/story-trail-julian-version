@@ -205,7 +205,7 @@ struct AllToursMapView: View {
     private func previewMetadata(for tour: Tour) -> String {
         switch tour.id {
         case "inner-harbour":
-            "\(tour.minutes) min · 8 stops"
+            "\(tour.minutes) min · \(tour.stops.count) stops"
         case "old-town":
             "60 min · \(tour.stops.count) stops"
         case "james-bay":
